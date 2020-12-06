@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sv_register"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/backgroundonboard"
+    android:backgroundTint="@color/pinkPasta"
+    android:backgroundTintMode="multiply"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".OnBoardScreenActivity">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:src="@drawable/logohorizontalnewwhite"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_onboard"
+            android:text="@string/find_talented_and_best_developers_in_various_fields_of_expertise"
+            android:textColor="#fff"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo"
+            android:layout_marginTop="80dp"
+            android:layout_marginHorizontal="15dp"
+            />
+
+        <Button
+            android:id="@+id/btn_login_engineer"
+            android:text="@string/login_as_engineer"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#ED4D4D"
+            android:background="@drawable/radiusbuttonwhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_onboard"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="100dp"
+            android:layout_marginHorizontal="15dp"
+            />
+
+        <View
+            android:id="@+id/v_or_left"
+            android:layout_height="1dp"
+            android:layout_marginTop="7dp"
+            android:background="#fff"
+            app:layout_constraintLeft_toLeftOf="@id/btn_login_engineer"
+            app:layout_constraintRight_toLeftOf="@+id/tv_or"
+            app:layout_constraintTop_toTopOf="@id/tv_or"
+            android:layout_marginEnd="5dp"
+            android:layout_marginVertical="14dp"
+            android:layout_width="0dp" />
+
+        <View
+            android:id="@+id/v_or_right"
+            android:layout_height="1dp"
+            android:layout_marginTop="7dp"
+            android:background="#fff"
+            app:layout_constraintRight_toRightOf="@id/btn_login_engineer"
+            app:layout_constraintLeft_toRightOf="@+id/tv_or"
+            app:layout_constraintTop_toTopOf="@id/tv_or"
+            android:layout_marginStart="5dp"
+            android:layout_marginVertical="14dp"
+            android:layout_width="0dp" />
+
+
+        <TextView
+            android:id="@+id/tv_or"
+            android:text="@string/or"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btn_login_engineer"
+            app:layout_constraintLeft_toLeftOf="@id/btn_login_engineer"
+            app:layout_constraintRight_toRightOf="@id/btn_login_engineer"
+            app:layout_constraintBottom_toTopOf="@+id/btn_login_company"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="15dp"
+            />
+
+        <Button
+            android:id="@+id/btn_login_company"
+            android:text="@string/login_as_company"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:background="@drawable/radiusbuttontransparant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_or"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginHorizontal="15dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
