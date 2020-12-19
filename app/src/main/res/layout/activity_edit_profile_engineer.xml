@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sv_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_edit_profile"
+            android:text="Edit Profile"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/bg_layout_white_radius"
+            android:padding="15dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="30dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/avatar"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_ic_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="35dp"
+                android:background="@drawable/ic_baseline_edit_24"
+                app:layout_constraintLeft_toLeftOf="@id/iv_avatar"
+                app:layout_constraintRight_toRightOf="@id/iv_avatar"
+                app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+
+            <TextView
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toRightOf="@id/tv_ic_edit"
+                app:layout_constraintTop_toTopOf="@id/tv_ic_edit" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/louis_tomlinson"
+                android:textColor="@color/navy"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_ic_edit" />
+
+            <TextView
+                android:id="@+id/tv_job_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/web_developer"
+                android:textColor="@color/navy"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="@id/tv_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/purwekerto_jawa_tengah"
+                android:textColor="#575757"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toRightOf="@id/iv_icon_place"
+                app:layout_constraintTop_toTopOf="@id/iv_icon_place" />
+
+            <ImageView
+                android:id="@+id/iv_icon_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_baseline_place_24"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_job_type" />
+
+            <TextView
+                android:id="@+id/tv_talent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Freelance"
+                android:textColor="#575757"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_icon_place" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey"
+            android:layout_marginHorizontal="15dp"
+            android:layout_below="@+id/content_1"
+            >
+
+            <Button
+                android:id="@+id/btn_save"
+                android:background="@drawable/radiusbutton"
+                android:text="Save"
+                android:textColor="#fff"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:background="@drawable/buttonradiustransparant_editprofile"
+                android:text="Cancel"
+                android:textColor="@color/pinkPasta"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/btn_save"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="15dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout_white_radius"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/content_2">
+
+            <TextView
+                android:id="@+id/tv_personal_data"
+                android:text="Personal Data"
+                android:textColor="@color/navy"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                />
+
+            <View
+                android:id="@+id/v_personal_data"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:background="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_personal_data"
+                android:layout_marginTop="18dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_fullname"
+                android:text="Full Name"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/v_personal_data"
+                app:layout_constraintLeft_toLeftOf="@id/et_fullname"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_fullname"
+                android:hint="@string/enter_full_name"
+                android:textSize="15sp"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_fullname"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_job_title"
+                android:text="Job_title"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_fullname"
+                app:layout_constraintLeft_toLeftOf="@id/et_fullname"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_job_title"
+                android:hint="Enter job title"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_job_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:text="City"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_job_title"
+                app:layout_constraintLeft_toLeftOf="@id/et_job_title"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_city"
+                android:hint="Enter city"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_city"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_workplace"
+                android:text="Workplace"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_city"
+                app:layout_constraintLeft_toLeftOf="@id/et_workplace"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_workplace"
+                android:hint="Enter workplace"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_workplace"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_short_desc"
+                android:text="Short Description"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_workplace"
+                app:layout_constraintLeft_toLeftOf="@id/et_city"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_short_desc"
+                android:hint="Write a short description"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:gravity="top"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_short_desc"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="25dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout_white_radius"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/content_3">
+
+            <TextView
+                android:id="@+id/tv_Skill"
+                android:text="Personal Data"
+                android:textColor="@color/navy"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                />
+
+            <View
+                android:id="@+id/v_Skill"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:background="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_Skill"
+                android:layout_marginTop="18dp"
+                />
+
+            <EditText
+                android:id="@+id/et_skill"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:hint="Javascript"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/v_Skill"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="15dp"
+                />
+
+            <Button
+                android:id="@+id/btn_save_skill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radiusbutton"
+                android:text="Save"
+                android:textColor="#fff"
+                app:layout_constraintLeft_toRightOf="@id/et_skill"
+                app:layout_constraintTop_toTopOf="@id/et_skill"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="25dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout_white_radius"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/content_4">
+
+            <TextView
+                android:id="@+id/tv_experience"
+                android:text="Experience"
+                android:textColor="@color/navy"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                />
+
+            <View
+                android:id="@+id/v_experience"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:background="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_experience"
+                android:layout_marginTop="18dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_position"
+                android:text="Position"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/v_experience"
+                app:layout_constraintLeft_toLeftOf="@id/et_position"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_position"
+                android:hint="Web developer"
+                android:textSize="15sp"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_position"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_company_name"
+                android:text="Company name"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_position"
+                app:layout_constraintLeft_toLeftOf="@id/et_position"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_company_name"
+                android:hint="PT Harus Bisa"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_company_name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_month_year"
+                android:text="Month/Year"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_company_name"
+                app:layout_constraintLeft_toLeftOf="@id/et_company_name"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_month_year"
+                android:hint="Januari 2018"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_month_year"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_short_desc_exp"
+                android:text="Short Description"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_month_year"
+                app:layout_constraintLeft_toLeftOf="@id/et_month_year"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_short_desc_exp"
+                android:hint="description your job"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:gravity="top"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_short_desc_exp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp"
+                />
+
+            <View
+                android:id="@+id/v_desc"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                android:background="@color/grey"
+                app:layout_constraintLeft_toLeftOf="@id/et_short_desc_exp"
+                app:layout_constraintRight_toRightOf="@id/et_short_desc_exp"
+                app:layout_constraintTop_toBottomOf="@id/et_short_desc_exp"
+                android:layout_marginTop="25dp"
+                />
+
+            <Button
+                android:id="@+id/btn_add_exp"
+                android:background="@drawable/buttonradiustransparant_editprofile"
+                android:text="Add Experience"
+                android:textColor="@color/pinkPasta"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/v_desc"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginHorizontal="15dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout_white_radius"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/content_5">
+
+            <TextView
+                android:id="@+id/tv_portofolio"
+                android:text="Portofolio"
+                android:textColor="@color/navy"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                />
+
+            <View
+                android:id="@+id/v_portofolio"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:background="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_portofolio"
+                android:layout_marginTop="18dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_app_name"
+                android:text="Aplication name"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/v_portofolio"
+                app:layout_constraintLeft_toLeftOf="@id/et_app_name"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_app_name"
+                android:hint="Enter application name"
+                android:textColorHint="@color/navy"
+                android:textSize="15sp"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_short_desc_app"
+                android:text="Short Description"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_app_name"
+                app:layout_constraintLeft_toLeftOf="@id/et_app_name"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_short_desc_app"
+                android:hint="description your application"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:gravity="top"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_short_desc_app"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_link_pub"
+                android:text="Link publication"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_short_desc_app"
+                app:layout_constraintLeft_toLeftOf="@id/et_link_pub"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_link_pub"
+                android:hint="Enter link publication"
+                android:textColorHint="@color/navy"
+                android:textSize="15sp"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_link_pub"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_link_repo"
+                android:text="Link repository"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_link_pub"
+                app:layout_constraintLeft_toLeftOf="@id/et_link_repo"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_link_repo"
+                android:hint="Enter link repository"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_link_repo"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+            <TextView
+                android:id="@+id/tv_workplace_app"
+                android:text="Workplace"
+                android:textColor="@color/navy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/et_link_repo"
+                app:layout_constraintLeft_toLeftOf="@id/et_link_repo"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/et_workplace_app"
+                android:hint="Enter workplace"
+                android:textColorHint="@color/navy"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:paddingStart="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_field_editprofile"
+                app:layout_constraintTop_toBottomOf="@id/tv_workplace_app"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="15dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+</ScrollView>

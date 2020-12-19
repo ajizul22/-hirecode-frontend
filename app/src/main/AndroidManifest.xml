@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_hirecode_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditProfileCompanyActivity"></activity>
+        <activity android:name=".HomeActivity"
+            android:theme="@style/Basic"/>
+        <activity android:name=".EditProfileEngineerActivity" />
+        <activity
+            android:name=".EditProfileCompanyActivity"
+            android:theme="@style/Basic" />
         <activity
             android:name=".LoginCompanyActivity"
             android:theme="@style/Basic" />
@@ -18,7 +23,7 @@
             android:theme="@style/Basic" />
         <activity
             android:name=".ProfileEngineerActivity"
-            android:theme="@style/Basic" />
+            android:theme="@style/darkPink" />
         <activity
             android:name=".OnBoardScreenActivity"
             android:theme="@style/OnBoard" />

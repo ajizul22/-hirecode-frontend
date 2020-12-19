@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sv_register"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/backgroundonboard"
-    android:backgroundTint="@color/pinkPasta"
-    android:backgroundTintMode="multiply"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:background="@drawable/backgroundonboard"
+        android:backgroundTint="@color/pinkPasta"
+        android:backgroundTintMode="multiply"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context=".OnBoardScreenActivity">
 
         <ImageView
@@ -31,14 +28,14 @@
             android:id="@+id/tv_onboard"
             android:text="@string/find_talented_and_best_developers_in_various_fields_of_expertise"
             android:textColor="#fff"
-            android:textSize="50sp"
+            android:textSize="40sp"
             android:textStyle="bold"
             android:fontFamily="serif"
-            android:layout_width="390dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_logo"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="40dp"
             android:layout_marginHorizontal="15dp"
             />
 
@@ -61,7 +58,6 @@
         <View
             android:id="@+id/v_or_left"
             android:layout_height="1dp"
-            android:layout_marginTop="7dp"
             android:background="#fff"
             app:layout_constraintLeft_toLeftOf="@id/btn_login_engineer"
             app:layout_constraintRight_toLeftOf="@+id/tv_or"
@@ -111,13 +107,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_or"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="50dp"
             android:layout_marginHorizontal="15dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</layout>

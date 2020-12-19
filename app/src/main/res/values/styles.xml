@@ -23,8 +23,15 @@
 
     <style name="Basic" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/pinkPasta</item>
+        <item name="colorPrimaryDark">@color/pinkdark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="darkPink" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#888888</item>
+        <item name="colorPrimaryDark">@color/pinkdark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

@@ -13,11 +13,11 @@
             android:id="@+id/top_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
-            android:background="@color/pinkdark"
+            android:background="@color/pinkPasta"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <fragment
+        <FrameLayout
             android:id="@+id/fg_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
