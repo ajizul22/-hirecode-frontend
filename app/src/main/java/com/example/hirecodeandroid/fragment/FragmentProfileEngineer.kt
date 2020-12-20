@@ -1,6 +1,7 @@
 package com.example.hirecodeandroid.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +13,11 @@ import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.adapter.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.FragmentProfileBinding
 import com.example.hirecodeandroid.util.SharedPrefUtil
+import com.example.hirecodeandroid.webview.WebViewActivity
+import kotlinx.android.synthetic.main.activity_home.*
 
 
-class FragmentProfile: Fragment() {
+class FragmentProfileEngineer: Fragment() {
 
 
     private lateinit var binding : FragmentProfileBinding
@@ -32,6 +35,16 @@ class FragmentProfile: Fragment() {
         binding.viewPager.adapter = pagerAdapter
 
         binding.tabLayout.setupWithViewPager(binding.viewPager)
+
+        binding.btnEditProfile.setOnClickListener {
+            val fragment = FragmentEditProfileEngineer()
+            fragmentManager!!.beginTransaction().replace(R.id.fg_container, fragment).commit()
+        }
+
+        binding.tvGit.setOnClickListener {
+            val intent = Intent(activity, WebViewActivity::class.java)
+            startActivity(intent)
+        }
         return binding.root
     }
 

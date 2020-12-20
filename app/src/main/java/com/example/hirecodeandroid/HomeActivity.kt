@@ -11,9 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.databinding.ActivityHomeBinding
 import com.example.hirecodeandroid.databinding.LayoutDialogLogoutBinding
-import com.example.hirecodeandroid.fragment.FragmentChat
-import com.example.hirecodeandroid.fragment.FragmentHome
-import com.example.hirecodeandroid.fragment.FragmentProfile
+import com.example.hirecodeandroid.fragment.FragmentHomeCompany
+import com.example.hirecodeandroid.fragment.FragmentProfileEngineer
 import com.example.hirecodeandroid.fragment.FragmentSearch
 import com.example.hirecodeandroid.util.SharedPrefUtil
 
@@ -28,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
         sharedPref = applicationContext.getSharedPreferences(SharedPrefUtil.SHARED_PREF_NAME, Context.MODE_PRIVATE)
         setSupportActionBar(binding.topToolbar)
 
-        val fragmentHome = FragmentHome()
+        val fragmentHome = FragmentHomeCompany()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fg_container, fragmentHome).commit()
 
@@ -45,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.page_4 -> {
-                    val fragmentProfile = FragmentProfile()
+                    val fragmentProfile = FragmentProfileEngineer()
                     supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentProfile).commit()
                     true
                 } else -> false

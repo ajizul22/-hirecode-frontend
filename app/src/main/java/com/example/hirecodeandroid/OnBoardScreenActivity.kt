@@ -43,9 +43,5 @@ class OnBoardScreenActivity : AppCompatActivity() {
             startActivity(intentLogin)
         }
 
-        tv_or.setOnClickListener {
-            val intent= Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
     }
 }

@@ -41,7 +41,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="15dp"
-                    tools:context=".ProfileEngineerActivity">
+                    tools:context=".temporary.ProfileEngineerActivity">
 
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/iv_avatar"

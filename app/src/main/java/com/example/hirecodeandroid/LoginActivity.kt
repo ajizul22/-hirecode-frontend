@@ -8,26 +8,19 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.databinding.ActivityLoginBinding
-import com.example.hirecodeandroid.fragment.FragmentProfile
 import com.example.hirecodeandroid.util.SharedPrefUtil
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     lateinit var sharedPref: SharedPreferences
-    var isRemembered = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
         sharedPref = applicationContext.getSharedPreferences(SharedPrefUtil.SHARED_PREF_NAME, Context.MODE_PRIVATE)
 
-        isRemembered = sharedPref.getBoolean(SharedPrefUtil.KEY_LOGIN, false)
-        if (isRemembered) {
-            val intent = Intent(this,HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+
 
         binding.tvForgotpw.setOnClickListener {
             val intentResetPw = Intent(this, ResetPasswordActivity::class.java)
@@ -54,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                 sharedPref.edit().putString(SharedPrefUtil.KEY_PASSWORD, password).apply()
                 sharedPref.edit().putBoolean(SharedPrefUtil.KEY_LOGIN, true).apply()
 
-                Toast.makeText(this, "Information Saved!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Login Success!", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)

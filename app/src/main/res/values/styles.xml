@@ -25,7 +25,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/pinkPasta</item>
         <item name="colorPrimaryDark">@color/pinkdark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/pinkPasta</item>
     </style>
 
     <style name="darkPink" parent="Theme.AppCompat.Light.NoActionBar">

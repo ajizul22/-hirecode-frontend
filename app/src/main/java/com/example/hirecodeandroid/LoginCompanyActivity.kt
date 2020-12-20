@@ -28,7 +28,7 @@ class LoginCompanyActivity : AppCompatActivity() {
         }
 
         btnLoginActivity.setOnClickListener {
-            val intentProfile = Intent(this, ProfileCompanyActivity::class.java)
+            val intentProfile = Intent(this, MainActivity::class.java)
             val email = etEmail.text.toString()
             intentProfile.putExtra("email", email)
             startActivity(intentProfile)

@@ -1,7 +1,8 @@
-package com.example.hirecodeandroid
+package com.example.hirecodeandroid.temporary
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.hirecodeandroid.R
 
 class EditProfileEngineerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

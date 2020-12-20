@@ -1,13 +1,12 @@
-package com.example.hirecodeandroid
+package com.example.hirecodeandroid.temporary
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityProfileEngineerBinding
 import com.example.hirecodeandroid.adapter.EngineerTabPagerAdapter
-import kotlinx.android.synthetic.main.activity_profile_engineer.*
 
 class ProfileEngineerActivity : AppCompatActivity() {
 
@@ -16,7 +15,9 @@ class ProfileEngineerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_profile_engineer)
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.activity_profile_engineer
+        )
 
         val tvEmail = findViewById<TextView>(R.id.tv_email_address)
 

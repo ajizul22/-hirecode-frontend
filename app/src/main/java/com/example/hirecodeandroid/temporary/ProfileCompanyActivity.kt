@@ -1,12 +1,13 @@
-package com.example.hirecodeandroid
+package com.example.hirecodeandroid.temporary
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
+import com.example.hirecodeandroid.LoginCompanyActivity
+import com.example.hirecodeandroid.R
 
 class ProfileCompanyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

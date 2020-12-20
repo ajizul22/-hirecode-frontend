@@ -12,7 +12,7 @@ import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.adapter.HomeRecyclerViewAdapter
 import com.example.hirecodeandroid.databinding.FragmentHomeBinding
 
-class FragmentHome : Fragment() {
+class FragmentHomeCompany : Fragment() {
 
 
     private lateinit var binding : FragmentHomeBinding

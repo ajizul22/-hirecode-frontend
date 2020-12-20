@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hirecodeandroid">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_hirecode_new"
@@ -9,20 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_hirecode_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity"
+        <activity android:name=".webview.WebViewActivity"
             android:theme="@style/Basic"/>
-        <activity android:name=".EditProfileEngineerActivity" />
         <activity
-            android:name=".EditProfileCompanyActivity"
+            android:name=".HomeActivity"
+            android:theme="@style/Basic" />
+        <activity android:name=".temporary.EditProfileEngineerActivity" />
+        <activity
+            android:name=".temporary.EditProfileCompanyActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".LoginCompanyActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".ProfileCompanyActivity"
+            android:name=".temporary.ProfileCompanyActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".ProfileEngineerActivity"
+            android:name=".temporary.ProfileEngineerActivity"
             android:theme="@style/darkPink" />
         <activity
             android:name=".OnBoardScreenActivity"
