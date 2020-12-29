@@ -3,7 +3,6 @@ package com.example.hirecodeandroid.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.HomeActivity
@@ -57,11 +56,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Login Success!", Toast.LENGTH_SHORT).show()
 
                 callLoginApi(binding.etEmail.text.toString(), binding.etPassword.text.toString())
-//                sharePref.put(SharePrefHelper.KEY_LOGIN, true)
-//                sharePref.put(SharePrefHelper.AC_LEVEL, 1)
-//                val intent = Intent(this, HomeActivity::class.java)
-//                startActivity(intent)
-//                finish()
             }
 
 
@@ -85,10 +79,11 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (result is LoginResponse) {
-                if (result?.success) {
+                if (result.success) {
                     sharePref.put(SharePrefHelper.AC_LEVEL, result.data?.accountLevel!!)
                     sharePref.put(SharePrefHelper.KEY_LOGIN, true)
                     sharePref.put(SharePrefHelper.TOKEN, result.data.token!!)
+                    sharePref.put(SharePrefHelper.KEY_EMAIL, result.data.accountEmail!!)
                     val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                     startActivity(intent)
                     finish()

@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        app:title="Hire"
+        app:title="Portofolio"
         app:titleTextColor="#fff"
         android:layout_height="?android:actionBarSize"
         android:background="@color/pinkPasta"
@@ -18,13 +18,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:targetApi="lollipop" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/content_6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_layout_white_radius"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:layout_margin="15dp">
+            android:layout_marginHorizontal="15dp">
 
             <TextView
                 android:id="@+id/tv_portofolio"
@@ -182,10 +189,13 @@
                 android:background="@drawable/bg_field_editprofile"
                 app:layout_constraintTop_toBottomOf="@id/tv_workplace_app"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="5dp"
-                android:layout_marginHorizontal="15dp" />
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="15dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

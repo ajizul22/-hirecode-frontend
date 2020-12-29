@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.fragment
+package com.example.hirecodeandroid.engineer
 
 import android.content.Context
 import android.content.Intent
@@ -21,7 +21,7 @@ class FragmentProfileEngineer: Fragment() {
 
     private lateinit var binding : FragmentProfileBinding
     private lateinit var pagerAdapter: EngineerTabPagerAdapter
-    private lateinit var sharedPref: SharedPreferences
+    private lateinit var sharedPref: SharePrefHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,18 +29,23 @@ class FragmentProfileEngineer: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile,container,false)
-        sharedPref = this.activity!!.getSharedPreferences(SharePrefHelper.SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        sharedPref = SharePrefHelper(requireContext())
         pagerAdapter = EngineerTabPagerAdapter(childFragmentManager)
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
 
         binding.btnEditProfile.setOnClickListener {
-            val fragment = FragmentEditProfileEngineer()
-            fragmentManager!!.beginTransaction().replace(R.id.fg_container, fragment).commit()
+            val intent = Intent(activity, EditProfileEngineerActivity::class.java)
+            startActivity(intent)
         }
 
         binding.tvGit.setOnClickListener {
             val intent = Intent(activity, WebViewActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnAddSkill.setOnClickListener {
+            val intent = Intent(activity, AddSkillActivity::class.java)
             startActivity(intent)
         }
 
@@ -51,7 +56,7 @@ class FragmentProfileEngineer: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val email = sharedPref.getString(SharePrefHelper.KEY_EMAIL,"email")
+        val email = sharedPref.getString(SharePrefHelper.KEY_EMAIL)
         binding.tvEmailAddress.text = email
     }
 }

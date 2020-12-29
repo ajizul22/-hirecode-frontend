@@ -1,20 +1,18 @@
-package com.example.hirecodeandroid.temporary
+package com.example.hirecodeandroid.engineer
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.databinding.ActivityEditProfileCompanyBinding
+import com.example.hirecodeandroid.databinding.ActivityEditProfileEngineerBinding
 
-class EditProfileCompanyActivity : AppCompatActivity() {
+class EditProfileEngineerActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityEditProfileCompanyBinding
+    private lateinit var binding: ActivityEditProfileEngineerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_company)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_engineer)
 
         binding.btnCancel.setOnClickListener {
             onBackPressed()
@@ -25,6 +23,5 @@ class EditProfileCompanyActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-
     }
 }

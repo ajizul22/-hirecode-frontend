@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.fragment
+package com.example.hirecodeandroid.temporary
 
 import android.os.Bundle
 import android.view.LayoutInflater

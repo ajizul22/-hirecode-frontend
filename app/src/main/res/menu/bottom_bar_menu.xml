@@ -15,7 +15,7 @@
         android:id="@+id/page_3"
         android:enabled="true"
         android:icon="@drawable/ic_project"
-        android:title="Project"/>
+        android:title="List"/>
     <item
         android:id="@+id/page_4"
         android:enabled="true"

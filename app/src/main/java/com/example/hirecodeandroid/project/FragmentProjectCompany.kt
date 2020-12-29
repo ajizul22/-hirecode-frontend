@@ -19,7 +19,6 @@ class FragmentProjectCompany: Fragment() {
     private lateinit var binding: FragmentProjectCompanyBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: ProjectApiService
-//    private var projectModel = ArrayList<ListProjectEngineerData>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,18 +37,12 @@ class FragmentProjectCompany: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getAllProject()
-
-//        getListProject()
-//        binding.rvProject.adapter = ProjectEngineerRecyclerViewAdapter(projectModel, this)
-//        binding.rvProject.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
 
     fun getAllProject() {
         coroutineScope.launch {
-//            Log.d("android2", "Start: ${Thread.currentThread().name}")
 
             val result = withContext(Dispatchers.IO) {
-//                Log.d("android2", "CallApi: ${Thread.currentThread().name}")
                 try {
                     service?.getAllProject()
                 } catch (e: Throwable) {
@@ -71,24 +64,6 @@ class FragmentProjectCompany: Fragment() {
         coroutineScope.cancel()
         super.onDestroy()
     }
-
-//    fun getListProject() {
-//        projectModel = ArrayList()
-//
-//        projectModel.add(ListProjectEngineerData(
-//            R.drawable.port1,
-//            "Membuat Aplikasi Company Chat",
-//            "PT Martabat Jaya Abadi",
-//            "December 2020"
-//        ))
-//
-//        projectModel.add(ListProjectEngineerData(
-//            R.drawable.port3,
-//            "Membuat Web Company Profile",
-//            "PT Martabat Jaya Abadi",
-//            "August 2020"
-//        ))
-//    }
 
 //    override fun onItemClick(item: ListProjectEngineerData, position: Int) {
 //        val intent = Intent(requireContext(), DetailProjectActivity::class.java)

@@ -25,9 +25,9 @@ class ProjectListAdapter: RecyclerView.Adapter<ProjectListAdapter.ProjectHolder>
 
     override fun onBindViewHolder(holder: ProjectHolder, position: Int) {
         val item = items[position]
-        holder.binding.tvName.text = item.projectName
-        holder.binding.tvDesc.text = item.projectDesc
-        holder.binding.tvType.text = item.projectDeadline
+        holder.binding.tvProjectTitle.text = item.projectName
+        holder.binding.tvProjectCompany.text = item.companyId
+        holder.binding.tvProjectDeadline.text = item.projectDeadline
     }
 
     override fun getItemCount(): Int = items.size

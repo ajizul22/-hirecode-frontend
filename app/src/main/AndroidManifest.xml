@@ -15,15 +15,20 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".AddHireActivity"
+        <activity android:name=".engineer.AddSkillActivity"
             android:theme="@style/Basic"/>
+        <activity
+            android:name=".AddHireActivity"
+            android:theme="@style/Basic" />
         <activity
             android:name=".project.DetailProjectActivity"
             android:theme="@style/Basic" />
-        <activity android:name=".portfolio.AddPortfolioActivity"
-            android:theme="@style/Basic"/>
-        <activity android:name=".experience.AddExperienceActivity"
-            android:theme="@style/Basic"/>
+        <activity
+            android:name=".portfolio.AddPortfolioActivity"
+            android:theme="@style/Basic" />
+        <activity
+            android:name=".experience.AddExperienceActivity"
+            android:theme="@style/Basic" />
         <activity android:name=".project.ProjectListActivity" />
         <activity android:name=".reset_password.InputNewPasswordActivity" />
         <activity
@@ -32,7 +37,8 @@
         <activity
             android:name=".HomeActivity"
             android:theme="@style/Basic" />
-        <activity android:name=".temporary.EditProfileEngineerActivity" />
+        <activity android:name=".engineer.EditProfileEngineerActivity"
+            android:theme="@style/Basic"/>
         <activity
             android:name=".temporary.EditProfileCompanyActivity"
             android:theme="@style/Basic" />

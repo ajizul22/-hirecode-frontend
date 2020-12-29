@@ -7,10 +7,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.example.hirecodeandroid.company.FragmentHomeCompany
 import com.example.hirecodeandroid.company.FragmentProfileCompany
 import com.example.hirecodeandroid.databinding.ActivityHomeBinding
 import com.example.hirecodeandroid.databinding.LayoutDialogLogoutBinding
+import com.example.hirecodeandroid.engineer.FragmentProfileEngineer
 import com.example.hirecodeandroid.fragment.*
 import com.example.hirecodeandroid.project.FragmentProjectCompany
 import com.example.hirecodeandroid.temporary.FragmentDetailProject
@@ -60,21 +62,21 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
                     true
                 }
                 R.id.page_3 -> {
-                    val fragmentProjectEng = FragmentProjectEngineer()
+                    val fragmentHireEngineer = FragmentHireEngineer()
                     val fragmentProjectCom = FragmentProjectCompany()
 
                     if(sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
-                        supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentProjectEng).commit()
+                        supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentHireEngineer).commit()
+                        binding.tvToolbarTitle.text = "Hire"
                     } else if (sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 1) {
-//                        val intent = Intent(this, ProjectListActivity::class.java)
-//                        startActivity(intent)
                         supportFragmentManager.beginTransaction().replace(R.id.fg_container, fragmentProjectCom).commit()
+                        binding.tvToolbarTitle.text = "Project"
                     }
-                    binding.tvToolbarTitle.text = "Project"
                     true
                 }
                 R.id.page_4 -> {
-                    val fragmentProfile = FragmentProfileEngineer()
+                    val fragmentProfile =
+                        FragmentProfileEngineer()
                     val fragmentCompany =
                         FragmentProfileCompany()
 
@@ -114,7 +116,7 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
             dialog.dismiss()
         }
         rootView.btnOkLogout.setOnClickListener {
-            sharedPref.put(SharePrefHelper.KEY_LOGIN, false)
+            sharedPref.clear()
             val intent = Intent(this,OnBoardScreenActivity::class.java)
             startActivity(intent)
             finish()
