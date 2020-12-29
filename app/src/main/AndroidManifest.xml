@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hirecodeandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,9 +12,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_hirecode_new_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".webview.WebViewActivity"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <activity android:name=".AddHireActivity"
             android:theme="@style/Basic"/>
+        <activity
+            android:name=".project.DetailProjectActivity"
+            android:theme="@style/Basic" />
+        <activity android:name=".portfolio.AddPortfolioActivity"
+            android:theme="@style/Basic"/>
+        <activity android:name=".experience.AddExperienceActivity"
+            android:theme="@style/Basic"/>
+        <activity android:name=".project.ProjectListActivity" />
+        <activity android:name=".reset_password.InputNewPasswordActivity" />
+        <activity
+            android:name=".webview.WebViewActivity"
+            android:theme="@style/Basic" />
         <activity
             android:name=".HomeActivity"
             android:theme="@style/Basic" />
@@ -22,28 +37,28 @@
             android:name=".temporary.EditProfileCompanyActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".LoginCompanyActivity"
+            android:name=".temporary.LoginCompanyActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".temporary.ProfileCompanyActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".temporary.ProfileEngineerActivity"
-            android:theme="@style/darkPink" />
+            android:name=".DetailProfileEngineerActivity"
+            android:theme="@style/Basic" />
         <activity
             android:name=".OnBoardScreenActivity"
             android:theme="@style/OnBoard" />
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name=".reset_password.ResetPasswordActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".RegisterCompanyActivity"
+            android:name=".register.RegisterCompanyActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".RegisterEngineerActivity"
+            android:name=".register.RegisterEngineerActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".MainActivity"

@@ -22,7 +22,7 @@ class WebViewActivity : AppCompatActivity(), WebViewListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_web_view)
 
-        binding.webView.loadUrl("https://github.com/")
+        binding.webView.loadUrl("https://github.com/ajizul22")
         binding.webView.webChromeClient = GithubChromeClient(this)
         binding.webView.webViewClient = GithubViewClient(this)
     }

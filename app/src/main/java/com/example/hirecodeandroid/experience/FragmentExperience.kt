@@ -1,5 +1,6 @@
-package com.example.hirecodeandroid.fragment
+package com.example.hirecodeandroid.experience
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,12 @@ class FragmentExperience : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.btnAddExp.setOnClickListener {
+            val intent = Intent(requireContext(), AddExperienceActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
 }

@@ -8,6 +8,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/btn_add_portfolio"
+            android:text="Add Portfolio"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radiusbutton"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="15dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_portofolio"
             android:layout_width="match_parent"

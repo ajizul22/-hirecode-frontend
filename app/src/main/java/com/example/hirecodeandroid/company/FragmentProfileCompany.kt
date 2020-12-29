@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.fragment
+package com.example.hirecodeandroid.company
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,8 @@ class FragmentProfileCompany: Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile_company,container,false)
         binding.btnEditProfile.setOnClickListener {
-            val fragment = FragmentEditProfileCompany()
+            val fragment =
+                FragmentEditProfileCompany()
             fragmentManager!!.beginTransaction().replace(R.id.fg_container, fragment).commit()
         }
         return binding.root

@@ -19,12 +19,11 @@ class FragmentEditProfileEngineer : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile_engineer,container,false)
-
         binding.btnCancel.setOnClickListener {
             val fragment = FragmentProfileEngineer()
             fragmentManager!!.beginTransaction().replace(R.id.fg_container, fragment).commit()
         }
-
         return binding.root
     }
+    
 }

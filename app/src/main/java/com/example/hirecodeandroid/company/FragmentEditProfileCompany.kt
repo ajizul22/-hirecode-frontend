@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.fragment
+package com.example.hirecodeandroid.company
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.hirecodeandroid.R
+import com.example.hirecodeandroid.company.FragmentProfileCompany
 import com.example.hirecodeandroid.databinding.FragmentEditProfileCompanyBinding
 
 class FragmentEditProfileCompany: Fragment() {
@@ -21,7 +22,8 @@ class FragmentEditProfileCompany: Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile_company,container,false)
 
         binding.btnCancel.setOnClickListener {
-            val fragment = FragmentProfileCompany()
+            val fragment =
+                FragmentProfileCompany()
             fragmentManager!!.beginTransaction().replace(R.id.fg_container, fragment).commit()
         }
         return binding.root

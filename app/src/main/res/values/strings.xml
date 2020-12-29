@@ -28,7 +28,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="lorem_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a euismod leo</string>
     <string name="lorem_long2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a euismod leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a euismod leo.</string>
-    <string name="send_to_reset_password">Send to reset password</string>
+    <string name="send_to_reset_password">Reset Password</string>
     <string name="to_reset_password_activity">to reset password activity</string>
     <string name="find_talented_and_best_developers_in_various_fields_of_expertise">Find talented and best developers in various fields of expertise</string>
     <string name="login_as_engineer">Login as Engineer</string>
@@ -41,4 +41,9 @@
     <string name="talent">Talent</string>
     <string name="to_profile_engineer">to profile engineer</string>
     <string name="to_profile_company">to profile company</string>
+    <string name="enter_a_new_password_confirmation">Enter a new password confirmation</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="new_password">New password</string>
+    <string name="send_password_reset_to_email">Send password reset to email</string>
 </resources>

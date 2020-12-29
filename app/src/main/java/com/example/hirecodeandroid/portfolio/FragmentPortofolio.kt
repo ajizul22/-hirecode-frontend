@@ -1,5 +1,6 @@
-package com.example.hirecodeandroid.fragment
+package com.example.hirecodeandroid.portfolio
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,5 +31,11 @@ class FragmentPortofolio : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.btnAddPortfolio.setOnClickListener {
+            val intent = Intent(requireContext(), AddPortfolioActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }

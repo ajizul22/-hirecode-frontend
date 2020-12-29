@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid
+package com.example.hirecodeandroid.temporary
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.example.hirecodeandroid.MainActivity
+import com.example.hirecodeandroid.R
+import com.example.hirecodeandroid.register.RegisterCompanyActivity
+import com.example.hirecodeandroid.reset_password.ResetPasswordActivity
 
 class LoginCompanyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
