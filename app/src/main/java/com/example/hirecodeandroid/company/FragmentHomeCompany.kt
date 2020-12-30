@@ -22,12 +22,12 @@ import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import kotlinx.coroutines.*
 
-class FragmentHomeCompany : Fragment() {
+class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickListener {
 
     private lateinit var binding : FragmentHomeBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: EngineerApiService
-//    private var engineerModel = ArrayList<ListEngineerDataClass>()
+    var listEngineer = ArrayList<ListEngineerModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +40,7 @@ class FragmentHomeCompany : Fragment() {
 //        getListEngineer()
 //        binding.rvHome.adapter = HomeRecyclerViewAdapter(engineerModel, this)
         getAllEngineer()
-        binding.rvHome.adapter = ListEngineerAdapter()
+        binding.rvHome.adapter = ListEngineerAdapter(listEngineer,this)
         binding.rvHome.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         return binding.root
     }
@@ -72,55 +72,14 @@ class FragmentHomeCompany : Fragment() {
         super.onDestroy()
     }
 
-//     private fun getListEngineer() {
-//        engineerModel = ArrayList()
-//        engineerModel.add(
-//            ListEngineerDataClass(
-//                R.drawable.avatar,
-//                "Fahmi Mahardika",
-//                "Web Developer",
-//                "Javascript",
-//                "PHP",
-//                "Node Js",
-//                "4+"
-//
-//        )
-//        )
-//        engineerModel.add(
-//            ListEngineerDataClass(
-//                R.drawable.jane,
-//                "Ajizul Hakim",
-//                "Android Developer",
-//                "kotlin",
-//                "Android Studio",
-//                "Node Js",
-//                "2+"
-//
-//            )
-//        )
-//
-//        engineerModel.add(
-//            ListEngineerDataClass(
-//                R.drawable.ic_github,
-//                "Farhan",
-//                "Web Developer",
-//                "Javascript",
-//                "CSS",
-//                "Node Js",
-//                "1+"
-//            )
-//        )
-//    }
-//
-//    override fun onItemClick(item: ListEngineerDataClass, position: Int) {
-//        val intent = Intent(requireContext(), DetailProfileEngineerActivity::class.java)
-//        intent.putExtra("image", engineerModel[position].imageProfile)
-//        intent.putExtra("name", engineerModel[position].name)
-//        intent.putExtra("title", engineerModel[position].jobTitle)
-//        intent.putExtra("skill1", engineerModel[position].skillOne)
-//        intent.putExtra("skill2", engineerModel[position].skillTwo)
-//        intent.putExtra("skill3", engineerModel[position].skillThree)
-//        startActivity(intent)
-//    }
+    override fun onEngineerItemClicked(position: Int) {
+        val intent = Intent(requireContext(), DetailProfileEngineerActivity::class.java)
+        intent.putExtra("name", listEngineer[position].accountName)
+        intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
+        intent.putExtra("jobType", listEngineer[position].engineerJobType)
+        intent.putExtra("image", listEngineer[position].engineerProfilePict)
+        intent.putExtra("location", listEngineer[position].engineerDomicilie)
 
+        startActivity(intent)
+    }
 }

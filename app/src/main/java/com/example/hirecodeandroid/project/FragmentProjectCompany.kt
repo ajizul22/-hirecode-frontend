@@ -1,5 +1,6 @@
 package com.example.hirecodeandroid.project
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,11 +15,12 @@ import com.example.hirecodeandroid.databinding.FragmentProjectCompanyBinding
 import com.example.hirecodeandroid.remote.ApiClient
 import kotlinx.coroutines.*
 
-class FragmentProjectCompany: Fragment() {
+class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickListener {
 
     private lateinit var binding: FragmentProjectCompanyBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: ProjectApiService
+    var listProject = ArrayList<ProjectModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +31,7 @@ class FragmentProjectCompany: Fragment() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(requireContext())!!.create(ProjectApiService::class.java)
 
-        binding.rvProject.adapter = ProjectListAdapter()
+        binding.rvProject.adapter = ProjectListAdapter(listProject, this)
         binding.rvProject.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         return binding.root
     }
@@ -65,13 +67,14 @@ class FragmentProjectCompany: Fragment() {
         super.onDestroy()
     }
 
-//    override fun onItemClick(item: ListProjectEngineerData, position: Int) {
-//        val intent = Intent(requireContext(), DetailProjectActivity::class.java)
-//        intent.putExtra("image", projectModel[position].imageProject)
-//        intent.putExtra("title", projectModel[position].title)
-//        intent.putExtra("company", projectModel[position].company)
-//        intent.putExtra("deadline", projectModel[position].deadline)
-//        startActivity(intent)
-//    }
+    override fun onProjectItemClicked(position: Int) {
+        val intent = Intent(requireContext(),DetailProjectActivity::class.java)
+        intent.putExtra("image", listProject[position].projectImage)
+        intent.putExtra("title", listProject[position].projectName)
+        intent.putExtra("company", listProject[position].companyId)
+        intent.putExtra("desc", listProject[position].projectDesc)
+        intent.putExtra("deadline", listProject[position].projectDeadline)
 
+        startActivity(intent)
+    }
 }

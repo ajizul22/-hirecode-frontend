@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.adapter.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.ActivityDetailProfileEngineerBinding
 import com.example.hirecodeandroid.webview.WebViewActivity
@@ -19,18 +20,20 @@ class DetailProfileEngineerActivity : AppCompatActivity() {
             R.layout.activity_detail_profile_engineer
         )
 
-        val image = intent.getIntExtra("image",0)
-        binding.ivAvatar.setImageResource(image)
         val name = intent.getStringExtra("name")
         binding.tvName.text = name
-        val jobTitle = intent.getStringExtra("title")
+        val jobTitle = intent.getStringExtra("jobTitle")
         binding.tvJobType.text = jobTitle
-        val skillOne = intent.getStringExtra("skill1")
-        binding.tvSkill1.text = skillOne
-        val skillTwo = intent.getStringExtra("skill2")
-        binding.tvSkill2.text = skillTwo
-        val skillThree = intent.getStringExtra("skill3")
-        binding.tvSkill3.text = skillThree
+        val location = intent.getStringExtra("location")
+        binding.tvAddress.text = location
+        val image = intent.getStringExtra("image")
+        val img = "http://3.80.223.103:4000/image/$image"
+
+        Glide.with(binding.ivAvatar)
+            .load(img)
+            .placeholder(R.drawable.avatar)
+            .error(R.drawable.avatar)
+            .into(binding.ivAvatar)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

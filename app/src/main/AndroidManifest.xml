@@ -29,7 +29,7 @@
         <activity
             android:name=".experience.AddExperienceActivity"
             android:theme="@style/Basic" />
-        <activity android:name=".project.ProjectListActivity" />
+        <activity android:name=".temporary.ProjectListActivity" />
         <activity android:name=".reset_password.InputNewPasswordActivity" />
         <activity
             android:name=".webview.WebViewActivity"

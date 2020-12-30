@@ -74,8 +74,8 @@ class FragmentSearch: Fragment(), HomeRecyclerViewAdapter.OnItemClickListener {
     override fun onItemClick(item: ListEngineerDataClass, position: Int) {
 //        communicator.passDataEng(item.imageProfile, item.name, item.jobTitle, item.skillOne, item.skillTwo,item.skillThree)
         val intent = Intent(requireContext(), DetailProfileEngineerActivity::class.java)
-        intent.putExtra("image", engineerModel[position].imageProfile)
-        intent.putExtra("name", engineerModel[position].name)
+        intent.putExtra("image1", engineerModel[position].imageProfile)
+        intent.putExtra("name1", engineerModel[position].name)
         intent.putExtra("title", engineerModel[position].jobTitle)
         intent.putExtra("skill1", engineerModel[position].skillOne)
         intent.putExtra("skill2", engineerModel[position].skillTwo)

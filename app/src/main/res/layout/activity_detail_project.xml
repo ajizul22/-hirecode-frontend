@@ -75,9 +75,6 @@
                 android:layout_marginBottom="20dp"
                 android:textColor="@android:color/holo_red_dark"/>
 
-
-
-
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
