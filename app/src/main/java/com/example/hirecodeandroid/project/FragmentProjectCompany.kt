@@ -1,6 +1,7 @@
 package com.example.hirecodeandroid.project
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentProjectCompanyBinding
 import com.example.hirecodeandroid.remote.ApiClient
+import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
 class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickListener {
@@ -20,6 +22,7 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
     private lateinit var binding: FragmentProjectCompanyBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: ProjectApiService
+    private lateinit var sharePref: SharePrefHelper
     var listProject = ArrayList<ProjectModel>()
 
     override fun onCreateView(
@@ -30,6 +33,7 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_project_company, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(requireContext())!!.create(ProjectApiService::class.java)
+        sharePref = SharePrefHelper(requireContext())
 
         binding.rvProject.adapter = ProjectListAdapter(listProject, this)
         binding.rvProject.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -38,15 +42,15 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getAllProject()
+        getProjectByCompanyId()
     }
 
-    fun getAllProject() {
+    fun getProjectByCompanyId() {
         coroutineScope.launch {
 
             val result = withContext(Dispatchers.IO) {
                 try {
-                    service?.getAllProject()
+                    service?.getProjectByCompanyId(sharePref.getString(SharePrefHelper.COM_ID))
                 } catch (e: Throwable) {
                     e.printStackTrace()
                 }

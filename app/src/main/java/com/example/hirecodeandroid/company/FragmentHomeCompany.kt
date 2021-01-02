@@ -37,8 +37,7 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
-//        getListEngineer()
-//        binding.rvHome.adapter = HomeRecyclerViewAdapter(engineerModel, this)
+
         getAllEngineer()
         binding.rvHome.adapter = ListEngineerAdapter(listEngineer,this)
         binding.rvHome.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -79,6 +78,7 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         intent.putExtra("jobType", listEngineer[position].engineerJobType)
         intent.putExtra("image", listEngineer[position].engineerProfilePict)
         intent.putExtra("location", listEngineer[position].engineerDomicilie)
+        intent.putExtra("engId", listEngineer[position].engineerId)
 
         startActivity(intent)
     }

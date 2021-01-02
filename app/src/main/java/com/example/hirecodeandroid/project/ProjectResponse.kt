@@ -3,7 +3,7 @@ package com.example.hirecodeandroid.project
 import com.google.gson.annotations.SerializedName
 
 data class ProjectResponse(val success: String, val message: String, val data: List<Project>) {
-    data class Project(@SerializedName("pj_id") val projectId: String,
+    data class Project(@SerializedName("pj_id") val projectId: Int,
                        @SerializedName("cn_id") val companyId: String,
                        @SerializedName("pj_nama_project") val projectName: String,
                        @SerializedName("pj_deskripsi") val projectDesc: String,

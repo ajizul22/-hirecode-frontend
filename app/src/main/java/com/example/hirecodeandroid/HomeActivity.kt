@@ -131,30 +131,6 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
         startActivity(a)
     }
 
-//    override fun passDataEng(
-//        image: Int,
-//        name: String,
-//        jobTitle: String,
-//        skillOne: String,
-//        skillTwo: String,
-//        skillThree: String
-//    )  {
-//        val bundle = Bundle()
-//        bundle.putInt("image", image)
-//        bundle.putString("name", name)
-//        bundle.putString("title", jobTitle)
-//        bundle.putString("skill1", skillOne)
-//        bundle.putString("skill2", skillTwo)
-//        bundle.putString("skill3", skillThree)
-//
-//        val transaction = this.supportFragmentManager.beginTransaction()
-//        val fragmentDetail = FragmentDetailProfileEngineer()
-//        fragmentDetail.arguments = bundle
-//        binding.tvToolbarTitle.text = "Detail Engineer"
-//        transaction.replace(R.id.fg_container, fragmentDetail).addToBackStack("tag")
-//        transaction.commit()
-//    }
-
     override fun passDataProject(image: Int, title: String, company: String, deadline: String) {
         val bundle = Bundle()
         bundle.putInt("image", image)

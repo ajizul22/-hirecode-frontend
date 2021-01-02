@@ -53,23 +53,19 @@
 
             <TextView
                 android:id="@+id/tv_project_name"
-                android:text="Project Name"
+                android:text="Project:"
                 android:textColor="@color/navy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/v_experience"
-                app:layout_constraintLeft_toLeftOf="@id/et_position"
+                app:layout_constraintLeft_toLeftOf="@id/spinner_list_project"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="5dp" />
 
-            <EditText
-                android:id="@+id/et_position"
-                android:hint="Enter Project Name"
-                android:textSize="15sp"
-                android:inputType="text"
-                android:paddingStart="15dp"
+            <Spinner
+                android:id="@+id/spinner_list_project"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/bg_field_editprofile"
                 app:layout_constraintTop_toBottomOf="@id/tv_project_name"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -82,17 +78,18 @@
                 android:textColor="@color/navy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/et_position"
-                app:layout_constraintLeft_toLeftOf="@id/et_position"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_list_project"
+                app:layout_constraintLeft_toLeftOf="@id/spinner_list_project"
                 android:layout_marginTop="25dp"
                 android:layout_marginStart="5dp" />
 
             <EditText
                 android:id="@+id/et_hire_price"
                 android:hint="Project Price"
-                android:inputType="text"
+                android:inputType="number"
                 android:textSize="15sp"
                 android:paddingStart="15dp"
+                android:paddingEnd="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/bg_field_editprofile"
@@ -102,8 +99,8 @@
                 android:layout_marginHorizontal="15dp" />
 
             <TextView
-                android:id="@+id/tv_desc_hire"
-                android:text="Description"
+                android:id="@+id/tv_hire_message"
+                android:text="Message"
                 android:textColor="@color/navy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,18 +110,18 @@
                 android:layout_marginStart="5dp" />
 
             <EditText
-                android:id="@+id/et_desc_hire"
-                android:hint="Short description"
-                android:textColorHint="@color/navy"
-                android:inputType="text"
+                android:id="@+id/et_hire_message"
+                android:hint="ex: Please response"
+                android:inputType="textLongMessage|textMultiLine"
                 android:textSize="15sp"
                 android:gravity="top"
                 android:paddingStart="15dp"
                 android:paddingTop="15dp"
+                android:paddingEnd="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:background="@drawable/bg_field_editprofile"
-                app:layout_constraintTop_toBottomOf="@id/tv_desc_hire"
+                app:layout_constraintTop_toBottomOf="@id/tv_hire_message"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginTop="5dp"
                 android:layout_marginHorizontal="15dp"
@@ -135,9 +132,9 @@
                 android:layout_width="0dp"
                 android:layout_height="5dp"
                 android:background="@color/grey"
-                app:layout_constraintLeft_toLeftOf="@id/et_desc_hire"
-                app:layout_constraintRight_toRightOf="@id/et_desc_hire"
-                app:layout_constraintTop_toBottomOf="@id/et_desc_hire"
+                app:layout_constraintLeft_toLeftOf="@id/et_hire_message"
+                app:layout_constraintRight_toRightOf="@id/et_hire_message"
+                app:layout_constraintTop_toBottomOf="@id/et_hire_message"
                 android:layout_marginTop="25dp"
                 />
 

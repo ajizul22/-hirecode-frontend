@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentHireEngineerBinding
 import com.example.hirecodeandroid.remote.ApiClient
+import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
 class FragmentHireEngineer: Fragment() {
@@ -19,6 +20,7 @@ class FragmentHireEngineer: Fragment() {
     private lateinit var binding: FragmentHireEngineerBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: HireApiService
+    private lateinit var sharePref: SharePrefHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +30,7 @@ class FragmentHireEngineer: Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hire_engineer,container,false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(requireContext())!!.create(HireApiService::class.java)
+        sharePref = SharePrefHelper(requireContext())
 
         binding.rvHire.adapter = HireListAdapter()
         binding.rvHire.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -44,7 +47,7 @@ class FragmentHireEngineer: Fragment() {
 
             val result = withContext(Dispatchers.IO) {
                 try {
-                    service?.getHireByEngineerId()
+                    service?.getHireByEngineerId(sharePref.getString(SharePrefHelper.ENG_ID))
                 } catch (e: Throwable) {
                     e.printStackTrace()
                 }

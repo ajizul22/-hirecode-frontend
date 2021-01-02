@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.adapter.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.ActivityDetailProfileEngineerBinding
+import com.example.hirecodeandroid.hire.AddHireActivity
 import com.example.hirecodeandroid.webview.WebViewActivity
 
 class DetailProfileEngineerActivity : AppCompatActivity() {

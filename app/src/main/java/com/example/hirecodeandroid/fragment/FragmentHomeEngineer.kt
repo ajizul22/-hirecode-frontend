@@ -21,13 +21,15 @@ class FragmentHomeEngineer: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_engineer,container,false)
-        sharePref = SharePrefHelper(this.activity!!)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvGreetingName.text = sharePref.getString(SharePrefHelper.AC_NAME)
+        sharePref = SharePrefHelper(this.activity!!)
+        binding.tvGreetingName.text = sharePref.getString(SharePrefHelper.ENG_NAME)
+
     }
 
 }

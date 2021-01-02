@@ -1,7 +1,7 @@
 package com.example.hirecodeandroid.project
 
 data class ProjectModel(
-    val projectId: String?,
+    val projectId: Int?,
     val companyId: String?,
     val projectName: String?,
     val projectDesc: String?,

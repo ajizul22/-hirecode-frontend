@@ -12,6 +12,10 @@ class SharePrefHelper(private val context: Context) {
         const val AC_LEVEL = "AC_LEVEL"
         const val AC_NAME = "AC_NAME"
         const val TOKEN = "TOKEN"
+        const val AC_ID = "ACID"
+        const val ENG_ID = "ENG_ID"
+        const val COM_ID = "COM_ID"
+        const val ENG_NAME = "ENG_NAME"
     }
 
     private val sharedPref: SharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
