@@ -5,9 +5,7 @@ import retrofit2.http.Path
 
 interface EngineerApiService {
 
-    @GET("engineer")
+    @GET("engineer/detail")
     suspend fun getAllEngineer(): ListEngineerResponse
-
-
 
 }

@@ -42,7 +42,7 @@ class FragmentHireEngineer: Fragment() {
         getListHire()
     }
 
-    fun getListHire() {
+    private fun getListHire() {
         coroutineScope.launch {
 
             val result = withContext(Dispatchers.IO) {

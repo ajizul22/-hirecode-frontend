@@ -57,9 +57,6 @@ class LoginActivity : AppCompatActivity() {
 
                 callLoginApi(binding.etEmail.text.toString(), binding.etPassword.text.toString())
 
-
-
-
             }
 
 

@@ -27,6 +27,8 @@ class DetailProfileEngineerActivity : AppCompatActivity() {
         binding.tvJobType.text = jobTitle
         val location = intent.getStringExtra("location")
         binding.tvAddress.text = location
+        binding.tvEmailAddress.text = intent.getStringExtra("acEmail")
+        binding.tvAddress.text = intent.getStringExtra("location")
         val image = intent.getStringExtra("image")
         val img = "http://3.80.223.103:4000/image/$image"
 

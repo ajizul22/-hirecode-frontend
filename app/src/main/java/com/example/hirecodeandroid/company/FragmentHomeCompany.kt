@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import com.example.hirecodeandroid.listengineer.ListEngineerAdapter
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
+import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
 class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickListener {
@@ -28,6 +30,7 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: EngineerApiService
     var listEngineer = ArrayList<ListEngineerModel>()
+    private lateinit var sharePref: SharePrefHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +40,7 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
+        sharePref = SharePrefHelper(requireContext())
 
         getAllEngineer()
         binding.rvHome.adapter = ListEngineerAdapter(listEngineer,this)
@@ -59,7 +63,7 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
             }
             if (result is ListEngineerResponse) {
                 val list = result.data.map {
-                    ListEngineerModel(it.engineerId, it.accountId, it.accountName, it.engineerJobTitle, it.engineerJobType, it.engineerDomicilie, it.engineerProfilePict, it.skillEngineer)
+                    ListEngineerModel(it.engineerId, it.accountId, it.accountName,it.accountEmail,it.accountPhone, it.engineerJobTitle, it.engineerJobType, it.engineerDomicilie, it.engineerProfilePict, it.skillEngineer)
                 }
                 (binding.rvHome.adapter as ListEngineerAdapter).addList(list)
             }
@@ -79,7 +83,10 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         intent.putExtra("image", listEngineer[position].engineerProfilePict)
         intent.putExtra("location", listEngineer[position].engineerDomicilie)
         intent.putExtra("engId", listEngineer[position].engineerId)
+        intent.putExtra("acEmail", listEngineer[position].accountEmail)
+        intent.putExtra("location", listEngineer[position].engineerDomicilie)
 
+        sharePref.put(SharePrefHelper.ENG_ID_CLICKED, listEngineer[position].engineerId!!)
         startActivity(intent)
     }
 }

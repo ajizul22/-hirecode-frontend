@@ -6,6 +6,8 @@ data class ListEngineerModel(
                         val engineerId: String?,
                         val accountId: String?,
                         val accountName: String?,
+                        val accountEmail: String?,
+                        val accountPhone: String?,
                         val engineerJobTitle: String?,
                         val engineerJobType: String?,
                         val engineerDomicilie: String?,
