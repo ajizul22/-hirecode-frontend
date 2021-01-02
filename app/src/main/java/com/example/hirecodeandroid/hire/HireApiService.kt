@@ -13,7 +13,8 @@ interface HireApiService {
         @Field("en_id") engineerId: Int,
         @Field("pj_id") projectId: Int,
         @Field("hr_price") hirePrice: String,
-        @Field("hr_message") hireMessage: String
+        @Field("hr_message") hireMessage: String,
+        @Field("hr_status") hireStatus: String
     ) : HireResponse
 
 }

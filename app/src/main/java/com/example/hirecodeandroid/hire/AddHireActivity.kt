@@ -35,7 +35,6 @@ class AddHireActivity : AppCompatActivity() {
         service = ApiClient.getApiClient(context = this)!!.create(ProjectApiService::class.java)
         listProjectSpinner()
 
-
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
@@ -51,7 +50,7 @@ class AddHireActivity : AppCompatActivity() {
             if (binding.etHireMessage.text.isEmpty() || binding.etHirePrice.text.isEmpty()) {
                 Toast.makeText(this, "All field must be filled!", Toast.LENGTH_SHORT).show()
             } else {
-                callHireApi(engineerId!!.toInt(), projectId, hirePrice, hireMessage)
+                callHireApi(engineerId!!.toInt(), projectId, hirePrice, hireMessage, "wait")
             }
         }
     }
@@ -103,12 +102,12 @@ class AddHireActivity : AppCompatActivity() {
         }
     }
 
-    fun callHireApi(enId: Int, pjId: Int, pjPrice: String, pjMessage: String) {
+    fun callHireApi(enId: Int, pjId: Int, hirePrice: String, hireMessage: String, hireStatus: String) {
         val service = ApiClient.getApiClient(context = this)?.create(HireApiService::class.java)
         coroutineScope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    service?.addHire(enId, pjId, pjPrice, pjMessage)
+                    service?.addHire(enId, pjId, hirePrice, hireMessage, hireStatus)
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }
@@ -116,6 +115,7 @@ class AddHireActivity : AppCompatActivity() {
 
             if (result is HireResponse) {
                 if (result.success) {
+                    Toast.makeText(this@AddHireActivity, "Success Hire", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@AddHireActivity, HomeActivity::class.java)
                     startActivity(intent)
                 }

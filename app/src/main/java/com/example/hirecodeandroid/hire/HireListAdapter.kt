@@ -1,5 +1,8 @@
 package com.example.hirecodeandroid.hire
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -25,10 +28,18 @@ class HireListAdapter: RecyclerView.Adapter<HireListAdapter.HireHolder>() {
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: HireHolder, i: Int) {
         val item = items[i]
         holder.binding.tvProjectTitle.text = item.hireMessage
         holder.binding.tvHireCreated.text = item.hirePrice.toString()
         holder.binding.tvHireStatus.text = item.hireStatus
+
+        if (item.hireStatus == "wait") {
+            holder.binding.tvHireStatus.text = "wait your response"
+        } else if (item.hireStatus == "approve") {
+            holder.binding.tvHireStatus.setTextColor(Color.rgb(60, 122, 62))
+        }
+
     }
 }
