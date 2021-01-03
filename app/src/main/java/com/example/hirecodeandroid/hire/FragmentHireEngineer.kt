@@ -1,5 +1,6 @@
 package com.example.hirecodeandroid.hire
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,12 +16,13 @@ import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
-class FragmentHireEngineer: Fragment() {
+class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener {
 
     private lateinit var binding: FragmentHireEngineerBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: HireApiService
     private lateinit var sharePref: SharePrefHelper
+    var listHire = ArrayList<HireModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +34,7 @@ class FragmentHireEngineer: Fragment() {
         service = ApiClient.getApiClient(requireContext())!!.create(HireApiService::class.java)
         sharePref = SharePrefHelper(requireContext())
 
-        binding.rvHire.adapter = HireListAdapter()
+        binding.rvHire.adapter = HireListAdapter(listHire, this)
         binding.rvHire.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         return binding.root
     }
@@ -58,6 +60,29 @@ class FragmentHireEngineer: Fragment() {
                     HireModel(it.hireId, it.engineerId, it.projectId, it.hirePrice, it.hireMessage, it.hireStatus,it.hireDateConfirm, it.hireCreated)
                 }
                 (binding.rvHire.adapter as HireListAdapter).addList(list)
+            }
+        }
+    }
+
+    override fun onHireRejectClicked(position: Int) {
+        val hireId = listHire[position].hireId
+        updateHireStatus(hireId!!, "reject")
+    }
+
+    override fun onHireApproveClicked(position: Int) {
+        val hireId = listHire[position].hireId
+        updateHireStatus(hireId!!, "approve")
+    }
+
+    private fun updateHireStatus(id: String, status: String) {
+        coroutineScope.launch {
+
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    service?.responseHire(id, status)
+                } catch (e:Throwable) {
+                    e.printStackTrace()
+                }
             }
         }
     }

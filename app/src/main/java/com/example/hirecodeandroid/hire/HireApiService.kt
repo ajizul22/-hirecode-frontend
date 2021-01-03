@@ -17,4 +17,11 @@ interface HireApiService {
         @Field("hr_status") hireStatus: String
     ) : HireResponse
 
+    @FormUrlEncoded
+    @PUT("hire/{id}")
+    suspend fun responseHire(
+        @Path("id") hireId: String?,
+        @Field("hr_status") hireStatus: String
+    ): UpdateHireResponse
+
 }

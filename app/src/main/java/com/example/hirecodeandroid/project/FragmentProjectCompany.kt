@@ -37,6 +37,12 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
 
         binding.rvProject.adapter = ProjectListAdapter(listProject, this)
         binding.rvProject.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+
+        binding.btnAddProject.setOnClickListener {
+            val intent = Intent(requireContext(), AddProjectActivity:: class.java)
+            startActivity(intent)
+        }
+
         return binding.root
     }
 

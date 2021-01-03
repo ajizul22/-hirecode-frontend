@@ -15,8 +15,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".engineer.AddSkillActivity"
-            android:theme="@style/Basic"/>
+        <activity android:name=".hire.DetailHireActivity"></activity>
+        <activity
+            android:name=".project.AddProjectActivity"
+            android:theme="@style/Basic" />
+        <activity
+            android:name=".engineer.AddSkillActivity"
+            android:theme="@style/Basic" />
         <activity
             android:name=".hire.AddHireActivity"
             android:theme="@style/Basic" />
@@ -37,8 +42,9 @@
         <activity
             android:name=".HomeActivity"
             android:theme="@style/Basic" />
-        <activity android:name=".engineer.EditProfileEngineerActivity"
-            android:theme="@style/Basic"/>
+        <activity
+            android:name=".engineer.EditProfileEngineerActivity"
+            android:theme="@style/Basic" />
         <activity
             android:name=".temporary.EditProfileCompanyActivity"
             android:theme="@style/Basic" />

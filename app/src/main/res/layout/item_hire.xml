@@ -43,9 +43,33 @@
             android:textColor="@android:color/holo_red_dark"
             app:layout_constraintTop_toBottomOf="@id/tv_hire_created"
             app:layout_constraintLeft_toLeftOf="@id/tv_project_title"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/btn_approve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approve"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/radiusbutton"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hire_status"
+            app:layout_constraintLeft_toLeftOf="@id/tv_hire_status"/>
+
+        <Button
+            android:id="@+id/btn_reject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reject"
+            android:textAllCaps="false"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/radiusbuttontransparant"
+            app:layout_constraintTop_toTopOf="@+id/btn_approve"
+            app:layout_constraintLeft_toRightOf="@id/btn_approve"/>
+
 
 
 
