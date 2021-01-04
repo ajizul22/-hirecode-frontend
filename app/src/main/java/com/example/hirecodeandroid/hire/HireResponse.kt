@@ -11,6 +11,9 @@ data class HireResponse(val success: Boolean, val message: String, val data: Lis
         @SerializedName("hr_message") val hireMessage: String?,
         @SerializedName("hr_status") val hireStatus: String?,
         @SerializedName("hr_date_confirm") val hireDateConfirm: String?,
-        @SerializedName("hr_created_at") val hireCreated: String?
+        @SerializedName("hr_created_at") val hireCreated: String?,
+        @SerializedName("cn_perusahaan") val companyName: String?,
+        @SerializedName("pj_nama_project") val projectName: String?,
+        @SerializedName("pj_deadline") val projectDeadline: String
     )
 }

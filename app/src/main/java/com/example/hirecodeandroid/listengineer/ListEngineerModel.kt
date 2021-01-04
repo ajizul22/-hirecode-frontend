@@ -11,5 +11,8 @@ data class ListEngineerModel(
                         val engineerJobTitle: String?,
                         val engineerJobType: String?,
                         val engineerDomicilie: String?,
+                        val engineerDesc: String?,
                         val engineerProfilePict: String?,
+                        val engineerCreated: String?,
+                        val engineerUpdate: String?,
                         val skillEngineer: List<ItemSkillEngineerDataClass?>)

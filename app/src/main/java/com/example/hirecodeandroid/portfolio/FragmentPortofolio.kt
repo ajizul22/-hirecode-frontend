@@ -12,17 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.adapter.PortofolioRecyclerViewAdapter
 import com.example.hirecodeandroid.databinding.FragmentPortofolioBinding
+import com.example.hirecodeandroid.util.SharePrefHelper
 
 class FragmentPortofolio : Fragment() {
 
     private lateinit var binding : FragmentPortofolioBinding
-
+    private lateinit var sharePref: SharePrefHelper
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_portofolio, container, false)
+        sharePref = SharePrefHelper(requireContext())
         binding.rvPortofolio.adapter = PortofolioRecyclerViewAdapter()
         binding.rvPortofolio.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
@@ -31,6 +33,10 @@ class FragmentPortofolio : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 1) {
+            binding.btnAddPortfolio.visibility = View.GONE
+        }
 
         binding.btnAddPortfolio.setOnClickListener {
             val intent = Intent(requireContext(), AddPortfolioActivity::class.java)

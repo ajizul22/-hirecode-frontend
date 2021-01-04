@@ -21,7 +21,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
@@ -109,8 +108,8 @@
                     android:layout_marginHorizontal="15dp" />
 
                 <TextView
-                    android:id="@+id/tv_month_year"
-                    android:text="Month/Year"
+                    android:id="@+id/tv_start"
+                    android:text="Date Start"
                     android:textColor="@color/navy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,7 +119,7 @@
                     android:layout_marginStart="5dp" />
 
                 <EditText
-                    android:id="@+id/et_month_year"
+                    android:id="@+id/et_start"
                     android:hint="Januari 2018"
                     android:inputType="text"
                     android:textSize="15sp"
@@ -128,7 +127,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_month_year"
+                    app:layout_constraintTop_toBottomOf="@id/tv_start"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_end"
+                    android:text="Date End"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/et_start"
+                    app:layout_constraintLeft_toLeftOf="@id/et_start"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="5dp" />
+
+                <EditText
+                    android:id="@+id/et_end"
+                    android:hint="Februari 2018"
+                    android:inputType="text"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_field_editprofile"
+                    app:layout_constraintTop_toBottomOf="@id/tv_end"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginHorizontal="15dp" />
@@ -139,8 +163,8 @@
                     android:textColor="@color/navy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/et_month_year"
-                    app:layout_constraintLeft_toLeftOf="@id/et_month_year"
+                    app:layout_constraintTop_toBottomOf="@+id/et_end"
+                    app:layout_constraintLeft_toLeftOf="@id/et_end"
                     android:layout_marginTop="25dp"
                     android:layout_marginStart="5dp" />
 

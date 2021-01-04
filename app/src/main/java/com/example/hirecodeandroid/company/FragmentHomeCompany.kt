@@ -63,7 +63,7 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
             }
             if (result is ListEngineerResponse) {
                 val list = result.data.map {
-                    ListEngineerModel(it.engineerId, it.accountId, it.accountName,it.accountEmail,it.accountPhone, it.engineerJobTitle, it.engineerJobType, it.engineerDomicilie, it.engineerProfilePict, it.skillEngineer)
+                    ListEngineerModel(it.engineerId, it.accountId, it.accountName,it.accountEmail,it.accountPhone, it.engineerJobTitle, it.engineerJobType, it.engineerDomicilie, it.engineerDesc, it.engineerProfilePict,it.engineerCreated, it.engineerUpdate, it.skillEngineer)
                 }
                 (binding.rvHome.adapter as ListEngineerAdapter).addList(list)
             }

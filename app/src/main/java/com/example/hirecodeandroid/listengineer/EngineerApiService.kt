@@ -8,4 +8,7 @@ interface EngineerApiService {
     @GET("engineer/detail")
     suspend fun getAllEngineer(): ListEngineerResponse
 
+    @GET("engineer/{id}")
+    suspend fun getDataEngById(@Path("id") engineerId: String?) : ListEngineerResponse
+
 }

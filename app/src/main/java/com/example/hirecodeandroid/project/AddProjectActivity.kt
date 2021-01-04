@@ -1,6 +1,11 @@
 package com.example.hirecodeandroid.project
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +21,10 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddProjectActivity : AppCompatActivity() {
+
+    companion object {
+        private const val REQUEST_CODE_IMAGE_PICKER = 100
+    }
 
     private lateinit var binding: ActivityAddProjectBinding
     private lateinit var sharePref : SharePrefHelper
@@ -35,11 +44,32 @@ class AddProjectActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        binding.ivUploadImage.setOnClickListener {
+            openImageChooser()
+        }
+
         binding.btnAddProject.setOnClickListener {
             callProjectApi()
             val intent = Intent(this, HomeActivity::class.java)
             Toast.makeText(this, "Success Add Project", Toast.LENGTH_SHORT).show()
             startActivity(intent)
+        }
+    }
+
+    private fun openImageChooser() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_CODE_IMAGE_PICKER)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_IMAGE_PICKER) {
+            // I'M GETTING THE URI OF THE IMAGE AS DATA AND SETTING IT TO THE IMAGEVIEW
+            val selectedImage = data?.data
+            binding.ivUploadImage.setImageURI(selectedImage)
+            Log.d("imagee", selectedImage.toString())
+
         }
     }
 

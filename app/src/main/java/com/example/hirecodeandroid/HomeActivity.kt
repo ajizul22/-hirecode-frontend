@@ -11,6 +11,7 @@ import com.example.hirecodeandroid.company.FragmentHomeCompany
 import com.example.hirecodeandroid.company.FragmentProfileCompany
 import com.example.hirecodeandroid.databinding.ActivityHomeBinding
 import com.example.hirecodeandroid.databinding.LayoutDialogLogoutBinding
+import com.example.hirecodeandroid.engineer.FragmentHomeEngineer
 import com.example.hirecodeandroid.engineer.FragmentProfileEngineer
 import com.example.hirecodeandroid.fragment.*
 import com.example.hirecodeandroid.hire.FragmentHireEngineer
@@ -33,7 +34,8 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val fragmentHomeCom = FragmentHomeCompany()
-        val fragmentHomeEng = FragmentHomeEngineer()
+        val fragmentHomeEng =
+            FragmentHomeEngineer()
 
         if(sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
             supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentHomeEng).commit()

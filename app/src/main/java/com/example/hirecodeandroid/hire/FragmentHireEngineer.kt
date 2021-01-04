@@ -57,7 +57,7 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
             if (result is HireResponse) {
                 Log.d("hire list", result.toString())
                 val list = result.data?.map {
-                    HireModel(it.hireId, it.engineerId, it.projectId, it.hirePrice, it.hireMessage, it.hireStatus,it.hireDateConfirm, it.hireCreated)
+                    HireModel(it.hireId, it.engineerId, it.projectId, it.hirePrice, it.hireMessage, it.hireStatus,it.hireDateConfirm, it.hireCreated, it.companyName, it.projectName, it.projectDeadline)
                 }
                 (binding.rvHire.adapter as HireListAdapter).addList(list)
             }
