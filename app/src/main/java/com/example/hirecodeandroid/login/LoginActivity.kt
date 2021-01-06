@@ -3,8 +3,11 @@ package com.example.hirecodeandroid.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.OnBoardScreenActivity
 import com.example.hirecodeandroid.R
@@ -20,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var sharePref: SharePrefHelper
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: LoginApiService
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +32,14 @@ class LoginActivity : AppCompatActivity() {
         )
         sharePref = SharePrefHelper(this)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(context = this)!!.create(LoginApiService:: class.java)
+        val service = ApiClient.getApiClient(context = this)?.create(LoginApiService:: class.java)
 
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        viewModel.setSharedPreferences(sharePref)
+
+        if (service != null) {
+            viewModel.setLoginService(service)
+        }
         
         binding.tvForgotpw.setOnClickListener {
             val intentResetPw = Intent(this, ResetPasswordActivity::class.java)
@@ -55,12 +64,57 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Login Success!", Toast.LENGTH_SHORT).show()
 
-                callLoginApi(binding.etEmail.text.toString(), binding.etPassword.text.toString())
+                viewModel.callLoginApi(email, password)
+
+//                callLoginApi(binding.etEmail.text.toString(), binding.etPassword.text.toString())
 
             }
-
-
         }
+
+        subscribeLiveData()
+        subscribeEngineerIdLiveData()
+        subscribeCompanyIdLiveData()
+    }
+
+    private fun subscribeLiveData() {
+        viewModel.isLoginLiveData.observe(this, Observer {
+            Log.d("subscribeLiveData", "$it")
+
+            if (it) {
+                Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
+    private fun subscribeEngineerIdLiveData() {
+        viewModel.isGetEngineerId.observe(this, Observer {
+            Log.d("subscribeEngLiveData", "$it")
+
+            if (it) {
+                Toast.makeText(this, "Engineer Id Get", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Engineer Id failed to Get", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun subscribeCompanyIdLiveData() {
+        viewModel.isGetCompanyId.observe(this, Observer {
+            Log.d("subscribeCompLiveData", "$it")
+
+            if (it) {
+                Toast.makeText(this, "Company Id Get", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Company Id failed to Get", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onBackPressed() {
@@ -69,73 +123,83 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun callLoginApi(email: String ,password: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.loginRequest(email, password)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is LoginResponse) {
-                if (result.success) {
-                    sharePref.put(SharePrefHelper.AC_LEVEL, result.data?.accountLevel!!)
-                    sharePref.put(SharePrefHelper.KEY_LOGIN, true)
-                    sharePref.put(SharePrefHelper.TOKEN, result.data.token!!)
-                    sharePref.put(SharePrefHelper.KEY_EMAIL, result.data.accountEmail!!)
-                    sharePref.put(SharePrefHelper.AC_ID, result.data.accountId!!)
-
-                    if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
-                        getEngineerId()
-                    } else {
-                        getCompanyId()
-                    }
-
-                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                    startActivity(intent)
-                    finish()
-
-                }
-            }
-        }
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
     }
 
-    private fun getEngineerId() {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.getEngineerIdByAccountId(sharePref.getString(SharePrefHelper.AC_ID))
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is GetEngineerIdResponse)
-                if (result.success) {
-                    sharePref.put(SharePrefHelper.ENG_ID, result.data.engineerId)
-                    sharePref.put(SharePrefHelper.ENG_NAME, result.data.accountName)
-                }
-        }
-    }
-
-    private fun getCompanyId() {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.getCompanyIdByAccountId(sharePref.getString(SharePrefHelper.AC_ID))
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is GetCompanyIdResponse)
-                if (result.success) {
-                    sharePref.put(SharePrefHelper.COM_ID, result.data.companyId)
-                }
-        }
-    }
-
+//    private fun callLoginApi(email: String ,password: String) {
+//        coroutineScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                try {
+//                    service.loginRequest(email, password)
+//                } catch (e: Throwable) {
+//                    e.printStackTrace()
+//                }
+//            }
+//
+//            if (result is LoginResponse) {
+//                if (result.success) {
+//                    sharePref.put(SharePrefHelper.AC_LEVEL, result.data?.accountLevel!!)
+//                    sharePref.put(SharePrefHelper.KEY_LOGIN, true)
+//                    sharePref.put(SharePrefHelper.TOKEN, result.data.token!!)
+//                    sharePref.put(SharePrefHelper.KEY_EMAIL, result.data.accountEmail!!)
+//                    sharePref.put(SharePrefHelper.AC_ID, result.data.accountId!!)
+//
+//                    if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
+//                        getEngineerId()
+//                    } else {
+//                        getCompanyId()
+//                    }
+//
+//                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+//                    startActivity(intent)
+//                    finish()
+//
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun getEngineerId() {
+//        coroutineScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                try {
+//                    service.getEngineerIdByAccountId(sharePref.getString(SharePrefHelper.AC_ID))
+//                } catch (e: Throwable) {
+//                    e.printStackTrace()
+//                }
+//            }
+//
+//            if (result is GetEngineerIdResponse) {
+//                if (result.success) {
+//                    val fragmentHomeEngineer = FragmentHomeEngineer()
+//                    val bundle = Bundle()
+//                    bundle.putString("name", result.data.accountName)
+//                    fragmentHomeEngineer.arguments = bundle
+//                    sharePref.put(SharePrefHelper.ENG_ID, result.data.engineerId)
+//                    sharePref.put(SharePrefHelper.ENG_NAME, result.data.accountName)
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun getCompanyId() {
+//        coroutineScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                try {
+//                    service.getCompanyIdByAccountId(sharePref.getString(SharePrefHelper.AC_ID))
+//                } catch (e: Throwable) {
+//                    e.printStackTrace()
+//                }
+//            }
+//
+//            if (result is GetCompanyIdResponse) {
+//                if (result.success) {
+//                    sharePref.put(SharePrefHelper.COM_ID, result.data.companyId)
+//                }
+//            }
+//        }
+//    }
 
 }

@@ -72,6 +72,11 @@ class RegisterEngineerActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
+    }
+
 
 //    private fun saveSession(name: String, email: String, password: String){
 //        sharepref.put(SharePrefHelper.KEY_EMAIL, email)

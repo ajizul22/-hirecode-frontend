@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddExperienceBinding
-import com.example.hirecodeandroid.project.ProjectApiService
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
@@ -51,18 +50,18 @@ class AddExperienceActivity : AppCompatActivity() {
         coroutineScope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    service?.addExperience(enId,expPosition,expCompany,expStart,expEnd,expDesc)
+                    service.addExperience(enId,expPosition,expCompany,expStart,expEnd,expDesc)
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }
             }
+            Log.d("errornih", result.toString())
 
             if (result is ExperienceResponse) {
-                Log.d("masuk ga", result.toString())
+                Log.d("masukga", result.toString())
                 Toast.makeText(this@AddExperienceActivity, "Success Add Experience", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this@AddExperienceActivity, HomeActivity::class.java)
                 startActivity(intent)
-
             }
         }
     }

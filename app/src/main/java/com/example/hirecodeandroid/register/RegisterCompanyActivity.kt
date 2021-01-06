@@ -63,4 +63,9 @@ class RegisterCompanyActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
+    }
 }

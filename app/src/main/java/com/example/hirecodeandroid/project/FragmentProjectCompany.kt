@@ -1,7 +1,6 @@
 package com.example.hirecodeandroid.project
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,17 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentProjectCompanyBinding
+import com.example.hirecodeandroid.project.addproject.AddProjectActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
-class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickListener {
+class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickListener, ProjectContract.View {
 
     private lateinit var binding: FragmentProjectCompanyBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: ProjectApiService
     private lateinit var sharePref: SharePrefHelper
-    var listProject = ArrayList<ProjectModel>()
+    private var listProject = ArrayList<ProjectModel>()
+    private var presenter: ProjectPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,43 +39,24 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
         binding.rvProject.adapter = ProjectListAdapter(listProject, this)
         binding.rvProject.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
-        binding.btnAddProject.setOnClickListener {
-            val intent = Intent(requireContext(), AddProjectActivity:: class.java)
-            startActivity(intent)
-        }
+        presenter = ProjectPresenter(coroutineScope, service, sharePref)
+
+
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getProjectByCompanyId()
-    }
 
-    fun getProjectByCompanyId() {
-        coroutineScope.launch {
-
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getProjectByCompanyId(sharePref.getString(SharePrefHelper.COM_ID))
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is ProjectResponse) {
-                Log.d("android2", result.toString())
-                val list = result.data?.map {
-                    ProjectModel(it.projectId,it.companyId,it.projectName,it.projectDesc,it.projectDeadline,it.projectImage,it.projectCreated,it.projectUpdated)
-                }
-                (binding.rvProject.adapter as ProjectListAdapter).addList(list)
-            }
-
+        binding.btnAddProject.setOnClickListener {
+            val intent = Intent(requireContext(), AddProjectActivity:: class.java)
+            startActivity(intent)
         }
     }
 
-    override fun onDestroy() {
-        coroutineScope.cancel()
-        super.onDestroy()
+    override fun addListProject(list: List<ProjectModel>) {
+        (binding.rvProject.adapter as ProjectListAdapter).addList(list)
     }
 
     override fun onProjectItemClicked(position: Int) {
@@ -87,4 +69,23 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
 
         startActivity(intent)
     }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindToView(this)
+        presenter?.callProjectApi()
+    }
+
+    override fun onStop() {
+        presenter?.unBind()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
+    }
+
+
 }

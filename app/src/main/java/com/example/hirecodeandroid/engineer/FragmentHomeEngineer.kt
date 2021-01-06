@@ -28,7 +28,10 @@ class FragmentHomeEngineer: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharePref = SharePrefHelper(this.activity!!)
-        binding.tvGreetingName.text = sharePref.getString(SharePrefHelper.ENG_NAME)
+
+//        val name = sharePref.getString(SharePrefHelper.ENG_NAME)
+        val greetingName = arguments?.getString("name", "Developer!")
+        binding.tvGreetingName.text = greetingName
 
     }
 

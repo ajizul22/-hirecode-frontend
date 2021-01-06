@@ -1,5 +1,6 @@
 package com.example.hirecodeandroid
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -37,7 +38,14 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
         val fragmentHomeEng =
             FragmentHomeEngineer()
 
+        val name = sharedPref.getString(SharePrefHelper.ENG_NAME)
+
+
+
         if(sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
+            val bundle = Bundle()
+            bundle.putString("name", name)
+            fragmentHomeEng.arguments = bundle
             supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentHomeEng).commit()
             binding.tvToolbarTitle.text = ""
         } else if (sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 1) {
@@ -52,6 +60,9 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
                         supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentHomeCom).commit()
                         binding.tvToolbarTitle.text = "Home"
                     } else if (sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
+                        val bundle = Bundle()
+                        bundle.putString("name", name)
+                        fragmentHomeEng.arguments = bundle
                         supportFragmentManager.beginTransaction().replace(R.id.fg_container, fragmentHomeEng).commit()
                         binding.tvToolbarTitle.text = ""
                     }
@@ -109,21 +120,17 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
     }
 
     private fun showDialogLogout() {
-        val rootView = DataBindingUtil.inflate<LayoutDialogLogoutBinding>(layoutInflater, R.layout.layout_dialog_logout,null,false)
-        val dialog = AlertDialog.Builder(this)
-            .setView(rootView.root)
-            .setCancelable(false)
-            .create()
-        dialog.show()
-        rootView.btnCancelLogout.setOnClickListener {
-            dialog.dismiss()
-        }
-        rootView.btnOkLogout.setOnClickListener {
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("Log Out")
+        builder.setMessage("are you sure? Logging out will remove all data from this device.")
+        builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
             sharedPref.clear()
             val intent = Intent(this,OnBoardScreenActivity::class.java)
             startActivity(intent)
             finish()
         }
+        builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
+        builder.show()
     }
 
     override fun onBackPressed() {

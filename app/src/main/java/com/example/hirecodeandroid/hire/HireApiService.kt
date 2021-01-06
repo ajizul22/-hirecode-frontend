@@ -1,5 +1,6 @@
 package com.example.hirecodeandroid.hire
 
+import com.example.hirecodeandroid.util.GeneralResponse
 import retrofit2.http.*
 
 interface HireApiService {
@@ -22,6 +23,6 @@ interface HireApiService {
     suspend fun responseHire(
         @Path("id") hireId: String?,
         @Field("hr_status") hireStatus: String
-    ): UpdateHireResponse
+    ): GeneralResponse
 
 }

@@ -1,11 +1,7 @@
-package com.example.hirecodeandroid.project
+package com.example.hirecodeandroid.project.addproject
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +10,9 @@ import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddProjectBinding
+import com.example.hirecodeandroid.project.ProjectApiService
 import com.example.hirecodeandroid.remote.ApiClient
+import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -59,7 +57,9 @@ class AddProjectActivity : AppCompatActivity() {
     private fun openImageChooser() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_CODE_IMAGE_PICKER)
+        startActivityForResult(intent,
+            REQUEST_CODE_IMAGE_PICKER
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -92,10 +92,15 @@ class AddProjectActivity : AppCompatActivity() {
                 }
             }
 
-            if (result is AddProjectResponse) {
+            if (result is GeneralResponse) {
                 Log.d("Data", result.toString())
             }
         }
 
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
     }
 }

@@ -70,11 +70,6 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         }
     }
 
-    override fun onDestroy() {
-        coroutineScope.cancel()
-        super.onDestroy()
-    }
-
     override fun onEngineerItemClicked(position: Int) {
         val intent = Intent(requireContext(), DetailProfileEngineerActivity::class.java)
         intent.putExtra("name", listEngineer[position].accountName)
@@ -88,5 +83,10 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
 
         sharePref.put(SharePrefHelper.ENG_ID_CLICKED, listEngineer[position].engineerId!!)
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
     }
 }
