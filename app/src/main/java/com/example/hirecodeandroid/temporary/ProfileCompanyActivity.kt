@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.example.hirecodeandroid.R
+import com.example.hirecodeandroid.company.EditProfileCompanyActivity
 
 class ProfileCompanyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

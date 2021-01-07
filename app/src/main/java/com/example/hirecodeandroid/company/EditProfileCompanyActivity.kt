@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.temporary
+package com.example.hirecodeandroid.company
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

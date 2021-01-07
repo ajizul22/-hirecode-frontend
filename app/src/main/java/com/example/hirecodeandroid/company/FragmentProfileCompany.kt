@@ -11,9 +11,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentProfileCompanyBinding
-import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.remote.ApiClient
-import com.example.hirecodeandroid.temporary.EditProfileCompanyActivity
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
