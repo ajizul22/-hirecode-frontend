@@ -81,10 +81,12 @@ class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpCl
             }
 
             if (result is ExperienceResponse) {
-                val list = result.data?.map {
-                    ExperienceModel(it.experienceId, it.engineerId, it.experiencePosition, it.experienceCompany, it.experienceStart,it.experienceEnd,it.experienceDesc)
+                if (result.success) {
+                    val list = result.data?.map {
+                        ExperienceModel(it.experienceId, it.engineerId, it.experiencePosition, it.experienceCompany, it.experienceStart,it.experienceEnd,it.experienceDesc)
+                    }
+                    (binding.rvExperience.adapter as ExperienceRecyclerViewAdapter).addList(list)
                 }
-                (binding.rvExperience.adapter as ExperienceRecyclerViewAdapter).addList(list)
             }
         }
     }
@@ -108,14 +110,22 @@ class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpCl
     }
 
     override fun onHireDelete(position: Int) {
-        showDialogLogOut(position)
+        showDialogDelete(position)
     }
 
     override fun onHireEdit(position: Int) {
         Toast.makeText(context, "Update ${listExperience[position].expId}", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), UpdateExperienceActivity::class.java)
+        intent.putExtra("id", listExperience[position].expId)
+        intent.putExtra("position", listExperience[position].expPosition)
+        intent.putExtra("company", listExperience[position].expCompany)
+        intent.putExtra("start", listExperience[position].expStart)
+        intent.putExtra("end", listExperience[position].expEnd)
+        intent.putExtra("desc", listExperience[position].expDesc)
+        startActivity(intent)
     }
 
-    private fun showDialogLogOut(position: Int) {
+    private fun showDialogDelete(position: Int) {
         val id = listExperience[position].expId
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Delete Experience")

@@ -1,5 +1,7 @@
 package com.example.hirecodeandroid.hire
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,9 +13,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentHireEngineerBinding
 import com.example.hirecodeandroid.remote.ApiClient
+import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
@@ -66,13 +70,15 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
     }
 
     override fun onHireRejectClicked(position: Int) {
-        val hireId = listHire[position].hireId
-        updateHireStatus(hireId!!, "reject")
+//        val hireId = listHire[position].hireId
+//        updateHireStatus(hireId!!, "reject")
+        showDialogReject(position)
     }
 
     override fun onHireApproveClicked(position: Int) {
-        val hireId = listHire[position].hireId
-        updateHireStatus(hireId!!, "approve")
+//        val hireId = listHire[position].hireId
+//        updateHireStatus(hireId!!, "approve")
+        showDialogAprrove(position)
     }
 
     private fun updateHireStatus(id: String, status: String) {
@@ -85,7 +91,44 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
                     e.printStackTrace()
                 }
             }
+
+            if (result is GeneralResponse) {
+                if (result.success) {
+                    Toast.makeText(requireContext(), "Update Hire Success", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+    }
+
+    private fun showDialogAprrove(position: Int) {
+        val id = listHire[position].hireId
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("Approve Hire")
+        builder.setMessage("Are you sure to approve this hiring?")
+        builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
+            updateHireStatus(id!!, "approve")
+            moveActivity()
+        }
+        builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
+        builder.show()
+    }
+
+    private fun showDialogReject(position: Int) {
+        val id = listHire[position].hireId
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("Reject Hire")
+        builder.setMessage("Are you sure to reject this hiring?")
+        builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
+            updateHireStatus(id!!, "reject")
+            moveActivity()
+        }
+        builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
+        builder.show()
+    }
+
+    private fun moveActivity() {
+        startActivity(Intent(requireContext(), HomeActivity::class.java))
+        activity?.finish()
     }
 
     override fun onDestroy() {

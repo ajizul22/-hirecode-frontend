@@ -22,6 +22,7 @@ interface ExperienceApiService {
     @DELETE("experience/{id}")
     suspend fun deleteExperience(@Path("id") expId: Int?) : GeneralResponse
 
+    @FormUrlEncoded
     @PUT("experience/{id}")
     suspend fun updateExperience(
         @Path("id") expId: Int?,

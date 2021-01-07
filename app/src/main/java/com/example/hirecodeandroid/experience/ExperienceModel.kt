@@ -1,6 +1,6 @@
 package com.example.hirecodeandroid.experience
 
-class ExperienceModel(
+data class ExperienceModel(
     val expId: Int?,
     val enId: Int?,
     val expPosition: String?,
