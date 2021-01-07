@@ -12,7 +12,8 @@ import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ItemListPortofolioBinding
 import com.example.hirecodeandroid.experience.ExperienceModel
 
-class PortofolioRecyclerViewAdapter(private val listPortfolio: ArrayList<PortfolioModel>) : RecyclerView.Adapter<PortofolioRecyclerViewAdapter.PortofolioHolder>() {
+class PortofolioRecyclerViewAdapter(private val listPortfolio: ArrayList<PortfolioModel>,
+                                    private val onListPortfolioClickListener: OnListPortfolioClickListener) : RecyclerView.Adapter<PortofolioRecyclerViewAdapter.PortofolioHolder>() {
 
     fun addList(list: List<PortfolioModel>) {
         listPortfolio.clear()
@@ -46,6 +47,15 @@ class PortofolioRecyclerViewAdapter(private val listPortfolio: ArrayList<Portfol
             .placeholder(R.drawable.ic_project)
             .error(R.drawable.ic_project)
             .into(holder.binding.ivPort)
+
+        holder.itemView.setOnClickListener {
+            onListPortfolioClickListener.onPortfolioItemClick(position)
+        }
+
+    }
+
+    interface OnListPortfolioClickListener {
+        fun onPortfolioItemClick(position: Int)
     }
 
 }

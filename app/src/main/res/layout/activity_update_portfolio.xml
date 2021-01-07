@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            app:title="Portofolio"
+            app:titleTextColor="#fff"
+            android:layout_height="?android:actionBarSize"
+            android:background="@color/pinkPasta"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:targetApi="lollipop" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/content_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_layout_white_radius"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                android:layout_marginHorizontal="15dp">
+
+                <TextView
+                    android:id="@+id/tv_portofolio"
+                    android:text="Update Portofolio"
+                    android:textColor="@color/navy"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="25dp"
+                    />
+
+                <View
+                    android:id="@+id/v_portofolio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="5dp"
+                    android:background="@color/grey"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_portofolio"
+                    android:layout_marginTop="18dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_app_name"
+                    android:text="Aplication name"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/v_portofolio"
+                    app:layout_constraintLeft_toLeftOf="@id/et_app_name"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="5dp" />
+
+                <EditText
+                    android:id="@+id/et_app_name"
+                    android:hint="Enter application name"
+                    android:textColorHint="@color/navy"
+                    android:textSize="15sp"
+                    android:inputType="text"
+                    android:paddingStart="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_field_editprofile"
+                    app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_short_desc_app"
+                    android:text="Short Description"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/et_app_name"
+                    app:layout_constraintLeft_toLeftOf="@id/et_app_name"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="5dp" />
+
+                <EditText
+                    android:id="@+id/et_short_desc_app"
+                    android:hint="description your application"
+                    android:textColorHint="@color/navy"
+                    android:inputType="text"
+                    android:textSize="15sp"
+                    android:gravity="top"
+                    android:paddingStart="15dp"
+                    android:paddingTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bg_field_editprofile"
+                    app:layout_constraintTop_toBottomOf="@id/tv_short_desc_app"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_link_pub"
+                    android:text="Link publication"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/et_short_desc_app"
+                    app:layout_constraintLeft_toLeftOf="@id/et_link_pub"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="5dp" />
+
+                <EditText
+                    android:id="@+id/et_link_pub"
+                    android:hint="Enter link publication"
+                    android:textColorHint="@color/navy"
+                    android:textSize="15sp"
+                    android:inputType="text"
+                    android:paddingStart="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_field_editprofile"
+                    app:layout_constraintTop_toBottomOf="@id/tv_link_pub"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_link_repo"
+                    android:text="Link repository"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/et_link_pub"
+                    app:layout_constraintLeft_toLeftOf="@id/et_link_repo"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="5dp" />
+
+                <EditText
+                    android:id="@+id/et_link_repo"
+                    android:hint="Enter link repository"
+                    android:textColorHint="@color/navy"
+                    android:inputType="text"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_field_editprofile"
+                    app:layout_constraintTop_toBottomOf="@id/tv_link_repo"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_workplace_app"
+                    android:text="Workplace"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/et_link_repo"
+                    app:layout_constraintLeft_toLeftOf="@id/et_link_repo"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="5dp" />
+
+                <EditText
+                    android:id="@+id/et_workplace_app"
+                    android:hint="Enter workplace"
+                    android:textColorHint="@color/navy"
+                    android:inputType="text"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_field_editprofile"
+                    app:layout_constraintTop_toBottomOf="@id/tv_workplace_app"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_port_type"
+                    android:text="Type"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/et_workplace_app"
+                    app:layout_constraintLeft_toLeftOf="@id/et_workplace_app"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="5dp" />
+
+                <RadioGroup
+                    android:id="@+id/radio_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_port_type"
+                    app:layout_constraintLeft_toLeftOf="@id/et_workplace_app">
+
+                    <RadioButton android:id="@+id/radio_mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mobile Application"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/radio_web"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Web Application"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+                <TextView
+                    android:id="@+id/tv_upload_image"
+                    android:text="Upload Image:"
+                    android:textColor="@color/navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_type"
+                    app:layout_constraintLeft_toLeftOf="@id/radio_type"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="5dp" />
+
+                <ImageView
+                    android:id="@+id/iv_upload_image"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_upload_image"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="5dp"
+                    app:srcCompat="@drawable/ic_project"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_select_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Tap to Select Image"
+                    android:textSize="24sp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_upload_image"
+                    app:layout_constraintRight_toRightOf="@id/iv_upload_image"
+                    app:layout_constraintLeft_toLeftOf="@id/iv_upload_image"/>
+
+
+                <View
+                    android:id="@+id/v_desc"
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:background="@color/grey"
+                    app:layout_constraintLeft_toLeftOf="@id/iv_upload_image"
+                    app:layout_constraintRight_toRightOf="@id/et_workplace_app"
+                    app:layout_constraintTop_toBottomOf="@id/tv_select_image"
+                    android:layout_marginTop="25dp"
+                    />
+
+                <Button
+                    android:id="@+id/btn_update_portfolio"
+                    android:background="@drawable/radiusbutton"
+                    android:text="Update Portfolio"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/v_desc"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginHorizontal="15dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -15,8 +15,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".experience.UpdateExperienceActivity"
-                  android:theme="@style/Basic"/>
+        <activity
+            android:name=".portfolio.UpdatePortfolioActivity"
+            android:theme="@style/Basic"
+            />
+        <activity
+            android:name=".portfolio.DetailPortfolioActivity"
+            android:theme="@style/Basic" />
+        <activity
+            android:name=".experience.UpdateExperienceActivity"
+            android:theme="@style/Basic" />
         <activity android:name=".hire.DetailHireActivity" />
         <activity
             android:name=".project.addproject.AddProjectActivity"

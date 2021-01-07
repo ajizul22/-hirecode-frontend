@@ -17,7 +17,7 @@ import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 import retrofit2.create
 
-class FragmentPortofolio : Fragment() {
+class FragmentPortofolio : Fragment(), PortofolioRecyclerViewAdapter.OnListPortfolioClickListener {
 
     private lateinit var binding : FragmentPortofolioBinding
     private lateinit var sharePref: SharePrefHelper
@@ -39,7 +39,7 @@ class FragmentPortofolio : Fragment() {
 
 
         binding.rvPortofolio.adapter =
-            PortofolioRecyclerViewAdapter(listPortfolio)
+            PortofolioRecyclerViewAdapter(listPortfolio, this)
         binding.rvPortofolio.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
         return binding.root
@@ -88,5 +88,11 @@ class FragmentPortofolio : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onPortfolioItemClick(position: Int) {
+        val intent = Intent(requireContext(), DetailPortfolioActivity:: class.java)
+        intent.putExtra("id", listPortfolio[position].portoId)
+        startActivity(intent)
     }
 }
