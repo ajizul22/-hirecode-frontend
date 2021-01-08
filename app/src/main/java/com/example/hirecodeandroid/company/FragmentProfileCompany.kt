@@ -22,6 +22,7 @@ class FragmentProfileCompany: Fragment() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: CompanyApiService
     val img = "http://3.80.223.103:4000/image/"
+    var image: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +37,7 @@ class FragmentProfileCompany: Fragment() {
 
         binding.btnEditProfile.setOnClickListener {
             val intent = Intent(activity, EditProfileCompanyActivity::class.java)
+            intent.putExtra("image", image)
             startActivity(intent)
         }
         return binding.root
@@ -64,6 +66,7 @@ class FragmentProfileCompany: Fragment() {
             if (result is CompanyResponse) {
                 Log.d("data company by id", result.toString())
                 binding.model = result.data[0]
+                image = result.data[0].companyPhotoProfile
                 Glide.with(requireContext()).load(img + result.data[0].companyPhotoProfile).placeholder(R.drawable.ic_profile)
                     .error(R.drawable.ic_profile).into(binding.ivAvatar)
             }

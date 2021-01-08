@@ -45,6 +45,7 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
     private lateinit var sharedPref: SharePrefHelper
     val img = "http://3.80.223.103:4000/image/"
     var listSkill = ArrayList<SkillModel>()
+    var image: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +68,7 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
 
         binding.btnEditProfile.setOnClickListener {
             val intent = Intent(activity, EditProfileEngineerActivity::class.java)
+            intent.putExtra("image", image)
             startActivity(intent)
         }
 
@@ -106,6 +108,7 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
             if (result is ListEngineerResponse) {
                 Log.d("data engineer by id", result.toString())
                 binding.model = result.data[0]
+                image = result.data[0].engineerProfilePict
                 Glide.with(requireContext()).load(img + result.data[0].engineerProfilePict).placeholder(R.drawable.ic_profile)
                     .error(R.drawable.ic_profile).into(binding.ivAvatar)
             }
