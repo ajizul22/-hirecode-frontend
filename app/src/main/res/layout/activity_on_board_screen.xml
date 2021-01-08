@@ -41,7 +41,7 @@
 
         <Button
             android:id="@+id/btn_login_engineer"
-            android:text="@string/login_as_engineer"
+            android:text="Login"
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -90,15 +90,15 @@
             app:layout_constraintTop_toBottomOf="@id/btn_login_engineer"
             app:layout_constraintLeft_toLeftOf="@id/btn_login_engineer"
             app:layout_constraintRight_toRightOf="@id/btn_login_engineer"
-            app:layout_constraintBottom_toTopOf="@+id/btn_login_company"
+            app:layout_constraintBottom_toTopOf="@+id/btn_register"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginHorizontal="15dp"
             />
 
         <Button
-            android:id="@+id/btn_login_company"
-            android:text="@string/login_as_company"
+            android:id="@+id/btn_register"
+            android:text="Register"
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textSize="18sp"

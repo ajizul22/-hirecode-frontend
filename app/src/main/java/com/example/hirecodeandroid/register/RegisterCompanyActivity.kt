@@ -26,6 +26,11 @@ class RegisterCompanyActivity : AppCompatActivity() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(RegisterApiService::class.java)
 
+        binding.tvLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnRegister.setOnClickListener {
             val name = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
