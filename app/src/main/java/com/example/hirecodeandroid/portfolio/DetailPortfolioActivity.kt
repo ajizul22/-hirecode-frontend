@@ -31,6 +31,7 @@ class DetailPortfolioActivity : AppCompatActivity() {
     var linkRepo: String? = null
     var workplace: String? = null
     var portType: String? = null
+    var image: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +68,7 @@ class DetailPortfolioActivity : AppCompatActivity() {
             intent.putExtra("repo", linkRepo)
             intent.putExtra("workplace", workplace)
             intent.putExtra("type", portType)
+            intent.putExtra("image", image)
             startActivity(intent)
         }
 
@@ -93,6 +95,7 @@ class DetailPortfolioActivity : AppCompatActivity() {
                     linkRepo = result.data[0].portoLinkRepo
                     workplace = result.data[0].portoWorkPlace
                     portType = result.data[0].portoType
+                    image = result.data[0].portoImage
                     Glide.with(this@DetailPortfolioActivity).load(img + result.data[0].portoImage).placeholder(R.drawable.ic_project)
                         .error(R.drawable.ic_project).into(binding.ivPortfolio)
                 }

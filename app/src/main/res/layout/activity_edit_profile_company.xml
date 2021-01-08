@@ -47,25 +47,16 @@
                     android:scaleType="centerCrop"/>
 
                 <TextView
-                    android:id="@+id/tv_ic_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_baseline_edit_24"
-                    app:layout_constraintTop_toBottomOf="@id/iv_avatar"
-                    app:layout_constraintLeft_toLeftOf="@id/iv_avatar"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintRight_toRightOf="@id/iv_avatar"
-                    android:layout_marginRight="35dp"
-                    />
-
-                <TextView
                     android:id="@+id/tv_edit"
                     android:text="Edit"
                     android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toRightOf="@id/tv_ic_edit"
-                    app:layout_constraintTop_toTopOf="@id/tv_ic_edit"/>
+                    android:layout_marginTop="8dp"
+                    android:drawableLeft="@drawable/ic_edit_profile"
+                    app:layout_constraintLeft_toLeftOf="@id/iv_avatar"
+                    app:layout_constraintRight_toRightOf="@id/iv_avatar"
+                    app:layout_constraintTop_toBottomOf="@id/iv_avatar"/>
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -76,7 +67,7 @@
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ic_edit"
+                    app:layout_constraintTop_toBottomOf="@id/tv_edit"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginTop="20dp" />
 

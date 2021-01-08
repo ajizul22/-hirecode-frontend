@@ -1,6 +1,7 @@
 package com.example.hirecodeandroid.portfolio
 
 import com.example.hirecodeandroid.util.GeneralResponse
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -21,7 +22,8 @@ interface PortofolioApiService {
         @Part("pr_link_pub") portLinkPub: RequestBody,
         @Part("pr_link_repo") portLinkRepo: RequestBody,
         @Part("pr_tp_kerja") portWorkPlace: RequestBody,
-        @Part("pr_tipe") portType: RequestBody
+        @Part("pr_tipe") portType: RequestBody,
+        @Part image: MultipartBody.Part
     ) : GeneralResponse
 
     @DELETE("portofolio/{id}")
@@ -36,7 +38,8 @@ interface PortofolioApiService {
         @Part("pr_link_pub") portLinkPub: RequestBody,
         @Part("pr_link_repo") portLinkRepo: RequestBody,
         @Part("pr_tp_kerja") portWorkPlace: RequestBody,
-        @Part("pr_tipe") portType: RequestBody
+        @Part("pr_tipe") portType: RequestBody?,
+        @Part image: MultipartBody.Part
     ) : GeneralResponse
 
 }

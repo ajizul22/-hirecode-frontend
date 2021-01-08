@@ -151,7 +151,6 @@
                             android:id="@+id/tv_skill"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="30dp"
                             android:fontFamily="sans-serif-light"
                             android:text="Skill"
                             android:textColor="@color/navy"
@@ -160,44 +159,13 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tv_skill_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_skill"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/bg_skill"
-                            android:paddingHorizontal="20dp"
-                            android:paddingVertical="5dp"
-                            android:text="Javascript"
-                            android:textColor="#fff"
-                            app:layout_constraintLeft_toLeftOf="@id/tv_skill"
-                            app:layout_constraintTop_toBottomOf="@id/tv_skill" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_skill"/>
 
-                        <TextView
-                            android:id="@+id/tv_skill_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/bg_skill"
-                            android:paddingHorizontal="20dp"
-                            android:paddingVertical="5dp"
-                            android:text="Phyton"
-                            android:textColor="#fff"
-                            app:layout_constraintLeft_toRightOf="@id/tv_skill_1"
-                            app:layout_constraintTop_toTopOf="@id/tv_skill_1" />
-
-                        <TextView
-                            android:id="@+id/tv_skill_3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/bg_skill"
-                            android:paddingHorizontal="20dp"
-                            android:paddingVertical="5dp"
-                            android:text="Golang"
-                            android:textColor="#fff"
-                            app:layout_constraintLeft_toRightOf="@id/tv_skill_2"
-                            app:layout_constraintTop_toTopOf="@id/tv_skill_2" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
