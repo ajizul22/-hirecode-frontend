@@ -5,16 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.company.FragmentHomeCompany
 import com.example.hirecodeandroid.company.FragmentProfileCompany
 import com.example.hirecodeandroid.databinding.ActivityHomeBinding
-import com.example.hirecodeandroid.databinding.LayoutDialogLogoutBinding
 import com.example.hirecodeandroid.engineer.FragmentHomeEngineer
 import com.example.hirecodeandroid.engineer.FragmentProfileEngineer
-import com.example.hirecodeandroid.fragment.*
+import com.example.hirecodeandroid.search.*
 import com.example.hirecodeandroid.hire.FragmentHireEngineer
 import com.example.hirecodeandroid.project.FragmentProjectCompany
 import com.example.hirecodeandroid.temporary.FragmentDetailProject

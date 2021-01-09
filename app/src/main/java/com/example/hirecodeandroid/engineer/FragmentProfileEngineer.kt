@@ -1,10 +1,8 @@
 package com.example.hirecodeandroid.engineer
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,11 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.adapter.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.FragmentProfileBinding
 import com.example.hirecodeandroid.listengineer.EngineerApiService
-import com.example.hirecodeandroid.listengineer.ListEngineerAdapter
-import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.skill.SkillAdapter
@@ -59,7 +54,10 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
         serviceSkill = ApiClient.getApiClient(requireContext())!!.create(SkillApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
-        pagerAdapter = EngineerTabPagerAdapter(childFragmentManager)
+        pagerAdapter =
+            EngineerTabPagerAdapter(
+                childFragmentManager
+            )
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
 

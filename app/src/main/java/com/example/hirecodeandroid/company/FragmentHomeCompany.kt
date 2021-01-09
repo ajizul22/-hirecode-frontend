@@ -6,15 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.adapter.HomeRecyclerViewAdapter
 import com.example.hirecodeandroid.databinding.FragmentHomeBinding
-import com.example.hirecodeandroid.dataclass.ListEngineerDataClass
 import com.example.hirecodeandroid.DetailProfileEngineerActivity
 import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerAdapter

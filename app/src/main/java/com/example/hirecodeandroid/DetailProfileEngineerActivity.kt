@@ -8,10 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.hirecodeandroid.adapter.EngineerTabPagerAdapter
+import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.ActivityDetailProfileEngineerBinding
 import com.example.hirecodeandroid.hire.AddHireActivity
-import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.skill.SkillAdapter
 import com.example.hirecodeandroid.skill.SkillApiService
@@ -74,7 +73,10 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
             startActivity(intent)
         }
 
-        pagerAdapter = EngineerTabPagerAdapter(supportFragmentManager)
+        pagerAdapter =
+            EngineerTabPagerAdapter(
+                supportFragmentManager
+            )
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
 

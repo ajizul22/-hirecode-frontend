@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.adapter.EngineerTabPagerAdapter
+import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.FragmentDetailProfileEngBinding
 
 class FragmentDetailProfileEngineer: Fragment() {
@@ -22,7 +22,10 @@ class FragmentDetailProfileEngineer: Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_profile_eng, container, false)
 
-        pagerAdapter = EngineerTabPagerAdapter(childFragmentManager)
+        pagerAdapter =
+            EngineerTabPagerAdapter(
+                childFragmentManager
+            )
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
 

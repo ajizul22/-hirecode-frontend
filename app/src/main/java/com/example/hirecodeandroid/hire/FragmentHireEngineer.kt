@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentHireEngineerBinding
+import com.example.hirecodeandroid.project.detailproject.DetailProjectActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
@@ -79,6 +80,12 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
 //        val hireId = listHire[position].hireId
 //        updateHireStatus(hireId!!, "approve")
         showDialogAprrove(position)
+    }
+
+    override fun onDetailProjectClicked(position: Int) {
+        val intent = Intent(requireContext(), DetailProjectActivity::class.java)
+        intent.putExtra("project_id", listHire[position].projectId?.toInt())
+        startActivity(intent)
     }
 
     private fun updateHireStatus(id: String, status: String) {

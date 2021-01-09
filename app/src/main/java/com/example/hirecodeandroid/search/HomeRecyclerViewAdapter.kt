@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.adapter
+package com.example.hirecodeandroid.search
 
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,9 @@ class HomeRecyclerViewAdapter(private val itemList: List<ListEngineerDataClass>,
     override fun getItemCount(): Int = itemList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_list_engineer, parent, false))
+        return ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_list_engineer, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

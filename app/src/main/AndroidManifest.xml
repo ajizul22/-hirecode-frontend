@@ -37,7 +37,7 @@
             android:name=".hire.AddHireActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".project.DetailProjectActivity"
+            android:name=".project.detailproject.DetailProjectActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".portfolio.AddPortfolioActivity"

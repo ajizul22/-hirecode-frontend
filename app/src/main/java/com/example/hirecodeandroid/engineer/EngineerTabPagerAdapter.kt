@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.adapter
+package com.example.hirecodeandroid.engineer
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

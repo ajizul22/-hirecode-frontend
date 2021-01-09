@@ -1,5 +1,6 @@
 package com.example.hirecodeandroid.hire
 
+import com.example.hirecodeandroid.project.detailproject.HireByProjectResponse
 import com.example.hirecodeandroid.util.GeneralResponse
 import retrofit2.http.*
 
@@ -7,6 +8,9 @@ interface HireApiService {
 
     @GET("hire/engineer/{id}")
     suspend fun getHireByEngineerId(@Path("id") engineerId: String?) : HireResponse
+
+    @GET("hire/project/{id}")
+    suspend fun getHireByProjectId(@Path("id") projectId: Int?) : HireByProjectResponse
 
     @FormUrlEncoded
     @POST("hire")

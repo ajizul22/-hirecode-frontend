@@ -2,7 +2,6 @@ package com.example.hirecodeandroid.project
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentProjectCompanyBinding
 import com.example.hirecodeandroid.project.addproject.AddProjectActivity
+import com.example.hirecodeandroid.project.detailproject.DetailProjectActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
@@ -60,12 +60,15 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
     }
 
     override fun onProjectItemClicked(position: Int) {
-        val intent = Intent(requireContext(),DetailProjectActivity::class.java)
+        val intent = Intent(requireContext(),
+            DetailProjectActivity::class.java)
+        intent.putExtra("project_id", listProject[position].projectId)
         intent.putExtra("image", listProject[position].projectImage)
-        intent.putExtra("title", listProject[position].projectName)
-        intent.putExtra("company", listProject[position].companyId)
-        intent.putExtra("desc", listProject[position].projectDesc)
-        intent.putExtra("deadline", listProject[position].projectDeadline)
+        sharePref.put(SharePrefHelper.PROJECT_ID_COMPANY_CLICKED, listProject[position].projectId!!)
+//        intent.putExtra("title", listProject[position].projectName)
+//        intent.putExtra("company", listProject[position].companyId)
+//        intent.putExtra("desc", listProject[position].projectDesc)
+//        intent.putExtra("deadline", listProject[position].projectDeadline)
 
         startActivity(intent)
     }

@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.fragment
+package com.example.hirecodeandroid.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.adapter.HomeRecyclerViewAdapter
 import com.example.hirecodeandroid.databinding.FragmentSearchBinding
 import com.example.hirecodeandroid.dataclass.ListEngineerDataClass
 import com.example.hirecodeandroid.DetailProfileEngineerActivity
@@ -35,7 +34,11 @@ class FragmentSearch: Fragment(), HomeRecyclerViewAdapter.OnItemClickListener {
         getEngineerList()
 
 //        communicator = activity as Communicator
-        binding.rvSearch.adapter = HomeRecyclerViewAdapter(engineerModel, this)
+        binding.rvSearch.adapter =
+            HomeRecyclerViewAdapter(
+                engineerModel,
+                this
+            )
         binding.rvSearch.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
 

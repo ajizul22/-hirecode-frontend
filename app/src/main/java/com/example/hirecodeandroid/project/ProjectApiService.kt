@@ -1,5 +1,6 @@
 package com.example.hirecodeandroid.project
 
+import com.example.hirecodeandroid.project.detailproject.DetailProjectResponse
 import com.example.hirecodeandroid.util.GeneralResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -9,6 +10,9 @@ interface ProjectApiService {
 
     @GET("project/{id}")
     suspend fun getProjectByCompanyId(@Path("id") companyId: String?): ProjectResponse
+
+    @GET("project/detail/{id}")
+    suspend fun getProjectByProjectId(@Path("id") projectId: Int?) : DetailProjectResponse
 
     @Multipart
     @POST("project")

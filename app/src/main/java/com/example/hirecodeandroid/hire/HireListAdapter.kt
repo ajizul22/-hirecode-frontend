@@ -57,10 +57,15 @@ class HireListAdapter(private val listHire: ArrayList<HireModel>, private val on
             onListHireClickListener.onHireRejectClicked(i)
         }
 
+        holder.binding.btnDetailProject.setOnClickListener {
+            onListHireClickListener.onDetailProjectClicked(i)
+        }
+
     }
 
     interface OnListHireClickListener {
         fun onHireRejectClicked(position : Int)
         fun onHireApproveClicked(position : Int)
+        fun onDetailProjectClicked(position: Int)
     }
 }
