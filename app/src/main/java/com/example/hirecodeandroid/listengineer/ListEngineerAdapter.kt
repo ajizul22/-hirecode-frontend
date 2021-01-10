@@ -31,6 +31,8 @@ class ListEngineerAdapter(private val listEngineer: ArrayList<ListEngineerModel>
 
         holder.binding.tvNameTalent.text = item.accountName
         holder.binding.tvTypeTalent.text = item.engineerJobTitle
+        holder.binding.tvDomicile.text = item.engineerDomicilie
+        holder.binding.tvFulltime.text = item.engineerJobType
 
         Glide.with(holder.itemView)
             .load(img)

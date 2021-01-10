@@ -5,6 +5,7 @@ import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 
 class SearchPresenter(private val coroutineScope: CoroutineScope,
                       private val service: EngineerApiService) : SearchContract.Presenter {
@@ -19,14 +20,28 @@ class SearchPresenter(private val coroutineScope: CoroutineScope,
         this.view = null
     }
 
-    override fun callServiceSearch(search: String?) {
+    override fun callServiceSearch(search: String?, filter: Int?) {
             coroutineScope.launch {
                 view?.showLoading()
                 val result = withContext(Dispatchers.IO) {
                     try {
-                        service?.getAllEngineerSearch(search = search)
-                    } catch (e: Throwable) {
-                        e.printStackTrace()
+                        service?.getAllEngineerSearch(search = search, filter = filter)
+                    } catch (e: HttpException) {
+                        withContext(Dispatchers.Main) {
+                            view?.hideLoading()
+
+                            when {
+                                e.code() == 404 -> {
+                                    view?.onResultFail("Engineer Not Found!")
+                                }
+                                e.code() == 400 -> {
+                                    view?.onResultFail("Please Re-login")
+                                }
+                                else -> {
+                                    view?.onResultFail("Server Under Maintenance")
+                                }
+                            }
+                        }
                     }
                 }
                 if (result is ListEngineerResponse) {

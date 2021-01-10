@@ -14,7 +14,7 @@ interface SearchContract {
     interface Presenter {
         fun bindToView(view: View)
         fun unbind()
-        fun callServiceSearch(search: String?)
+        fun callServiceSearch(search: String?, filter: Int?)
     }
 
 }

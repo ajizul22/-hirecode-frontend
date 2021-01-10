@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -46,6 +47,10 @@ class FragmentSearch: Fragment(), SearchContract.View {
         binding.rvSearch.adapter = SearchAdapter(listEngineer)
         binding.rvSearch.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
+        binding.ivFilter.setOnClickListener {
+            selectFilter()
+        }
+
         setSearchView()
         setRecyclerView()
 
@@ -60,6 +65,7 @@ class FragmentSearch: Fragment(), SearchContract.View {
     override fun onResultFail(message: String) {
         binding.rvSearch.visibility = View.GONE
         binding.tvDataNotFound.visibility = View.VISIBLE
+        binding.message = message
     }
 
     override fun showLoading() {
@@ -81,10 +87,10 @@ class FragmentSearch: Fragment(), SearchContract.View {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText == "") {
-                    presenter?.callServiceSearch(null)
+                    presenter?.callServiceSearch(null, null)
                 } else {
                     if (newText?.length!! == 3) {
-                        presenter?.callServiceSearch(newText)
+                        presenter?.callServiceSearch(newText, null)
                     }
                 }
                 return true
@@ -100,10 +106,34 @@ class FragmentSearch: Fragment(), SearchContract.View {
         binding.rvSearch.adapter = adapter
     }
 
+    private fun selectFilter() {
+        val builder: AlertDialog.Builder? = activity?.let { AlertDialog.Builder(it) }
+        builder?.setTitle("Filter")
+        builder?.setIcon(R.drawable.ic_filter)
+
+        val user = arrayOf("Name", "skill", "domicile", "Freelance / Full Time")
+        builder?.setItems(user) { _, which ->
+            when (which) {
+                0 -> {
+                    presenter?.callServiceSearch(null, 0)
+                }
+                1 -> {
+                    presenter?.callServiceSearch(null, 1)
+                }
+                2 -> {
+                    presenter?.callServiceSearch(null, 2)
+                }
+                3 -> {
+                    presenter?.callServiceSearch(null, 3)
+                }
+            }
+        }?.show()
+    }
+
     override fun onStart() {
         super.onStart()
         presenter?.bindToView(this)
-        presenter?.callServiceSearch(null)
+        presenter?.callServiceSearch(null,null)
     }
 
     override fun onStop() {

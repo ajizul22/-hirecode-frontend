@@ -17,7 +17,8 @@ interface EngineerApiService {
     suspend fun getAllEngineerSearch(
         @Query("search") search: String? = null,
         @Query("limit") limit: Int? = null,
-        @Query("page") page: Int? = null
+        @Query("page") page: Int? = null,
+        @Query("filter") filter: Int? = null
     ) : ListEngineerResponse
 
     @Multipart
