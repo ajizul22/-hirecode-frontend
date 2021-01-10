@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.*
 
 class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickListener {
@@ -44,11 +46,6 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         binding.rvHome.adapter = ListEngineerAdapter(listEngineer,this)
         binding.rvHome.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         return binding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     fun getAllEngineer() {

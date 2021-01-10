@@ -1,24 +1,30 @@
 package com.example.hirecodeandroid.search
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentSearchBinding
-import com.example.hirecodeandroid.dataclass.ListEngineerDataClass
-import com.example.hirecodeandroid.DetailProfileEngineerActivity
+import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.listengineer.ListEngineerModel
+import com.example.hirecodeandroid.remote.ApiClient
+import kotlinx.coroutines.*
 
-class FragmentSearch: Fragment(), HomeRecyclerViewAdapter.OnItemClickListener {
+class FragmentSearch: Fragment(), SearchContract.View {
 
-//    private lateinit var communicator: Communicator
     private lateinit var binding : FragmentSearchBinding
-    private var engineerModel = ArrayList<ListEngineerDataClass>()
+    private lateinit var coroutineScope: CoroutineScope
+    private lateinit var service: EngineerApiService
+    var listEngineer = ArrayList<ListEngineerModel>()
+
+    private var presenter: SearchPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,63 +32,88 @@ class FragmentSearch: Fragment(), HomeRecyclerViewAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search,container,false)
+        coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
+
+        presenter = SearchPresenter(coroutineScope, service)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getEngineerList()
 
-//        communicator = activity as Communicator
-        binding.rvSearch.adapter =
-            HomeRecyclerViewAdapter(
-                engineerModel,
-                this
-            )
+        binding.rvSearch.adapter = SearchAdapter(listEngineer)
         binding.rvSearch.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+
+        setSearchView()
+        setRecyclerView()
+
     }
 
+    override fun onResultSuccess(list: List<ListEngineerModel>) {
+        (binding.rvSearch.adapter as SearchAdapter).addList(list)
+        binding.rvSearch.visibility = View.VISIBLE
+        binding.tvDataNotFound.visibility = View.GONE
+    }
 
+    override fun onResultFail(message: String) {
+        binding.rvSearch.visibility = View.GONE
+        binding.tvDataNotFound.visibility = View.VISIBLE
+    }
 
-    private fun generateDummyList(size : Int) : List<ListEngineerDataClass> {
-        val list = ArrayList<ListEngineerDataClass>()
+    override fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.rvSearch.visibility = View.GONE
+        binding.tvDataNotFound.visibility = View.GONE
+    }
 
-        for (i in 0 until size) {
-            val drawable = when(i%3) {
-                0 -> R.drawable.avatar
-                1 -> R.drawable.ic_github
-                else -> R.drawable.jane
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    private fun setSearchView() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+        android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
             }
 
-            val item = ListEngineerDataClass(drawable, "Billy", "Android Developer", "Kotlin", "Node Js", "Java", "3+")
-            list += item
-        }
-        return list
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText == "") {
+                    presenter?.callServiceSearch(null)
+                } else {
+                    if (newText?.length!! == 3) {
+                        presenter?.callServiceSearch(newText)
+                    }
+                }
+                return true
+            }
+        })
     }
 
-    private fun getEngineerList() {
-        engineerModel = ArrayList()
+    private fun setRecyclerView() {
+        binding.rvSearch.isNestedScrollingEnabled = false
+        binding.rvSearch.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
-        engineerModel.add(ListEngineerDataClass(
-            R.drawable.avatar,
-                "Ajizul",
-                "Android Developer",
-                "Kotlin",
-                "Node Js",
-                "Javascript",
-                "3+"
-        ))
+        val adapter = SearchAdapter(listEngineer)
+        binding.rvSearch.adapter = adapter
     }
 
-    override fun onItemClick(item: ListEngineerDataClass, position: Int) {
-//        communicator.passDataEng(item.imageProfile, item.name, item.jobTitle, item.skillOne, item.skillTwo,item.skillThree)
-        val intent = Intent(requireContext(), DetailProfileEngineerActivity::class.java)
-        intent.putExtra("image1", engineerModel[position].imageProfile)
-        intent.putExtra("name1", engineerModel[position].name)
-        intent.putExtra("title", engineerModel[position].jobTitle)
-        intent.putExtra("skill1", engineerModel[position].skillOne)
-        intent.putExtra("skill2", engineerModel[position].skillTwo)
-        intent.putExtra("skill3", engineerModel[position].skillThree)
-        startActivity(intent)
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindToView(this)
+        presenter?.callServiceSearch(null)
+    }
+
+    override fun onStop() {
+        presenter?.unbind()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 }

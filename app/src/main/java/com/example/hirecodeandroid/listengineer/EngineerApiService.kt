@@ -13,6 +13,13 @@ interface EngineerApiService {
     @GET("engineer/{id}")
     suspend fun getDataEngById(@Path("id") engineerId: String?) : ListEngineerResponse
 
+    @GET("engineer")
+    suspend fun getAllEngineerSearch(
+        @Query("search") search: String? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("page") page: Int? = null
+    ) : ListEngineerResponse
+
     @Multipart
     @PUT("engineer/{id}")
     suspend fun updateEngineer(
