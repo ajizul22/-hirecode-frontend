@@ -264,7 +264,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="700dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginBottom="30dp"
                     android:layout_marginHorizontal="15dp">
@@ -277,7 +277,8 @@
                         app:tabSelectedTextColor="@color/pinkdark"
                         android:background="@drawable/bg_layout_white_tablayout"
                         app:tabIndicatorColor="@color/pinkdark" />
-                    <androidx.viewpager.widget.ViewPager
+
+                    <com.example.hirecodeandroid.util.WrapContentViewPager
                         android:id="@+id/view_pager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />

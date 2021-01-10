@@ -40,9 +40,15 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         sharePref = SharePrefHelper(requireContext())
 
         getAllEngineer()
+
         binding.rvHome.adapter = ListEngineerAdapter(listEngineer,this)
         binding.rvHome.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     fun getAllEngineer() {
