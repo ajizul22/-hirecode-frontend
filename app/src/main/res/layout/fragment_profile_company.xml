@@ -9,25 +9,37 @@
             type="com.example.hirecodeandroid.company.CompanyResponse.Company" />
     </data>
 
-    <ScrollView
-        android:id="@+id/sv_register"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey"
-        >
-        <RelativeLayout
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ScrollView
+            android:id="@+id/content"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_layout_white_radius"
                 android:padding="15dp"
-                android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"
-                tools:context=".DetailProfileEngineerActivity">
+                android:layout_marginHorizontal="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/iv_avatar"
@@ -115,8 +127,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginTop="50dp"/>
 
-
-
                 <ImageView
                     android:id="@+id/iv_icon_email"
                     android:src="@drawable/ic_baseline_email_24"
@@ -187,7 +197,9 @@
                     android:layout_marginTop="15dp"
                     android:src="@drawable/ic_linkedin"
                     app:layout_constraintTop_toBottomOf="@id/iv_icon_git"
-                    app:layout_constraintLeft_toLeftOf="@id/iv_icon_git" />
+                    app:layout_constraintLeft_toLeftOf="@id/iv_icon_git"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="20dp"/>
 
                 <TextView
                     android:id="@+id/tv_linkedin"
@@ -200,6 +212,6 @@
                     app:layout_constraintTop_toTopOf="@id/iv_icon_linkedin"
                     app:layout_constraintLeft_toLeftOf="@id/tv_email_address" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </RelativeLayout>
-    </ScrollView>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

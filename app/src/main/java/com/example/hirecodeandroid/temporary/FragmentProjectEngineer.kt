@@ -16,7 +16,6 @@ import com.example.hirecodeandroid.util.PassDataProject
 
 class FragmentProjectEngineer: Fragment(), ProjectEngineerRecyclerViewAdapter.OnItemClickListener {
 
-    private lateinit var passDataProject: PassDataProject
     private lateinit var binding: FragmentProjectBinding
     private var projectModel = ArrayList<ListProjectEngineerData>()
 
@@ -32,7 +31,6 @@ class FragmentProjectEngineer: Fragment(), ProjectEngineerRecyclerViewAdapter.On
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getListProject()
-        passDataProject = activity as PassDataProject
         binding.rvProject.adapter =
             ProjectEngineerRecyclerViewAdapter(
                 projectModel,
@@ -74,6 +72,5 @@ class FragmentProjectEngineer: Fragment(), ProjectEngineerRecyclerViewAdapter.On
     }
 
     override fun onItemClick(item: ListProjectEngineerData, position: Int) {
-        passDataProject.passDataProject(item.imageProject, item.title, item.company, item.deadline)
     }
 }

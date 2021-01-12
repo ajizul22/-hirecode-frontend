@@ -1,5 +1,6 @@
 package com.example.hirecodeandroid.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,18 +12,21 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hirecodeandroid.DetailProfileEngineerActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentSearchBinding
 import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.remote.ApiClient
+import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
-class FragmentSearch: Fragment(), SearchContract.View {
+class FragmentSearch: Fragment(), SearchContract.View, SearchAdapter.OnListEngineerClickListener {
 
     private lateinit var binding : FragmentSearchBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: EngineerApiService
+    private lateinit var sharePref: SharePrefHelper
     var listEngineer = ArrayList<ListEngineerModel>()
 
     private var presenter: SearchPresenter? = null
@@ -35,6 +39,7 @@ class FragmentSearch: Fragment(), SearchContract.View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search,container,false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
+        sharePref = SharePrefHelper(requireContext())
 
         presenter = SearchPresenter(coroutineScope, service)
 
@@ -44,7 +49,7 @@ class FragmentSearch: Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvSearch.adapter = SearchAdapter(listEngineer)
+        binding.rvSearch.adapter = SearchAdapter(listEngineer,this)
         binding.rvSearch.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
         binding.ivFilter.setOnClickListener {
@@ -89,7 +94,7 @@ class FragmentSearch: Fragment(), SearchContract.View {
                 if (newText == "") {
                     presenter?.callServiceSearch(null, null)
                 } else {
-                    if (newText?.length!! == 3) {
+                    if (newText?.length!! >= 3) {
                         presenter?.callServiceSearch(newText, null)
                     }
                 }
@@ -102,7 +107,7 @@ class FragmentSearch: Fragment(), SearchContract.View {
         binding.rvSearch.isNestedScrollingEnabled = false
         binding.rvSearch.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
-        val adapter = SearchAdapter(listEngineer)
+        val adapter = SearchAdapter(listEngineer, this)
         binding.rvSearch.adapter = adapter
     }
 
@@ -128,6 +133,13 @@ class FragmentSearch: Fragment(), SearchContract.View {
                 }
             }
         }?.show()
+    }
+
+    override fun onEngineerItemClicked(position: Int) {
+        val intent = Intent(requireContext(), DetailProfileEngineerActivity::class.java)
+
+        sharePref.put(SharePrefHelper.ENG_ID_CLICKED, listEngineer[position].engineerId!!)
+        startActivity(intent)
     }
 
     override fun onStart() {

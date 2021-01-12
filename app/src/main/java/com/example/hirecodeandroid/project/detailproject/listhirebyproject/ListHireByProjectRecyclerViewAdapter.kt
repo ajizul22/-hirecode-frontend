@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.project.detailproject
+package com.example.hirecodeandroid.project.detailproject.listhirebyproject
 
 import android.graphics.Color
 import android.view.LayoutInflater

@@ -66,8 +66,6 @@ class LoginActivity : AppCompatActivity() {
 
                 viewModel.callLoginApi(email, password)
 
-//                callLoginApi(binding.etEmail.text.toString(), binding.etPassword.text.toString())
-
             }
         }
 
@@ -78,8 +76,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun subscribeLiveData() {
         viewModel.isLoginLiveData.observe(this, Observer {
-            Log.d("subscribeLiveData", "$it")
-
             if (it) {
                 Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
 
@@ -89,7 +85,6 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
             }
-
         })
     }
 
@@ -127,79 +122,5 @@ class LoginActivity : AppCompatActivity() {
         coroutineScope.cancel()
         super.onDestroy()
     }
-
-//    private fun callLoginApi(email: String ,password: String) {
-//        coroutineScope.launch {
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    service.loginRequest(email, password)
-//                } catch (e: Throwable) {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            if (result is LoginResponse) {
-//                if (result.success) {
-//                    sharePref.put(SharePrefHelper.AC_LEVEL, result.data?.accountLevel!!)
-//                    sharePref.put(SharePrefHelper.KEY_LOGIN, true)
-//                    sharePref.put(SharePrefHelper.TOKEN, result.data.token!!)
-//                    sharePref.put(SharePrefHelper.KEY_EMAIL, result.data.accountEmail!!)
-//                    sharePref.put(SharePrefHelper.AC_ID, result.data.accountId!!)
-//
-//                    if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
-//                        getEngineerId()
-//                    } else {
-//                        getCompanyId()
-//                    }
-//
-//                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-//
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun getEngineerId() {
-//        coroutineScope.launch {
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    service.getEngineerIdByAccountId(sharePref.getString(SharePrefHelper.AC_ID))
-//                } catch (e: Throwable) {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            if (result is GetEngineerIdResponse) {
-//                if (result.success) {
-//                    val fragmentHomeEngineer = FragmentHomeEngineer()
-//                    val bundle = Bundle()
-//                    bundle.putString("name", result.data.accountName)
-//                    fragmentHomeEngineer.arguments = bundle
-//                    sharePref.put(SharePrefHelper.ENG_ID, result.data.engineerId)
-//                    sharePref.put(SharePrefHelper.ENG_NAME, result.data.accountName)
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun getCompanyId() {
-//        coroutineScope.launch {
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    service.getCompanyIdByAccountId(sharePref.getString(SharePrefHelper.AC_ID))
-//                } catch (e: Throwable) {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            if (result is GetCompanyIdResponse) {
-//                if (result.success) {
-//                    sharePref.put(SharePrefHelper.COM_ID, result.data.companyId)
-//                }
-//            }
-//        }
-//    }
 
 }

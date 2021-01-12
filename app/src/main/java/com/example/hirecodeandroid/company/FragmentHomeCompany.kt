@@ -72,14 +72,6 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
 
     override fun onEngineerItemClicked(position: Int) {
         val intent = Intent(requireContext(), DetailProfileEngineerActivity::class.java)
-        intent.putExtra("name", listEngineer[position].accountName)
-        intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
-        intent.putExtra("jobType", listEngineer[position].engineerJobType)
-        intent.putExtra("image", listEngineer[position].engineerProfilePict)
-        intent.putExtra("location", listEngineer[position].engineerDomicilie)
-        intent.putExtra("engId", listEngineer[position].engineerId)
-        intent.putExtra("acEmail", listEngineer[position].accountEmail)
-        intent.putExtra("location", listEngineer[position].engineerDomicilie)
 
         sharePref.put(SharePrefHelper.ENG_ID_CLICKED, listEngineer[position].engineerId!!)
         startActivity(intent)

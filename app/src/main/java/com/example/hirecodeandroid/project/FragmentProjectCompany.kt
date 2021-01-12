@@ -65,10 +65,6 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
         intent.putExtra("project_id", listProject[position].projectId)
         intent.putExtra("image", listProject[position].projectImage)
         sharePref.put(SharePrefHelper.PROJECT_ID_COMPANY_CLICKED, listProject[position].projectId!!)
-//        intent.putExtra("title", listProject[position].projectName)
-//        intent.putExtra("company", listProject[position].companyId)
-//        intent.putExtra("desc", listProject[position].projectDesc)
-//        intent.putExtra("deadline", listProject[position].projectDeadline)
 
         startActivity(intent)
     }

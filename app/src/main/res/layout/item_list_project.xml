@@ -27,7 +27,7 @@
             android:id="@+id/tv_project_title"
             android:text="Membuat Aplikasi Dice Roller "
             android:textSize="18sp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="25dp"
             android:layout_width="200dp"
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"

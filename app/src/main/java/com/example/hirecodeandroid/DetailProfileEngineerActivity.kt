@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.ActivityDetailProfileEngineerBinding
 import com.example.hirecodeandroid.hire.AddHireActivity
+import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.skill.SkillAdapter
 import com.example.hirecodeandroid.skill.SkillApiService
@@ -26,8 +28,11 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
     private lateinit var pagerAdapter: EngineerTabPagerAdapter
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: SkillApiService
+    private lateinit var serviceEngineer: EngineerApiService
     private lateinit var sharedPref: SharePrefHelper
     var listSkill = ArrayList<SkillModel>()
+    val img = "http://3.80.223.103:4000/image/"
+    var image: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,26 +41,9 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
         )
 
         service = ApiClient.getApiClient(this)!!.create(SkillApiService::class.java)
+        serviceEngineer = ApiClient.getApiClient(this)!!.create(EngineerApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = SharePrefHelper(this)
-
-
-        val name = intent.getStringExtra("name")
-        binding.tvName.text = name
-        val jobTitle = intent.getStringExtra("jobTitle")
-        binding.tvJobType.text = jobTitle
-        val location = intent.getStringExtra("location")
-        binding.tvAddress.text = location
-        binding.tvEmailAddress.text = intent.getStringExtra("acEmail")
-        binding.tvAddress.text = intent.getStringExtra("location")
-        val image = intent.getStringExtra("image")
-        val img = "http://3.80.223.103:4000/image/$image"
-
-        Glide.with(binding.ivAvatar)
-            .load(img)
-            .placeholder(R.drawable.avatar)
-            .error(R.drawable.avatar)
-            .into(binding.ivAvatar)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -84,7 +72,27 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
         binding.rvSkill.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
         getDataSkillEngineer(sharedPref.getString(SharePrefHelper.ENG_ID_CLICKED)?.toInt())
+        getDataEngineer(sharedPref.getString(SharePrefHelper.ENG_ID_CLICKED)!!)
 
+    }
+
+    private fun getDataEngineer(id: String) {
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    serviceEngineer?.getDataEngById(id)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+            if (result is ListEngineerResponse) {
+                Log.d("data engineer by id", result.toString())
+                binding.model = result.data[0]
+                image = result.data[0].engineerProfilePict
+                Glide.with(this@DetailProfileEngineerActivity).load(img + result.data[0].engineerProfilePict).placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile).into(binding.ivAvatar)
+            }
+        }
     }
 
     private fun getDataSkillEngineer(id: Int?) {

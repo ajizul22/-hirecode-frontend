@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.project.detailproject
+package com.example.hirecodeandroid.project.detailproject.listhirebyproject
 
 data class HireByProjectModel(
     val hireId: String?,

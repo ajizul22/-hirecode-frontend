@@ -14,7 +14,7 @@ import com.example.hirecodeandroid.dataclass.ListEngineerDataClass
 import com.example.hirecodeandroid.listengineer.ListEngineerAdapter
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 
-class SearchAdapter(private val listEngineer: ArrayList<ListEngineerModel>)
+class SearchAdapter(private val listEngineer: ArrayList<ListEngineerModel>, private val onListEngineerClickListener: OnListEngineerClickListener)
     : RecyclerView.Adapter<SearchAdapter.ListEngineerHolder>() {
 
     fun addList(list: List<ListEngineerModel>) {
@@ -51,5 +51,14 @@ class SearchAdapter(private val listEngineer: ArrayList<ListEngineerModel>)
             .placeholder(R.drawable.avatar)
             .error(R.drawable.avatar)
             .into(holder.binding.ivEngineer)
+
+        holder.itemView.setOnClickListener {
+            onListEngineerClickListener.onEngineerItemClicked(position)
+        }
+
+    }
+
+    interface OnListEngineerClickListener {
+        fun onEngineerItemClicked(position : Int)
     }
 }

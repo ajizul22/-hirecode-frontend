@@ -57,7 +57,7 @@
             android:name=".engineer.EditProfileEngineerActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".company.EditProfileCompanyActivity"
+            android:name=".company.editprofilecompany.EditProfileCompanyActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".temporary.LoginCompanyActivity"

@@ -16,10 +16,9 @@ import com.example.hirecodeandroid.search.*
 import com.example.hirecodeandroid.hire.FragmentHireEngineer
 import com.example.hirecodeandroid.project.FragmentProjectCompany
 import com.example.hirecodeandroid.temporary.FragmentDetailProject
-import com.example.hirecodeandroid.util.PassDataProject
 import com.example.hirecodeandroid.util.SharePrefHelper
 
-class HomeActivity : AppCompatActivity(), PassDataProject {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityHomeBinding
     lateinit var sharedPref: SharePrefHelper
@@ -136,21 +135,5 @@ class HomeActivity : AppCompatActivity(), PassDataProject {
         a.addCategory(Intent.CATEGORY_HOME)
         a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(a)
-    }
-
-    override fun passDataProject(image: Int, title: String, company: String, deadline: String) {
-        val bundle = Bundle()
-        bundle.putInt("image", image)
-        bundle.putString("title", title)
-        bundle.putString("company", company)
-        bundle.putString("deadline", deadline)
-
-        val transaction = this.supportFragmentManager.beginTransaction()
-        val fragmentDetail =
-            FragmentDetailProject()
-        fragmentDetail.arguments = bundle
-        binding.tvToolbarTitle.text = "Detail Project"
-        transaction.replace(R.id.fg_container, fragmentDetail)
-        transaction.commit()
     }
 }

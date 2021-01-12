@@ -1,6 +1,6 @@
 package com.example.hirecodeandroid.hire
 
-import com.example.hirecodeandroid.project.detailproject.HireByProjectResponse
+import com.example.hirecodeandroid.project.detailproject.listhirebyproject.HireByProjectResponse
 import com.example.hirecodeandroid.util.GeneralResponse
 import retrofit2.http.*
 

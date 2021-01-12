@@ -12,6 +12,5 @@ interface ProjectContract {
         fun bindToView(view: View)
         fun unBind()
         fun callProjectApi()
-
     }
 }
