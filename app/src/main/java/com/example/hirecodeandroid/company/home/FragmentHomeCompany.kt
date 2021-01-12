@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.company
+package com.example.hirecodeandroid.company.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +19,8 @@ import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
-class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickListener, HomeCompanyContract.View {
+class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickListener,
+    HomeCompanyContract.View {
 
     private lateinit var binding : FragmentHomeBinding
     private lateinit var coroutineScope: CoroutineScope
@@ -39,7 +40,11 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
         sharePref = SharePrefHelper(requireContext())
 
-        presenter = HomeCompanyPresenter(coroutineScope, service)
+        presenter =
+            HomeCompanyPresenter(
+                coroutineScope,
+                service
+            )
 
         return binding.root
     }

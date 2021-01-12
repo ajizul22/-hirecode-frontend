@@ -1,13 +1,9 @@
-package com.example.hirecodeandroid.company.editprofilecompany
+package com.example.hirecodeandroid.company.editprofile
 
 import android.content.Context
-import android.content.Intent
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
-import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.company.CompanyApiService
 import com.example.hirecodeandroid.company.CompanyResponse
@@ -30,11 +26,6 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
     private lateinit var service: CompanyApiService
     private lateinit var binding: ActivityEditProfileCompanyBinding
-    private lateinit var intent: Context
-
-    fun setIntent(context: Context) {
-        this.intent = intent
-    }
 
     fun setCompanyService(service: CompanyApiService) {
         this.service = service

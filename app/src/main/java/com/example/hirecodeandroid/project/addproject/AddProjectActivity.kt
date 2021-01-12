@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
@@ -43,8 +45,8 @@ class AddProjectActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddProjectBinding
     private lateinit var sharePref : SharePrefHelper
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: ProjectApiService
     private lateinit var deadlineProject: DatePickerDialog.OnDateSetListener
+    private lateinit var viewModel: AddProjectViewModel
     private lateinit var c: Calendar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +55,17 @@ class AddProjectActivity : AppCompatActivity() {
         sharePref = SharePrefHelper(this)
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(context = this)!!.create(ProjectApiService::class.java)
+        val service = ApiClient.getApiClient(context = this)?.create(ProjectApiService::class.java)
 
         c = Calendar.getInstance()
+
+        viewModel = ViewModelProvider(this).get(AddProjectViewModel::class.java)
+        viewModel.setBinding(binding)
+        viewModel.setSharePref(sharePref)
+
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -161,47 +171,27 @@ class AddProjectActivity : AppCompatActivity() {
 
             binding.btnAddProject.setOnClickListener {
                 if (img != null) {
-                    callProjectApi(img)
+                    viewModel.callProjectApi(img)
+                    subscribeLiveData()
                 }
             }
         }
     }
 
-
-    private fun callProjectApi(image: MultipartBody.Part) {
-        coroutineScope.launch {
-
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val idCompany = sharePref.getString(SharePrefHelper.COM_ID).toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectName = binding.etProjectName.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectDesc = binding.etProjectDesc.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectDeadline = binding.etProjectDeadline.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    service?.addProject(idCompany, projectName, projectDesc, projectDeadline, image)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
+    fun subscribeLiveData() {
+        viewModel.isAddProjectLiveData.observe(this, androidx.lifecycle.Observer {
+            if (it) {
+                val intent = Intent(this@AddProjectActivity, HomeActivity::class.java)
+                Toast.makeText(this@AddProjectActivity, "Success Add Project", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this@AddProjectActivity, "Failed to Add Project", Toast.LENGTH_SHORT).show()
             }
-            Log.d("Data tdk masuk", result.toString())
-
-            if (result is GeneralResponse) {
-                Log.d("Data", result.toString())
-                if (result.success) {
-                    val intent = Intent(this@AddProjectActivity, HomeActivity::class.java)
-                    Toast.makeText(this@AddProjectActivity, "Success Add Project", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                }
-
-            }
-        }
-
+        })
     }
 
-    fun getPath(context: Context, contentUri: Uri) : String? {
+    private fun getPath(context: Context, contentUri: Uri) : String? {
         var result: String? = null
         val proj = arrayOf(MediaStore.Images.Media.DATA)
 

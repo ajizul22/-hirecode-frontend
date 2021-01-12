@@ -1,11 +1,14 @@
-package com.example.hirecodeandroid.project
+package com.example.hirecodeandroid.project.listprojectcompany
+
+import com.example.hirecodeandroid.project.ProjectModel
 
 interface ProjectContract {
 
     interface View {
         fun addListProject(list: List<ProjectModel>)
-//        fun showProgressBar()
-//        fun hideProgressBar()
+        fun onResultFail(message: String)
+        fun showLoading()
+        fun hideLoading()
     }
 
     interface Presenter {

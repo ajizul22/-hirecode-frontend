@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentEditProfileEngineerBinding
-import com.example.hirecodeandroid.engineer.FragmentProfileEngineer
+import com.example.hirecodeandroid.engineer.profile.FragmentProfileEngineer
 
 class FragmentEditProfileEngineer : Fragment() {
 

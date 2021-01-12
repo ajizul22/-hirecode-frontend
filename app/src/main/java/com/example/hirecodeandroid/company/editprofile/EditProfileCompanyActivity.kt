@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.engineer
+package com.example.hirecodeandroid.company.editprofile
 
 import android.Manifest
 import android.app.Activity
@@ -12,21 +12,16 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
-import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.databinding.ActivityEditProfileEngineerBinding
-import com.example.hirecodeandroid.listengineer.EngineerApiService
-import com.example.hirecodeandroid.listengineer.ListEngineerResponse
-import com.example.hirecodeandroid.portfolio.UpdatePortfolioActivity
+import com.example.hirecodeandroid.company.CompanyApiService
+import com.example.hirecodeandroid.databinding.ActivityEditProfileCompanyBinding
 import com.example.hirecodeandroid.remote.ApiClient
-import com.example.hirecodeandroid.skill.SkillApiService
-import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -35,35 +30,33 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-class EditProfileEngineerActivity : AppCompatActivity() {
+class EditProfileCompanyActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE_IMAGE_PICKER = 100
         private const val PERMISSION_CODE = 1001;
     }
 
-    private lateinit var binding: ActivityEditProfileEngineerBinding
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: EngineerApiService
     private lateinit var sharedPref: SharePrefHelper
-    val typeApp = arrayOf("fulltime", "freelance")
+    private lateinit var binding: ActivityEditProfileCompanyBinding
+    private lateinit var viewModel: EditProfileCompanyViewModel
+    val img = "http://3.80.223.103:4000/image/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_engineer)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_company)
         sharedPref = SharePrefHelper(this)
 
-        service = ApiClient.getApiClient(this)!!.create(EngineerApiService::class.java)
+        val service = ApiClient.getApiClient(this)?.create(CompanyApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
-        val img = "http://3.80.223.103:4000/image/"
-        Glide.with(binding.root)
-            .load(img+intent.getStringExtra("image"))
-            .placeholder(R.drawable.ic_profile)
-            .error(R.drawable.ic_profile)
-            .into(binding.ivAvatar)
+        viewModel = ViewModelProvider(this).get(EditProfileCompanyViewModel::class.java)
+        viewModel.setBinding(binding)
 
-
+        if (service != null) {
+            viewModel.setCompanyService(service)
+        }
 
         binding.btnCancel.setOnClickListener {
             onBackPressed()
@@ -74,9 +67,10 @@ class EditProfileEngineerActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        configSpinnerTypeApp()
-        val id = sharedPref.getString(SharePrefHelper.ENG_ID)
-        getDataEngineer(id!!)
+
+        val id = sharedPref.getString(SharePrefHelper.COM_ID)
+        viewModel.getDataCompany(id!!.toInt())
+        subscribeLiveData()
 
         binding.tvEdit.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -85,7 +79,9 @@ class EditProfileEngineerActivity : AppCompatActivity() {
                     //permission denied
                     val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
                     //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE);
+                    requestPermissions(permissions,
+                        PERMISSION_CODE
+                    );
                 }
                 else{
                     //permission already granted
@@ -97,74 +93,31 @@ class EditProfileEngineerActivity : AppCompatActivity() {
                 openImageChooser()
             }
         }
+
     }
 
-    private fun configSpinnerTypeApp() {
-        binding.spinnerTypeApp.adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, typeApp)
-        binding.spinnerTypeApp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(this@EditProfileEngineerActivity, "None", Toast.LENGTH_SHORT).show()
+    private fun subscribeLiveData() {
+        viewModel.isCompanyLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.scrollView.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.scrollView.visibility = View.GONE
             }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                Toast.makeText(this@EditProfileEngineerActivity, "${typeApp[position]} clicked", Toast.LENGTH_SHORT).show();
-                sharedPref.put(SharePrefHelper.JOB_TYPE, typeApp[position])
-            }
-
-        }
+        })
     }
 
-    private fun getDataEngineer(id: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getDataEngById(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeLiveDataUpdate() {
+        viewModel.isUpdateCompanyLiveData.observe(this, Observer {
+            if (it) {
+                val intent = Intent(this, HomeActivity::class.java)
+                Toast.makeText(this@EditProfileCompanyActivity, "Success update profile", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+            } else {
+                Toast.makeText(this@EditProfileCompanyActivity, "Edit profile failed", Toast.LENGTH_SHORT).show()
             }
-            if (result is ListEngineerResponse) {
-                Log.d("data engineer by id", result.toString())
-                binding.model = result.data[0]
-            }
-        }
-    }
-
-    private fun updateEngineer(id: Int, image: MultipartBody.Part) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val jobTitle = createPartFromString(binding.etJobTitle.text.toString())
-                    val jobType = createPartFromString(sharedPref.getString(SharePrefHelper.JOB_TYPE)!!)
-                    val domicile = createPartFromString(binding.etCity.text.toString())
-                    val desc = createPartFromString(binding.etShortDesc.text.toString())
-
-                    service?.updateEngineer(id, jobTitle, jobType, domicile, desc, image)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is GeneralResponse) {
-                if (result.success) {
-                    val intent = Intent(this@EditProfileEngineerActivity, HomeActivity::class.java)
-                    Toast.makeText(this@EditProfileEngineerActivity, "Success update profile", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        }
-    }
-
-    private fun createPartFromString(json: String): RequestBody {
-        val mediaType = "multipart/form-data".toMediaType()
-        return json
-            .toRequestBody(mediaType)
+        })
     }
 
     override fun onRequestPermissionsResult(
@@ -190,7 +143,8 @@ class EditProfileEngineerActivity : AppCompatActivity() {
     private fun openImageChooser() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_CODE_IMAGE_PICKER
+        startActivityForResult(intent,
+            REQUEST_CODE_IMAGE_PICKER
         )
     }
 
@@ -213,19 +167,18 @@ class EditProfileEngineerActivity : AppCompatActivity() {
             img = reqFile?.let { it1 ->
                 MultipartBody.Part.createFormData("image", file.name, it1)
             }
-
-            val id = sharedPref.getString(SharePrefHelper.ENG_ID)
+            val id = sharedPref.getString(SharePrefHelper.COM_ID)
 
             binding.btnSave.setOnClickListener {
                 if (img != null) {
-                    updateEngineer(id!!.toInt(), img)
+                    viewModel.updateDataCompany(id!!.toInt(), img)
+                    subscribeLiveDataUpdate()
                 }
             }
-
         }
     }
 
-    fun getPath(context: Context, contentUri: Uri) : String? {
+    private fun getPath(context: Context, contentUri: Uri) : String? {
         var result: String? = null
         val proj = arrayOf(MediaStore.Images.Media.DATA)
 

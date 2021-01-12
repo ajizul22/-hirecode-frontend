@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.project
+package com.example.hirecodeandroid.project.listprojectcompany
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ItemProjectBinding
+import com.example.hirecodeandroid.project.ProjectModel
 
 class ProjectListAdapter(private val listProject: ArrayList<ProjectModel>, private val onListProjectClickListener: OnListProjectClickListener): RecyclerView.Adapter<ProjectListAdapter.ProjectHolder>() {
 
@@ -20,7 +21,14 @@ class ProjectListAdapter(private val listProject: ArrayList<ProjectModel>, priva
     class ProjectHolder(val binding: ItemProjectBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectHolder {
-        return ProjectHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_project, parent, false))
+        return ProjectHolder(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.item_project,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ProjectHolder, position: Int) {

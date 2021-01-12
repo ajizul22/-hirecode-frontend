@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.engineer
+package com.example.hirecodeandroid.engineer.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

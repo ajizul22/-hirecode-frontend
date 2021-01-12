@@ -7,14 +7,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.hirecodeandroid.company.FragmentHomeCompany
+import com.example.hirecodeandroid.company.home.FragmentHomeCompany
 import com.example.hirecodeandroid.company.profile.FragmentProfileCompany
 import com.example.hirecodeandroid.databinding.ActivityHomeBinding
-import com.example.hirecodeandroid.engineer.FragmentHomeEngineer
-import com.example.hirecodeandroid.engineer.FragmentProfileEngineer
+import com.example.hirecodeandroid.engineer.home.FragmentHomeEngineer
+import com.example.hirecodeandroid.engineer.profile.FragmentProfileEngineer
 import com.example.hirecodeandroid.search.*
 import com.example.hirecodeandroid.hire.FragmentHireEngineer
-import com.example.hirecodeandroid.project.FragmentProjectCompany
+import com.example.hirecodeandroid.project.listprojectcompany.FragmentProjectCompany
 import com.example.hirecodeandroid.util.SharePrefHelper
 
 class HomeActivity : AppCompatActivity() {
@@ -30,7 +30,8 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(binding.topToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val fragmentHomeCom = FragmentHomeCompany()
+        val fragmentHomeCom =
+            FragmentHomeCompany()
         val fragmentHomeEng =
             FragmentHomeEngineer()
 
@@ -73,7 +74,8 @@ class HomeActivity : AppCompatActivity() {
                 R.id.page_3 -> {
                     val fragmentHireEngineer =
                         FragmentHireEngineer()
-                    val fragmentProjectCom = FragmentProjectCompany()
+                    val fragmentProjectCom =
+                        FragmentProjectCompany()
 
                     if(sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
                         supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentHireEngineer).commit()

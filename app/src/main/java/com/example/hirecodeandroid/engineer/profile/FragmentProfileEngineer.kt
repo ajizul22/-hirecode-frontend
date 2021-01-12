@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.engineer
+package com.example.hirecodeandroid.engineer.profile
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -17,13 +17,12 @@ import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentProfileBinding
+import com.example.hirecodeandroid.engineer.editprofile.EditProfileEngineerActivity
+import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
-import com.example.hirecodeandroid.skill.SkillAdapter
-import com.example.hirecodeandroid.skill.SkillApiService
-import com.example.hirecodeandroid.skill.SkillModel
-import com.example.hirecodeandroid.skill.SkillResponse
+import com.example.hirecodeandroid.skill.*
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import com.example.hirecodeandroid.webview.WebViewActivity
@@ -152,7 +151,7 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
         }
     }
 
-    private fun showDialogDelete(position: Int) {
+    private fun showDialogDeleteSkill(position: Int) {
         val id = listSkill[position].skillId
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Delete Skill")
@@ -165,8 +164,8 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
         builder.show()
     }
 
-    override fun onItemClicked(position: Int) {
-        showDialogDelete(position)
+    override fun onItemSkillClicked(position: Int) {
+        showDialogDeleteSkill(position)
     }
 
     private fun showMessage(message : String) {

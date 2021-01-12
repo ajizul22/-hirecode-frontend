@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.engineer
+package com.example.hirecodeandroid.skill
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,9 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddSkillBinding
-import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.remote.ApiClient
-import com.example.hirecodeandroid.skill.SkillApiService
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*

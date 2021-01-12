@@ -3,8 +3,8 @@ package com.example.hirecodeandroid.project.detailproject
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.example.hirecodeandroid.project.detailproject.listhirebyproject.FragmentListHireApprove
-import com.example.hirecodeandroid.project.detailproject.listhirebyproject.FragmentListHireWaiting
+import com.example.hirecodeandroid.project.detailproject.listhirebyproject.approve.FragmentListHireApprove
+import com.example.hirecodeandroid.project.detailproject.listhirebyproject.waiting.FragmentListHireWaiting
 
 class DetailProjectTabPagerAdapter(fragment: FragmentManager) : FragmentStatePagerAdapter(fragment, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

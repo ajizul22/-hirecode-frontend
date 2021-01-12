@@ -69,7 +69,16 @@ class AddHireActivity : AppCompatActivity() {
 
             if (result is ProjectResponse) {
                 val list = result.data?.map {
-                    ProjectModel(it.projectId, it.companyId,it.projectName,it.projectDesc,it.projectDeadline,it.projectImage,it.projectCreated,it.projectUpdated)
+                    ProjectModel(
+                        it.projectId,
+                        it.companyId,
+                        it.projectName,
+                        it.projectDesc,
+                        it.projectDeadline,
+                        it.projectImage,
+                        it.projectCreated,
+                        it.projectUpdated
+                    )
                 }
                 val projectName =
                     arrayOfNulls<String>(list.size)

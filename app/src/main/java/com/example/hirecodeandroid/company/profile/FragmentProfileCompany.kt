@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.company.CompanyApiService
-import com.example.hirecodeandroid.company.editprofilecompany.EditProfileCompanyActivity
+import com.example.hirecodeandroid.company.editprofile.EditProfileCompanyActivity
 import com.example.hirecodeandroid.databinding.FragmentProfileCompanyBinding
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper

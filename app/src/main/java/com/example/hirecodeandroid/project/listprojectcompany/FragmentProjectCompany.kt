@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.project
+package com.example.hirecodeandroid.project.listprojectcompany
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,13 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentProjectCompanyBinding
+import com.example.hirecodeandroid.project.*
 import com.example.hirecodeandroid.project.addproject.AddProjectActivity
 import com.example.hirecodeandroid.project.detailproject.DetailProjectActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
-class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickListener, ProjectContract.View {
+class FragmentProjectCompany: Fragment(),
+    ProjectListAdapter.OnListProjectClickListener,
+    ProjectContract.View {
 
     private lateinit var binding: FragmentProjectCompanyBinding
     private lateinit var coroutineScope: CoroutineScope
@@ -36,13 +39,19 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
         service = ApiClient.getApiClient(requireContext())!!.create(ProjectApiService::class.java)
         sharePref = SharePrefHelper(requireContext())
 
-        binding.rvProject.adapter = ProjectListAdapter(listProject, this)
+        binding.rvProject.adapter =
+            ProjectListAdapter(
+                listProject,
+                this
+            )
         binding.rvProject.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
-        presenter = ProjectPresenter(coroutineScope, service, sharePref)
-
-
-
+        presenter =
+            ProjectPresenter(
+                coroutineScope,
+                service,
+                sharePref
+            )
         return binding.root
     }
 
@@ -57,6 +66,24 @@ class FragmentProjectCompany: Fragment(), ProjectListAdapter.OnListProjectClickL
 
     override fun addListProject(list: List<ProjectModel>) {
         (binding.rvProject.adapter as ProjectListAdapter).addList(list)
+        binding.rvProject.visibility = View.VISIBLE
+        binding.tvDataNotFound.visibility = View.GONE
+    }
+
+    override fun onResultFail(message: String) {
+        binding.tvDataNotFound.visibility = View.VISIBLE
+        binding.message = message
+        binding.rvProject.visibility = View.GONE
+    }
+
+    override fun showLoading() {
+        binding.rvProject.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+        binding.tvDataNotFound.visibility = View.GONE
+    }
+
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
     }
 
     override fun onProjectItemClicked(position: Int) {

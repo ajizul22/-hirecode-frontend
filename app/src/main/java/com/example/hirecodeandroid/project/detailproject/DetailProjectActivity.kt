@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityDetailProjectBinding
@@ -20,10 +22,9 @@ class DetailProjectActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailProjectBinding
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: ProjectApiService
     private lateinit var pagerAdapter: DetailProjectTabPagerAdapter
     private lateinit var sharePref: SharePrefHelper
-    val img = "http://3.80.223.103:4000/image/"
+    private lateinit var viewModel: DetailProjectViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +32,14 @@ class DetailProjectActivity : AppCompatActivity() {
         sharePref = SharePrefHelper(this)
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(this)!!.create(ProjectApiService::class.java)
+        val service = ApiClient.getApiClient(this)?.create(ProjectApiService::class.java)
 
-        val image = intent.getStringExtra("image")
+        viewModel = ViewModelProvider(this).get(DetailProjectViewModel::class.java)
+        viewModel.setBinding(binding)
 
-
-//        Glide.with(binding.ivProject)
-//            .load(img)
-//            .placeholder(R.drawable.ic_project)
-//            .error(R.drawable.ic_project)
-//            .into(binding.ivProject)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         pagerAdapter = DetailProjectTabPagerAdapter(supportFragmentManager)
         binding.viewPager.adapter = pagerAdapter
@@ -57,9 +56,21 @@ class DetailProjectActivity : AppCompatActivity() {
         }
 
         val projectId = intent.getIntExtra("project_id", 0)
-        getDataproject(projectId)
+        viewModel.getDataproject(projectId)
+        subscribeLiveData()
     }
 
+    private fun subscribeLiveData() {
+        viewModel.isProjectLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.scrollView.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.scrollView.visibility = View.GONE
+            }
+        })
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -84,33 +95,6 @@ class DetailProjectActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun getDataproject(id: Int) {
-        coroutineScope.launch {
-
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getProjectByProjectId(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is DetailProjectResponse) {
-                if (result.success) {
-                    binding.model = result.data[0]
-                    val image = result.data[0].projectImage
-
-                    Glide.with(binding.ivProject)
-                        .load(img+image)
-                        .placeholder(R.drawable.ic_project)
-                        .error(R.drawable.ic_project)
-                        .into(binding.ivProject)
-
-                }
-            }
-
-        }
     }
 
 }

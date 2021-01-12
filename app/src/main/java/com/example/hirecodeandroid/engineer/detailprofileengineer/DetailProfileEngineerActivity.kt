@@ -119,7 +119,7 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
         }
     }
 
-    override fun onItemClicked(position: Int) {
+    override fun onItemSkillClicked(position: Int) {
 
     }
 }

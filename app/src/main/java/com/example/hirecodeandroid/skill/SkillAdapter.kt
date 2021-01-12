@@ -37,12 +37,12 @@ class SkillAdapter(private val listSkill: ArrayList<SkillModel>,
         holder.binding.tvSkill.text = item.skillName
 
         holder.itemView.setOnClickListener {
-            onItemSkillClickListener.onItemClicked(position)
+            onItemSkillClickListener.onItemSkillClicked(position)
         }
 
     }
 
     interface OnItemSkillClickListener {
-        fun onItemClicked(position: Int)
+        fun onItemSkillClicked(position: Int)
     }
 }

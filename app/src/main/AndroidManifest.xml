@@ -31,7 +31,7 @@
             android:name=".project.addproject.AddProjectActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".engineer.AddSkillActivity"
+            android:name=".skill.AddSkillActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".hire.AddHireActivity"
@@ -54,10 +54,10 @@
             android:name=".HomeActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".engineer.EditProfileEngineerActivity"
+            android:name=".engineer.editprofile.EditProfileEngineerActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".company.editprofilecompany.EditProfileCompanyActivity"
+            android:name=".company.editprofile.EditProfileCompanyActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".temporary.LoginCompanyActivity"
