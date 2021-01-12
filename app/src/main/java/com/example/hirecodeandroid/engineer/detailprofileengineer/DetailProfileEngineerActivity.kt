@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid
+package com.example.hirecodeandroid.engineer.detailprofileengineer
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.ActivityDetailProfileEngineerBinding
 import com.example.hirecodeandroid.hire.AddHireActivity
@@ -89,7 +90,9 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
                 Log.d("data engineer by id", result.toString())
                 binding.model = result.data[0]
                 image = result.data[0].engineerProfilePict
-                Glide.with(this@DetailProfileEngineerActivity).load(img + result.data[0].engineerProfilePict).placeholder(R.drawable.ic_profile)
+                Glide.with(this@DetailProfileEngineerActivity).load(img + result.data[0].engineerProfilePict).placeholder(
+                    R.drawable.ic_profile
+                )
                     .error(R.drawable.ic_profile).into(binding.ivAvatar)
             }
         }

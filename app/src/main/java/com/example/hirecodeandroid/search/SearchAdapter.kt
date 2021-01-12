@@ -1,17 +1,12 @@
 package com.example.hirecodeandroid.search
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ItemListEngineerBinding
-import com.example.hirecodeandroid.dataclass.ListEngineerDataClass
-import com.example.hirecodeandroid.listengineer.ListEngineerAdapter
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 
 class SearchAdapter(private val listEngineer: ArrayList<ListEngineerModel>, private val onListEngineerClickListener: OnListEngineerClickListener)

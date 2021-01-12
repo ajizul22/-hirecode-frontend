@@ -11,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
@@ -38,9 +41,9 @@ class EditProfileCompanyActivity : AppCompatActivity() {
     }
 
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: CompanyApiService
     private lateinit var sharedPref: SharePrefHelper
     private lateinit var binding: ActivityEditProfileCompanyBinding
+    private lateinit var viewModel: EditProfileCompanyViewModel
     val img = "http://3.80.223.103:4000/image/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,16 +51,15 @@ class EditProfileCompanyActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_company)
         sharedPref = SharePrefHelper(this)
 
-        service = ApiClient.getApiClient(this)!!.create(CompanyApiService::class.java)
+        val service = ApiClient.getApiClient(this)?.create(CompanyApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
-//            val img = "http://3.80.223.103:4000/image/"
-//            Glide.with(binding.root)
-//                .load(img+intent.getStringExtra("image"))
-//                .placeholder(R.drawable.ic_profile)
-//                .error(R.drawable.ic_profile)
-//                .into(binding.ivAvatar)
+        viewModel = ViewModelProvider(this).get(EditProfileCompanyViewModel::class.java)
+        viewModel.setBinding(binding)
 
+        if (service != null) {
+            viewModel.setCompanyService(service)
+        }
 
         binding.btnCancel.setOnClickListener {
             onBackPressed()
@@ -70,7 +72,8 @@ class EditProfileCompanyActivity : AppCompatActivity() {
         }
 
         val id = sharedPref.getString(SharePrefHelper.COM_ID)
-        getDataCompany(id!!.toInt())
+        viewModel.getDataCompany(id!!.toInt())
+        subscribeLiveData()
 
         binding.tvEdit.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -94,62 +97,30 @@ class EditProfileCompanyActivity : AppCompatActivity() {
             }
         }
 
-
-
-
     }
 
-    private fun getDataCompany(id: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getDataCompany(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeLiveData() {
+        viewModel.isCompanyLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.scrollView.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.scrollView.visibility = View.GONE
             }
-
-            if (result is CompanyResponse) {
-                Log.d("data company by id", result.toString())
-                binding.model = result.data[0]
-                Glide.with(binding.root).load(img + result.data[0].companyPhotoProfile).placeholder(R.drawable.ic_profile)
-                    .error(R.drawable.ic_profile).into(binding.ivAvatar)
-            }
-        }
+        })
     }
 
-    private fun updateCompany(id: Int, image: MultipartBody.Part) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val companyName = createPartFromString(binding.etCompanyName.text.toString())
-                    val companyField = createPartFromString(binding.etCompanyField.text.toString())
-                    val position = createPartFromString(binding.etPosition.text.toString())
-                    val city = createPartFromString(binding.etCity.text.toString())
-                    val instagram = createPartFromString(binding.etIg.text.toString())
-                    val linkedIn = createPartFromString(binding.etLinkedin.text.toString())
-                    val desc = createPartFromString(binding.etShortDesc.text.toString())
-                    service?.updateCompany(id,companyName, position, companyField, city, desc, instagram, linkedIn, image)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeLiveDataUpdate() {
+        viewModel.isUpdateCompanyLiveData.observe(this, Observer {
+            if (it) {
+                val intent = Intent(this, HomeActivity::class.java)
+                Toast.makeText(this@EditProfileCompanyActivity, "Success update profile", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+            } else {
+                Toast.makeText(this@EditProfileCompanyActivity, "Edit profile failed", Toast.LENGTH_SHORT).show()
             }
-
-            if (result is GeneralResponse) {
-                if (result.success) {
-                    val intent = Intent(this@EditProfileCompanyActivity, HomeActivity::class.java)
-                    Toast.makeText(this@EditProfileCompanyActivity, "Success update profile", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        }
-    }
-
-    private fun createPartFromString(json: String): RequestBody {
-        val mediaType = "multipart/form-data".toMediaType()
-        return json
-            .toRequestBody(mediaType)
+        })
     }
 
     override fun onRequestPermissionsResult(
@@ -203,13 +174,14 @@ class EditProfileCompanyActivity : AppCompatActivity() {
 
             binding.btnSave.setOnClickListener {
                 if (img != null) {
-                    updateCompany(id!!.toInt(), img)
+                    viewModel.updateDataCompany(id!!.toInt(), img)
+                    subscribeLiveDataUpdate()
                 }
             }
         }
     }
 
-    fun getPath(context: Context, contentUri: Uri) : String? {
+    private fun getPath(context: Context, contentUri: Uri) : String? {
         var result: String? = null
         val proj = arrayOf(MediaStore.Images.Media.DATA)
 

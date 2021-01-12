@@ -9,370 +9,390 @@
             type="com.example.hirecodeandroid.company.CompanyResponse.Company" />
     </data>
 
-    <ScrollView
-        android:id="@+id/sv_register"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            app:title="Edit Profile"
+            app:titleTextColor="#fff"
+            android:layout_height="?android:actionBarSize"
+            android:background="@color/pinkPasta"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:targetApi="lollipop" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                app:title="Edit Profile"
-                app:titleTextColor="#fff"
-                android:layout_height="?android:actionBarSize"
-                android:background="@color/pinkPasta"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                tools:targetApi="lollipop" />
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/grey">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/content_1"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_layout_white_radius"
-                android:padding="15dp"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="15dp">
+                android:orientation="vertical">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_layout_white_radius"
+                    android:padding="15dp"
+                    android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="30dp"
-                    android:scaleType="centerCrop"/>
+                    android:layout_marginBottom="15dp">
 
-                <TextView
-                    android:id="@+id/tv_edit"
-                    android:text="Edit"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/iv_avatar"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="30dp"
+                        android:scaleType="centerCrop"/>
+
+                    <TextView
+                        android:id="@+id/tv_edit"
+                        android:text="Edit"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:drawableLeft="@drawable/ic_edit_profile"
+                        app:layout_constraintLeft_toLeftOf="@id/iv_avatar"
+                        app:layout_constraintRight_toRightOf="@id/iv_avatar"
+                        app:layout_constraintTop_toBottomOf="@id/iv_avatar"/>
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:text="@{model.companyName}"
+                        android:textColor="@color/navy"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_edit"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="20dp" />
+
+                    <TextView
+                        android:id="@+id/tv_job_type"
+                        android:text="@{model.companyField}"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/navy"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_name"
+                        app:layout_constraintLeft_toLeftOf="@id/tv_name"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:text="@{model.companyDom}"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#575757"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@id/iv_icon_place"
+                        app:layout_constraintLeft_toRightOf="@id/iv_icon_place"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="5dp" />
+
+                    <ImageView
+                        android:id="@+id/iv_icon_place"
+                        android:src="@drawable/ic_baseline_place_24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_job_type"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="10dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:drawableLeft="@drawable/ic_edit_profile"
-                    app:layout_constraintLeft_toLeftOf="@id/iv_avatar"
-                    app:layout_constraintRight_toRightOf="@id/iv_avatar"
-                    app:layout_constraintTop_toBottomOf="@id/iv_avatar"/>
+                    android:background="@drawable/bg_layout_white_radius"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="15dp">
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:text="@{model.companyName}"
-                    android:textColor="@color/navy"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_personal_data"
+                        android:text="Personal Data"
+                        android:textColor="@color/navy"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp"
+                        />
+
+                    <View
+                        android:id="@+id/v_personal_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="5dp"
+                        android:background="@color/grey"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_personal_data"
+                        android:layout_marginTop="18dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_company_name"
+                        android:text="Company Name"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/v_personal_data"
+                        app:layout_constraintLeft_toLeftOf="@id/et_company_name"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_company_name"
+                        android:text="@{model.companyName}"
+                        android:hint="@string/enter_company_name"
+                        android:textSize="15sp"
+                        android:inputType="text"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_company_name"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_company_field"
+                        android:text="Company Field"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_company_name"
+                        app:layout_constraintLeft_toLeftOf="@id/et_company_name"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_company_field"
+                        android:text="@{model.companyField}"
+                        android:hint="Enter Company Field"
+                        android:inputType="text"
+                        android:textSize="15sp"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_company_field"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_position"
+                        android:text="Position"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_company_field"
+                        app:layout_constraintLeft_toLeftOf="@id/et_company_name"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_position"
+                        android:text="@{model.companyPosition}"
+                        android:hint="@string/enter_your_position"
+                        android:textSize="15sp"
+                        android:inputType="text"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_position"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_city"
+                        android:text="City"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_position"
+                        app:layout_constraintLeft_toLeftOf="@id/et_position"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_city"
+                        android:text="@{model.companyDom}"
+                        android:hint="Enter Company City"
+                        android:inputType="text"
+                        android:textSize="15sp"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_city"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_short_desc"
+                        android:text="Short Description"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_city"
+                        app:layout_constraintLeft_toLeftOf="@id/et_city"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_short_desc"
+                        android:text="@{model.companyDesc}"
+                        android:hint="Short Desc"
+                        android:inputType="text"
+                        android:textSize="15sp"
+                        android:gravity="top"
+                        android:paddingStart="15dp"
+                        android:paddingTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_short_desc"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_ig"
+                        android:text="Instagram"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_short_desc"
+                        app:layout_constraintLeft_toLeftOf="@id/et_short_desc"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_ig"
+                        android:text="@{model.companyIg}"
+                        android:hint="Link Instagram"
+                        android:inputType="text"
+                        android:textSize="15sp"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_ig"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_linkedin"
+                        android:text="Linkedin"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_ig"
+                        app:layout_constraintLeft_toLeftOf="@id/et_ig"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_linkedin"
+                        android:text="@{model.companyLinkedin}"
+                        android:hint="Link Linkedin"
+                        android:inputType="phone"
+                        android:textSize="15sp"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_linkedin"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginBottom="20dp"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_5"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_edit"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="20dp" />
-
-                <TextView
-                    android:id="@+id/tv_job_type"
-                    android:text="@{model.companyField}"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor="@color/navy"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_name"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_name"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="10dp" />
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:text="@{model.companyDom}"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor="#575757"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/iv_icon_place"
-                    app:layout_constraintLeft_toRightOf="@id/iv_icon_place"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp" />
-
-                <ImageView
-                    android:id="@+id/iv_icon_place"
-                    android:src="@drawable/ic_baseline_place_24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_job_type"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="10dp" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/content_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_layout_white_radius"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="15dp">
-
-                <TextView
-                    android:id="@+id/tv_personal_data"
-                    android:text="Personal Data"
-                    android:textColor="@color/navy"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="25dp"
-                    />
-
-                <View
-                    android:id="@+id/v_personal_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="5dp"
                     android:background="@color/grey"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_personal_data"
-                    android:layout_marginTop="18dp"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_company_name"
-                    android:text="Company Name"
-                    android:textColor="@color/navy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/v_personal_data"
-                    app:layout_constraintLeft_toLeftOf="@id/et_company_name"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="5dp" />
-
-                <EditText
-                    android:id="@+id/et_company_name"
-                    android:text="@{model.companyName}"
-                    android:hint="@string/enter_company_name"
-                    android:textSize="15sp"
-                    android:inputType="text"
-                    android:paddingStart="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_company_name"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="5dp"
                     android:layout_marginHorizontal="15dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_below="@+id/content_3">
 
-                    />
+                    <Button
+                        android:id="@+id/btn_save"
+                        android:background="@drawable/radiusbutton"
+                        android:text="Save"
+                        android:textColor="#fff"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="10dp"/>
 
-                <TextView
-                    android:id="@+id/tv_company_field"
-                    android:text="Company Field"
-                    android:textColor="@color/navy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/et_company_name"
-                    app:layout_constraintLeft_toLeftOf="@id/et_company_name"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginStart="5dp" />
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:background="@drawable/buttonradiustransparant_editprofile"
+                        android:text="Cancel"
+                        android:textColor="@color/pinkPasta"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/btn_save"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="15dp"/>
 
-                <EditText
-                    android:id="@+id/et_company_field"
-                    android:text="@{model.companyField}"
-                    android:hint="Enter Company Field"
-                    android:inputType="text"
-                    android:textSize="15sp"
-                    android:paddingStart="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_company_field"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="15dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </ScrollView>
 
-                <TextView
-                    android:id="@+id/tv_position"
-                    android:text="Position"
-                    android:textColor="@color/navy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/et_company_field"
-                    app:layout_constraintLeft_toLeftOf="@id/et_company_name"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="5dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <EditText
-                    android:id="@+id/et_position"
-                    android:text="@{model.companyPosition}"
-                    android:hint="@string/enter_your_position"
-                    android:textSize="15sp"
-                    android:inputType="text"
-                    android:paddingStart="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_position"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="15dp" />
 
-                <TextView
-                    android:id="@+id/tv_city"
-                    android:text="City"
-                    android:textColor="@color/navy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/et_position"
-                    app:layout_constraintLeft_toLeftOf="@id/et_position"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginStart="5dp" />
-
-                <EditText
-                    android:id="@+id/et_city"
-                    android:text="@{model.companyDom}"
-                    android:hint="Enter Company City"
-                    android:inputType="text"
-                    android:textSize="15sp"
-                    android:paddingStart="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_city"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="15dp" />
-
-                <TextView
-                    android:id="@+id/tv_short_desc"
-                    android:text="Short Description"
-                    android:textColor="@color/navy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/et_city"
-                    app:layout_constraintLeft_toLeftOf="@id/et_city"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginStart="5dp" />
-
-                <EditText
-                    android:id="@+id/et_short_desc"
-                    android:text="@{model.companyDesc}"
-                    android:hint="Short Desc"
-                    android:inputType="text"
-                    android:textSize="15sp"
-                    android:gravity="top"
-                    android:paddingStart="15dp"
-                    android:paddingTop="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_short_desc"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="15dp" />
-
-                <TextView
-                    android:id="@+id/tv_ig"
-                    android:text="Instagram"
-                    android:textColor="@color/navy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/et_short_desc"
-                    app:layout_constraintLeft_toLeftOf="@id/et_short_desc"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginStart="5dp" />
-
-                <EditText
-                    android:id="@+id/et_ig"
-                    android:text="@{model.companyIg}"
-                    android:hint="Link Instagram"
-                    android:inputType="text"
-                    android:textSize="15sp"
-                    android:paddingStart="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ig"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="15dp" />
-
-                <TextView
-                    android:id="@+id/tv_linkedin"
-                    android:text="Linkedin"
-                    android:textColor="@color/navy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ig"
-                    app:layout_constraintLeft_toLeftOf="@id/et_ig"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginStart="5dp" />
-
-                <EditText
-                    android:id="@+id/et_linkedin"
-                    android:text="@{model.companyLinkedin}"
-                    android:hint="Link Linkedin"
-                    android:inputType="phone"
-                    android:textSize="15sp"
-                    android:paddingStart="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_field_editprofile"
-                    app:layout_constraintTop_toBottomOf="@id/tv_linkedin"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginBottom="20dp"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/content_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/grey"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginBottom="25dp"
-                android:layout_below="@+id/content_3">
-
-                <Button
-                    android:id="@+id/btn_save"
-                    android:background="@drawable/radiusbutton"
-                    android:text="Save"
-                    android:textColor="#fff"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="10dp"/>
-
-                <Button
-                    android:id="@+id/btn_cancel"
-                    android:background="@drawable/buttonradiustransparant_editprofile"
-                    android:text="Cancel"
-                    android:textColor="@color/pinkPasta"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/btn_save"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="15dp"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </ScrollView>
 </layout>

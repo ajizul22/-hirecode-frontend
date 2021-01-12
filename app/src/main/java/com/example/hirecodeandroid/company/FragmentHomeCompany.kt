@@ -2,34 +2,32 @@ package com.example.hirecodeandroid.company
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentHomeBinding
-import com.example.hirecodeandroid.DetailProfileEngineerActivity
+import com.example.hirecodeandroid.engineer.detailprofileengineer.DetailProfileEngineerActivity
 import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerAdapter
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
-import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.*
 
-class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickListener {
+class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickListener, HomeCompanyContract.View {
 
     private lateinit var binding : FragmentHomeBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: EngineerApiService
     var listEngineer = ArrayList<ListEngineerModel>()
     private lateinit var sharePref: SharePrefHelper
+
+    private var presenter: HomeCompanyContract.Presenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,33 +39,39 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
         service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
         sharePref = SharePrefHelper(requireContext())
 
-        getAllEngineer()
+        presenter = HomeCompanyPresenter(coroutineScope, service)
 
-        binding.rvHome.adapter = ListEngineerAdapter(listEngineer,this)
-        binding.rvHome.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         return binding.root
     }
 
-    fun getAllEngineer() {
-        coroutineScope.launch {
-            Log.d("listengineer", "Start: ${Thread.currentThread().name}")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-            val result = withContext(Dispatchers.IO) {
-                Log.d("listengineer", "CallApi: ${Thread.currentThread().name}")
+        presenter?.callListEngineerService()
+        binding.rvHome.adapter = ListEngineerAdapter(listEngineer,this)
+        binding.rvHome.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+    }
 
-                try {
-                    service?.getAllEngineer()
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is ListEngineerResponse) {
-                val list = result.data.map {
-                    ListEngineerModel(it.engineerId, it.accountId, it.accountName,it.accountEmail,it.accountPhone, it.engineerJobTitle, it.engineerJobType, it.engineerDomicilie, it.engineerDesc, it.engineerProfilePict,it.engineerCreated, it.engineerUpdate, it.skillEngineer)
-                }
-                (binding.rvHome.adapter as ListEngineerAdapter).addList(list)
-            }
-        }
+    override fun onResultSuccess(list: List<ListEngineerModel>) {
+        (binding.rvHome.adapter as ListEngineerAdapter).addList(list)
+        binding.rvHome.visibility = View.VISIBLE
+        binding.tvDataNotFound.visibility = View.GONE
+    }
+
+    override fun onResultFail(message: String) {
+        binding.rvHome.visibility = View.GONE
+        binding.tvDataNotFound.visibility = View.VISIBLE
+        binding.message = message
+    }
+
+    override fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.rvHome.visibility = View.GONE
+        binding.tvDataNotFound.visibility = View.GONE
+    }
+
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
     }
 
     override fun onEngineerItemClicked(position: Int) {
@@ -75,6 +79,17 @@ class FragmentHomeCompany : Fragment(), ListEngineerAdapter.OnListEngineerClickL
 
         sharePref.put(SharePrefHelper.ENG_ID_CLICKED, listEngineer[position].engineerId!!)
         startActivity(intent)
+    }
+
+    override fun onStart() {
+        presenter?.bindToView(this)
+        presenter?.callListEngineerService()
+        super.onStart()
+    }
+
+    override fun onStop() {
+        presenter?.unbind()
+        super.onStop()
     }
 
     override fun onDestroy() {

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.company.FragmentProfileCompany
+import com.example.hirecodeandroid.company.profile.FragmentProfileCompany
 import com.example.hirecodeandroid.databinding.FragmentEditProfileCompanyBinding
 
 class FragmentEditProfileCompany: Fragment() {

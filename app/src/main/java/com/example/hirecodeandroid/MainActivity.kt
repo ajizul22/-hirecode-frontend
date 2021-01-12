@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.databinding.ActivityMainBinding
 import com.example.hirecodeandroid.company.FragmentHomeCompany
-import com.example.hirecodeandroid.company.FragmentProfileCompany
+import com.example.hirecodeandroid.company.profile.FragmentProfileCompany
 import com.example.hirecodeandroid.search.FragmentSearch
 import com.example.hirecodeandroid.util.SharePrefHelper
 

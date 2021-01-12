@@ -1,19 +1,16 @@
-package com.example.hirecodeandroid.company
+package com.example.hirecodeandroid.company.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
+import com.example.hirecodeandroid.company.CompanyApiService
 import com.example.hirecodeandroid.company.editprofilecompany.EditProfileCompanyActivity
 import com.example.hirecodeandroid.databinding.FragmentProfileCompanyBinding
 import com.example.hirecodeandroid.remote.ApiClient
@@ -66,7 +63,6 @@ class FragmentProfileCompany: Fragment() {
     }
 
     private fun subscribeLiveData() {
-        val progress: Int = 0
         viewModel.isCompanyLiveData.observe(this@FragmentProfileCompany, Observer {
             if (it) {
                 binding.progressBar.visibility = View.GONE
@@ -74,9 +70,13 @@ class FragmentProfileCompany: Fragment() {
             } else {
                 binding.progressBar.visibility = View.VISIBLE
                 binding.content.visibility = View.GONE
-                binding.progressBar.progress = progress
             }
         })
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
     }
 
 }

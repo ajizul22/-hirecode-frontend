@@ -1,10 +1,11 @@
-package com.example.hirecodeandroid.company
+package com.example.hirecodeandroid.company.profile
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
+import com.example.hirecodeandroid.company.CompanyApiService
+import com.example.hirecodeandroid.company.CompanyResponse
 import com.example.hirecodeandroid.databinding.FragmentProfileCompanyBinding
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext

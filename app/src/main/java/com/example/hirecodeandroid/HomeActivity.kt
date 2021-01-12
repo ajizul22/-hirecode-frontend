@@ -8,14 +8,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.company.FragmentHomeCompany
-import com.example.hirecodeandroid.company.FragmentProfileCompany
+import com.example.hirecodeandroid.company.profile.FragmentProfileCompany
 import com.example.hirecodeandroid.databinding.ActivityHomeBinding
 import com.example.hirecodeandroid.engineer.FragmentHomeEngineer
 import com.example.hirecodeandroid.engineer.FragmentProfileEngineer
 import com.example.hirecodeandroid.search.*
 import com.example.hirecodeandroid.hire.FragmentHireEngineer
 import com.example.hirecodeandroid.project.FragmentProjectCompany
-import com.example.hirecodeandroid.temporary.FragmentDetailProject
 import com.example.hirecodeandroid.util.SharePrefHelper
 
 class HomeActivity : AppCompatActivity() {
