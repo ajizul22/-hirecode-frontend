@@ -87,9 +87,6 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val email = sharedPref.getString(SharePrefHelper.KEY_EMAIL)
-        binding.tvEmailAddress.text = email
-
         getDataSkillEngineer(sharedPref.getString(SharePrefHelper.ENG_ID)?.toInt())
     }
 

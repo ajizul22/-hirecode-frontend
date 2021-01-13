@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityDetailProjectBinding
+import com.example.hirecodeandroid.hire.HireApiService
 import com.example.hirecodeandroid.project.ProjectApiService
 import com.example.hirecodeandroid.project.updateproject.UpdateProjectActivity
 import com.example.hirecodeandroid.remote.ApiClient
@@ -38,9 +39,14 @@ class DetailProjectActivity : AppCompatActivity() {
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         val service = ApiClient.getApiClient(this)?.create(ProjectApiService::class.java)
+        val serviceHire = ApiClient.getApiClient(this)?.create(HireApiService::class.java)
 
         viewModel = ViewModelProvider(this).get(DetailProjectViewModel::class.java)
         viewModel.setBinding(binding)
+
+        if (serviceHire != null) {
+            viewModel.setServiceHire(serviceHire)
+        }
 
         if (service != null) {
             viewModel.setService(service)
@@ -62,6 +68,7 @@ class DetailProjectActivity : AppCompatActivity() {
 
         val projectId = intent.getIntExtra("project_id", 0)
         viewModel.getDataproject(projectId)
+        viewModel.getHireByProject(projectId)
         subscribeLiveData()
     }
 
@@ -100,6 +107,12 @@ class DetailProjectActivity : AppCompatActivity() {
             delete.isVisible = false
             update.isVisible = false
         }
+        viewModel.isHireLiveData.observe(this, Observer {
+            if (it) {
+                delete.isVisible = false
+                update.isVisible = false
+            }
+        })
         return true
     }
 

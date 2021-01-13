@@ -51,6 +51,8 @@ class UpdateProjectViewModel: ViewModel(), CoroutineScope {
             if (result is DetailProjectResponse) {
                 if (result.success) {
                     binding.model = result.data[0]
+                    val deadLine = result.data[0].projectDeadline.split("T")[0]
+                    binding.etProjectDeadline.setText(deadLine)
                     val img = "http://3.80.223.103:4000/image/"
                     Glide.with(binding.ivUploadImage)
                         .load(img + result.data[0].projectImage)

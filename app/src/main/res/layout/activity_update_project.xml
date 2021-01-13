@@ -145,7 +145,7 @@
                 <EditText
                     android:id="@+id/et_project_deadline"
                     android:hint="Enter project deadline"
-                    android:text="@{model.projectDeadline}"
+                    android:text=""
                     android:textSize="15sp"
                     android:inputType="text"
                     android:paddingStart="15dp"
