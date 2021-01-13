@@ -1,5 +1,8 @@
 package com.example.hirecodeandroid.project.detailproject
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,9 +13,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityDetailProjectBinding
 import com.example.hirecodeandroid.project.ProjectApiService
+import com.example.hirecodeandroid.project.updateproject.UpdateProjectActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
@@ -72,6 +77,16 @@ class DetailProjectActivity : AppCompatActivity() {
         })
     }
 
+    private fun subscribeDeleteLiveData() {
+        viewModel.isProjectDeleteLiveData.observe(this, Observer {
+            if (it) {
+                Toast.makeText(this, "Delete Project Success", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Delete Project Failed", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater?.inflate(R.menu.detail_project_menu, menu)
@@ -90,11 +105,39 @@ class DetailProjectActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.delete -> Toast.makeText(this, "Delete Project Clicked", Toast.LENGTH_SHORT).show()
-            R.id.update -> Toast.makeText(this, "Update Project Clicked", Toast.LENGTH_SHORT).show()
+            R.id.delete -> {
+                showDialogDelete()
+            }
+            R.id.update -> {
+                val projectId = intent.getIntExtra("project_id", 0)
+                val intent = Intent(this, UpdateProjectActivity::class.java)
+                intent.putExtra("project_id", projectId)
+                startActivity(intent)
+            }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showDialogDelete() {
+        val projectId = intent.getIntExtra("project_id", 0)
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete Project")
+        builder.setMessage("Do you want to deleted this project?")
+        builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
+            viewModel.deleteProject(projectId)
+            val intent = Intent(this, HomeActivity::class.java)
+            subscribeDeleteLiveData()
+            startActivity(intent)
+            finish()
+        }
+        builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
+        builder.show()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
     }
 
 }
