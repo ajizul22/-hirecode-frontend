@@ -65,5 +65,19 @@
             app:layout_constraintLeft_toRightOf="@id/iv_engineer"
             app:layout_constraintBottom_toBottomOf="@id/iv_engineer"/>
 
+        <ImageButton
+            android:id="@+id/btn_delete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:text="Delete"
+            android:paddingHorizontal="2dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_delete"
+            android:src="@drawable/ic_delete"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

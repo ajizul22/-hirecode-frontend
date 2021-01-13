@@ -2,6 +2,7 @@ package com.example.hirecodeandroid.project.detailproject.listhirebyproject
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ItemListHireByProjectBinding
 
-class ListHireByProjectRecyclerViewAdapter(private val listHire: ArrayList<HireByProjectModel>) :
+class ListHireByProjectRecyclerViewAdapter(private val listHire: ArrayList<HireByProjectModel>,
+                                           private val onListHireClickListener: OnListHireInProjectClickListener) :
     RecyclerView.Adapter<ListHireByProjectRecyclerViewAdapter.HireListHolder>(){
 
     fun addList(list: List<HireByProjectModel>) {
@@ -54,6 +56,16 @@ class ListHireByProjectRecyclerViewAdapter(private val listHire: ArrayList<HireB
             holder.binding.tvStatus.setTextColor(Color.rgb(188, 15, 15))
         } else if (item.hireStatus == "approve") {
             holder.binding.tvStatus.setTextColor(Color.rgb(60, 122, 62))
+            holder.binding.btnDelete.visibility = View.GONE
         }
+
+        holder.binding.btnDelete.setOnClickListener {
+            onListHireClickListener.onHireDelete(position)
+        }
+
+    }
+
+    interface OnListHireInProjectClickListener {
+        fun onHireDelete(position: Int)
     }
 }

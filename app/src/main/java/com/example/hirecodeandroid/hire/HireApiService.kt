@@ -29,4 +29,7 @@ interface HireApiService {
         @Field("hr_status") hireStatus: String
     ): GeneralResponse
 
+    @DELETE("hire/{id}")
+    suspend fun deleteHire(@Path("id") hireId: Int?) : GeneralResponse
+
 }

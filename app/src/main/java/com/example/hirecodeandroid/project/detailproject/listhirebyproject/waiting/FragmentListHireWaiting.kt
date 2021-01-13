@@ -1,13 +1,18 @@
 package com.example.hirecodeandroid.project.detailproject.listhirebyproject.waiting
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentListHireWaitingBinding
 import com.example.hirecodeandroid.hire.HireApiService
@@ -18,7 +23,7 @@ import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
 class FragmentListHireWaiting: Fragment(),
-    ListHireWaitingContract.View {
+    ListHireWaitingContract.View, ListHireByProjectRecyclerViewAdapter.OnListHireInProjectClickListener {
 
     private lateinit var binding: FragmentListHireWaitingBinding
     private lateinit var coroutineScope: CoroutineScope
@@ -47,7 +52,7 @@ class FragmentListHireWaiting: Fragment(),
 
         binding.rvListHireWaiting.adapter =
             ListHireByProjectRecyclerViewAdapter(
-                listHire
+                listHire, this
             )
         binding.rvListHireWaiting.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
@@ -67,6 +72,12 @@ class FragmentListHireWaiting: Fragment(),
         binding.tvDataNotFound.visibility = View.GONE
     }
 
+    override fun onResultDeleteSuccess() {
+        val intent = Intent(requireContext(), HomeActivity::class.java)
+        Toast.makeText(requireContext(), "Success Delete Hire", Toast.LENGTH_SHORT).show()
+        startActivity(intent)
+    }
+
     override fun onResultFail(message: String) {
         binding.rvListHireWaiting.visibility = View.GONE
         binding.tvDataNotFound.visibility = View.VISIBLE
@@ -83,41 +94,21 @@ class FragmentListHireWaiting: Fragment(),
         binding.progressBar.visibility = View.GONE
     }
 
-    //    private fun getListHireByProject(id: Int) {
-//        var mutable: MutableList<HireByProjectModel>
-//        coroutineScope.launch {
-//
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    service?.getHireByProjectId(id)
-//                } catch (e: Throwable) {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            if (result is HireByProjectResponse) {
-//                if (result.success) {
-//                    val list = result.data?.map {
-//                        HireByProjectModel(
-//                            it.hireId,
-//                            it.engineerId,
-//                            it.projectId,
-//                            it.hirePrice,
-//                            it.hireStatus,
-//                            it.hireDateConfirm,
-//                            it.hireCreated,
-//                            it.engineerName,
-//                            it.engineerJobTitle,
-//                            it.engineerPhoto
-//                        )
-//                    }
-//                    mutable = list!!.toMutableList()
-//                    mutable.removeAll { it.hireStatus != "wait"}
-//                    (binding.rvListHireWaiting.adapter as ListHireByProjectRecyclerViewAdapter).addList(mutable)
-//                }
-//            }
-//        }
-//    }
+    override fun onHireDelete(position: Int) {
+        showDialogDelete(position)
+    }
+
+    private fun showDialogDelete(position: Int) {
+        val id = listHire[position].hireId
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("Delete Hire")
+        builder.setMessage("Do you want to deleted this Hire?")
+        builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
+            presenter?.deleteHire(id!!.toInt())
+        }
+        builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
+        builder.show()
+    }
 
     override fun onStart() {
         val projectId = sharePref.getInteger(SharePrefHelper.PROJECT_ID_COMPANY_CLICKED)

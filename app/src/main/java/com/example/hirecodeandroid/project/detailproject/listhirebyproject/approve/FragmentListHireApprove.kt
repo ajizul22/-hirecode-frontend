@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +19,7 @@ import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
-class FragmentListHireApprove : Fragment(), ListHireApproveContract.View {
+class FragmentListHireApprove : Fragment(), ListHireApproveContract.View, ListHireByProjectRecyclerViewAdapter.OnListHireInProjectClickListener {
 
     private lateinit var binding: FragmentListHireApproveBinding
     private lateinit var coroutineScope: CoroutineScope
@@ -42,7 +43,7 @@ class FragmentListHireApprove : Fragment(), ListHireApproveContract.View {
 
         binding.rvListHireApprove.adapter =
             ListHireByProjectRecyclerViewAdapter(
-                listHire
+                listHire, this
             )
         binding.rvListHireApprove.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
@@ -79,41 +80,9 @@ class FragmentListHireApprove : Fragment(), ListHireApproveContract.View {
         binding.progressBar.visibility = View.GONE
     }
 
-    //    private fun getListHireByProject(id: Int) {
-//        var mutable: MutableList<HireByProjectModel>
-//        coroutineScope.launch {
-//
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    service?.getHireByProjectId(id)
-//                } catch (e: Throwable) {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            if (result is HireByProjectResponse) {
-//                if (result.success) {
-//                    val list = result.data?.map {
-//                        HireByProjectModel(
-//                            it.hireId,
-//                            it.engineerId,
-//                            it.projectId,
-//                            it.hirePrice,
-//                            it.hireStatus,
-//                            it.hireDateConfirm,
-//                            it.hireCreated,
-//                            it.engineerName,
-//                            it.engineerJobTitle,
-//                            it.engineerPhoto
-//                        )
-//                    }
-//                    mutable = list!!.toMutableList()
-//                    mutable.removeAll { it.hireStatus != "approve"}
-//                    (binding.rvListHireApprove.adapter as ListHireByProjectRecyclerViewAdapter).addList(mutable)
-//                }
-//            }
-//        }
-//    }
+    override fun onHireDelete(position: Int) {
+        Toast.makeText(requireContext(), "You can't delete hire because engineer has accept this project", Toast.LENGTH_SHORT).show()
+    }
 
     override fun onStart() {
         val projectId = sharePref.getInteger(SharePrefHelper.PROJECT_ID_COMPANY_CLICKED)

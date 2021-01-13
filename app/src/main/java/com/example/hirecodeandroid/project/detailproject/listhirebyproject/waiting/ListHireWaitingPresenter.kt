@@ -3,6 +3,7 @@ package com.example.hirecodeandroid.project.detailproject.listhirebyproject.wait
 import com.example.hirecodeandroid.hire.HireApiService
 import com.example.hirecodeandroid.project.detailproject.listhirebyproject.HireByProjectModel
 import com.example.hirecodeandroid.project.detailproject.listhirebyproject.HireByProjectResponse
+import com.example.hirecodeandroid.util.GeneralResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,6 +71,36 @@ class ListHireWaitingPresenter(private var coroutineScope: CoroutineScope,
                     view?.addListHire(mutable)
                 } else {
                     view?.onResultFail(result.message)
+                }
+            }
+        }
+    }
+
+    override fun deleteHire(id: Int) {
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    service?.deleteHire(id)
+                } catch (e: HttpException) {
+                    withContext(Dispatchers.Main) {
+                        when {
+                            e.code() == 404 -> {
+                                view?.onResultFail("You haven't hired engineer")
+                            }
+                            e.code() == 400 -> {
+                                view?.onResultFail("Please re-login")
+                            }
+                            else -> {
+                                view?.onResultFail("Server under maintenance")
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (result is GeneralResponse) {
+                if (result.success) {
+                    view?.onResultDeleteSuccess()
                 }
             }
         }

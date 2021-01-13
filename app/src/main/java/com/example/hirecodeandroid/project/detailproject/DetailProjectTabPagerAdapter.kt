@@ -14,7 +14,7 @@ class DetailProjectTabPagerAdapter(fragment: FragmentManager) : FragmentStatePag
     )
 
     override fun getItem(position: Int): Fragment {
-        return fragment[position]
+        return fragment[position] as Fragment
     }
 
     override fun getCount(): Int = fragment.size

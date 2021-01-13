@@ -206,7 +206,7 @@
                 <Button
                     android:id="@+id/btn_add_project"
                     android:background="@drawable/radiusbutton"
-                    android:text="Add Project"
+                    android:text="Update Project"
                     android:textColor="@android:color/white"
                     android:textAllCaps="false"
                     android:textStyle="bold"
