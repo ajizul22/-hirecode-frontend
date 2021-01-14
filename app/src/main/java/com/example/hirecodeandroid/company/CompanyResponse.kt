@@ -8,6 +8,7 @@ data class CompanyResponse(val success: Boolean, val message: String, val data: 
         @SerializedName("cn_id") val companyId: Int?,
         @SerializedName("ac_id") val accountId: Int?,
         @SerializedName("cn_perusahaan") val companyName: String?,
+        @SerializedName("ac_email") val accountEmail: String?,
         @SerializedName("cn_jabatan") val companyPosition: String?,
         @SerializedName("cn_bidang") val companyField: String?,
         @SerializedName("cn_kota") val companyDom: String?,

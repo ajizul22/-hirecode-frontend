@@ -9,6 +9,8 @@ import com.example.hirecodeandroid.company.CompanyApiService
 import com.example.hirecodeandroid.company.CompanyResponse
 import com.example.hirecodeandroid.databinding.ActivityEditProfileCompanyBinding
 import com.example.hirecodeandroid.util.GeneralResponse
+import com.example.hirecodeandroid.util.SharePrefHelper
+import com.example.hirecodeandroid.util.UpdateAccountResponse
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -26,6 +28,11 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
     private lateinit var service: CompanyApiService
     private lateinit var binding: ActivityEditProfileCompanyBinding
+    private lateinit var sharePref: SharePrefHelper
+
+    fun setSharePref(sharePref: SharePrefHelper) {
+        this.sharePref = sharePref
+    }
 
     fun setCompanyService(service: CompanyApiService) {
         this.service = service
@@ -76,6 +83,56 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
                     val linkedIn = createPartFromString(binding.etLinkedin.text.toString())
                     val desc = createPartFromString(binding.etShortDesc.text.toString())
                     service?.updateCompany(id,companyName, position, companyField, city, desc, instagram, linkedIn, image)
+                } catch (e:Throwable) {
+                    e.printStackTrace()
+
+                    withContext(Dispatchers.Main) {
+                        isUpdateCompanyLiveData.value = false
+                    }
+                }
+            }
+
+            if (result is GeneralResponse) {
+                if (result.success) {
+                    isUpdateCompanyLiveData.value = true
+                } else {
+                    isUpdateCompanyLiveData.value = false
+                }
+            }
+        }
+    }
+
+    fun getAccountData(id: Int) {
+        launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    service?.getAccountData(id)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+
+                    withContext(Dispatchers.Main) {
+                        isCompanyLiveData.value = false
+                    }
+                }
+            }
+
+            if (result is UpdateAccountResponse) {
+                if (result.success) {
+                    binding.account = result.data[0]
+                    binding.etAcPassword.setText(sharePref.getString(SharePrefHelper.KEY_PASSWORD))
+                    isCompanyLiveData.value = true
+                } else {
+                    isCompanyLiveData.value = false
+                }
+            }
+        }
+    }
+
+    fun updateAccount(id: Int, name: String, email: String, phone:String, password:String) {
+        launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    service?.updateAccount(id, name, email, phone, password)
                 } catch (e:Throwable) {
                     e.printStackTrace()
 

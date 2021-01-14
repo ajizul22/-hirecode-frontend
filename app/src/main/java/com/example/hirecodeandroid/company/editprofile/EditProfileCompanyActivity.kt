@@ -53,6 +53,7 @@ class EditProfileCompanyActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(EditProfileCompanyViewModel::class.java)
         viewModel.setBinding(binding)
+        viewModel.setSharePref(sharedPref)
 
         if (service != null) {
             viewModel.setCompanyService(service)
@@ -68,9 +69,21 @@ class EditProfileCompanyActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        val accountId = sharedPref.getString(SharePrefHelper.AC_ID)
         val id = sharedPref.getString(SharePrefHelper.COM_ID)
         viewModel.getDataCompany(id!!.toInt())
+        viewModel.getAccountData(accountId!!.toInt())
         subscribeLiveData()
+
+        binding.btnUpdateAccount.setOnClickListener {
+            val name = binding.etAcName.text.toString()
+            val email = binding.etAcEmail.text.toString()
+            val phone = binding.etAcPhone.text.toString()
+            val password = binding.etAcPassword.text.toString()
+
+            viewModel.updateAccount(accountId.toInt(), name, email, phone, password)
+            subscribeLiveDataUpdate()
+        }
 
         binding.tvEdit.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

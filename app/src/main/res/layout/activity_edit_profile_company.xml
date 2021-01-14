@@ -7,6 +7,9 @@
         <variable
             name="model"
             type="com.example.hirecodeandroid.company.CompanyResponse.Company" />
+        <variable
+            name="account"
+            type="com.example.hirecodeandroid.util.UpdateAccountResponse.Data" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -389,6 +392,161 @@
                         android:layout_marginTop="15dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_layout_white_radius"
+                    android:layout_marginBottom="15dp"
+                    android:paddingBottom="15dp"
+                    android:layout_marginHorizontal="15dp">
+
+                    <TextView
+                        android:id="@+id/tv_account_data"
+                        android:text="Account Data"
+                        android:textColor="@color/navy"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp"
+                        />
+
+                    <View
+                        android:id="@+id/v_account_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="5dp"
+                        android:background="@color/grey"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_account_data"
+                        android:layout_marginTop="18dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_ac_name"
+                        android:text="Account Name"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/v_account_data"
+                        app:layout_constraintLeft_toLeftOf="@id/et_ac_name"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_ac_name"
+                        android:text="@{account.accountName}"
+                        android:hint="enter your name"
+                        android:textSize="15sp"
+                        android:inputType="text"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_ac_name"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_ac_email"
+                        android:text="Account Email"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_ac_name"
+                        app:layout_constraintLeft_toLeftOf="@id/et_ac_name"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_ac_email"
+                        android:text="@{account.accountEmail}"
+                        android:hint="enter your email address"
+                        android:textSize="15sp"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_ac_email"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_ac_phone"
+                        android:text="Phone number"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_ac_email"
+                        app:layout_constraintLeft_toLeftOf="@id/et_ac_email"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_ac_phone"
+                        android:text="@{account.accountPhone}"
+                        android:hint="enter your phone number"
+                        android:textSize="15sp"
+                        android:inputType="phone"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_ac_phone"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <TextView
+                        android:id="@+id/tv_ac_password"
+                        android:text="Password"
+                        android:textColor="@color/navy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/et_ac_phone"
+                        app:layout_constraintLeft_toLeftOf="@id/et_ac_phone"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/et_ac_password"
+                        android:hint="enter your password"
+                        android:textSize="15sp"
+                        android:inputType="text"
+                        android:paddingStart="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_field_editprofile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_ac_password"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp" />
+
+                    <Button
+                        android:id="@+id/btn_update_account"
+                        android:background="@drawable/radiusbutton"
+                        android:text="Update Data Account"
+                        android:textColor="#fff"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/et_ac_password"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="20dp"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </ScrollView>
 

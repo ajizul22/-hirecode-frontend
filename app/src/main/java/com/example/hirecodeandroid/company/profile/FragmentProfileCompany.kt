@@ -54,9 +54,6 @@ class FragmentProfileCompany: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val email = sharePref.getString(SharePrefHelper.KEY_EMAIL)
-        binding.tvEmailAddress.text = email
-
         val id = sharePref.getString(SharePrefHelper.COM_ID)
         viewModel.callCompanyApi(id!!.toInt())
         subscribeLiveData()

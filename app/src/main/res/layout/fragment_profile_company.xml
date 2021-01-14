@@ -139,7 +139,7 @@
 
                 <TextView
                     android:id="@+id/tv_email_address"
-                    android:text="Louistommo@gmail.com"
+                    android:text="@{model.accountEmail}"
                     android:fontFamily="sans-serif-light"
                     android:textColor="#575757"
                     android:textSize="12sp"

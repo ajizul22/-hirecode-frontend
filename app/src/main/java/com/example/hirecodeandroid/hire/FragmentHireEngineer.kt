@@ -71,14 +71,10 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
     }
 
     override fun onHireRejectClicked(position: Int) {
-//        val hireId = listHire[position].hireId
-//        updateHireStatus(hireId!!, "reject")
         showDialogReject(position)
     }
 
     override fun onHireApproveClicked(position: Int) {
-//        val hireId = listHire[position].hireId
-//        updateHireStatus(hireId!!, "approve")
         showDialogAprrove(position)
     }
 

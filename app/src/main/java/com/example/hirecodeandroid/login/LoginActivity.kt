@@ -65,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Login Success!", Toast.LENGTH_SHORT).show()
 
                 viewModel.callLoginApi(email, password)
+                sharePref.put(SharePrefHelper.KEY_PASSWORD, password)
 
             }
         }
