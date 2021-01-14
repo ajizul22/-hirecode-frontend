@@ -16,6 +16,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
@@ -42,8 +44,8 @@ class EditProfileEngineerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditProfileEngineerBinding
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: EngineerApiService
     private lateinit var sharedPref: SharePrefHelper
+    private lateinit var viewModel: EditProfileEngineerViewModel
     val typeApp = arrayOf("fulltime", "freelance")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,17 +53,16 @@ class EditProfileEngineerActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_engineer)
         sharedPref = SharePrefHelper(this)
 
-        service = ApiClient.getApiClient(this)!!.create(EngineerApiService::class.java)
+        val service = ApiClient.getApiClient(this)?.create(EngineerApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
-        val img = "http://3.80.223.103:4000/image/"
-        Glide.with(binding.root)
-            .load(img+intent.getStringExtra("image"))
-            .placeholder(R.drawable.ic_profile)
-            .error(R.drawable.ic_profile)
-            .into(binding.ivAvatar)
+        viewModel = ViewModelProvider(this).get(EditProfileEngineerViewModel::class.java)
+        viewModel.setBinding(binding)
+        viewModel.setSharePref(sharedPref)
 
-
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         binding.btnCancel.setOnClickListener {
             onBackPressed()
@@ -73,8 +74,22 @@ class EditProfileEngineerActivity : AppCompatActivity() {
             onBackPressed()
         }
         configSpinnerTypeApp()
+
+        val accountId = sharedPref.getString(SharePrefHelper.AC_ID)
         val id = sharedPref.getString(SharePrefHelper.ENG_ID)
-        getDataEngineer(id!!)
+        viewModel.getDataEngineer(id!!)
+        viewModel.getAccountData(accountId!!.toInt())
+        subscribeLiveData()
+
+        binding.btnUpdateAccount.setOnClickListener {
+            val name = binding.etAcName.text.toString()
+            val email = binding.etAcEmail.text.toString()
+            val phone = binding.etAcPhone.text.toString()
+            val password = binding.etAcPassword.text.toString()
+
+            viewModel.updateAccount(accountId.toInt(), name, email, phone, password)
+            subscribeLiveDataUpdate()
+        }
 
         binding.tvEdit.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -119,52 +134,28 @@ class EditProfileEngineerActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDataEngineer(id: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getDataEngById(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeLiveData() {
+        viewModel.isEngineerLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.scrollView.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.scrollView.visibility = View.GONE
             }
-            if (result is ListEngineerResponse) {
-                Log.d("data engineer by id", result.toString())
-                binding.model = result.data[0]
-            }
-        }
+        })
     }
 
-    private fun updateEngineer(id: Int, image: MultipartBody.Part) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val jobTitle = createPartFromString(binding.etJobTitle.text.toString())
-                    val jobType = createPartFromString(sharedPref.getString(SharePrefHelper.JOB_TYPE)!!)
-                    val domicile = createPartFromString(binding.etCity.text.toString())
-                    val desc = createPartFromString(binding.etShortDesc.text.toString())
-
-                    service?.updateEngineer(id, jobTitle, jobType, domicile, desc, image)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeLiveDataUpdate() {
+        viewModel.isUpdateEngineerLiveData.observe(this, Observer {
+            if (it) {
+                val intent = Intent(this, HomeActivity::class.java)
+                Toast.makeText(this, "Success update profile", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+            } else {
+                Toast.makeText(this@EditProfileEngineerActivity, "Edit profile failed", Toast.LENGTH_SHORT).show()
             }
-
-            if (result is GeneralResponse) {
-                if (result.success) {
-                    val intent = Intent(this@EditProfileEngineerActivity, HomeActivity::class.java)
-                    Toast.makeText(this@EditProfileEngineerActivity, "Success update profile", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        }
-    }
-
-    private fun createPartFromString(json: String): RequestBody {
-        val mediaType = "multipart/form-data".toMediaType()
-        return json
-            .toRequestBody(mediaType)
+        })
     }
 
     override fun onRequestPermissionsResult(
@@ -219,7 +210,8 @@ class EditProfileEngineerActivity : AppCompatActivity() {
 
             binding.btnSave.setOnClickListener {
                 if (img != null) {
-                    updateEngineer(id!!.toInt(), img)
+                    viewModel.updateEngineer(id!!.toInt(), img)
+                    subscribeLiveDataUpdate()
                 }
             }
 
