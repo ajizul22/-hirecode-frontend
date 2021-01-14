@@ -29,7 +29,7 @@ import com.example.hirecodeandroid.webview.WebViewActivity
 import kotlinx.coroutines.*
 
 
-class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener {
+class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener, ProfileEngineerContract.View {
 
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: EngineerApiService
@@ -40,6 +40,7 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
     val img = "http://3.80.223.103:4000/image/"
     var listSkill = ArrayList<SkillModel>()
     var image: String? = null
+    private var presenter: ProfileEngineerContract.Presenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +53,8 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
         service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
         serviceSkill = ApiClient.getApiClient(requireContext())!!.create(SkillApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+
+        presenter = ProfileEngineerPresenter(coroutineScope, service, serviceSkill)
 
         pagerAdapter =
             EngineerTabPagerAdapter(
@@ -79,73 +82,45 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
             startActivity(intent)
         }
 
-        val id = sharedPref.getString(SharePrefHelper.ENG_ID)
-        getDataEngineer(id!!)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getDataSkillEngineer(sharedPref.getString(SharePrefHelper.ENG_ID)?.toInt())
     }
 
-    private fun getDataEngineer(id: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getDataEngById(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is ListEngineerResponse) {
-                Log.d("data engineer by id", result.toString())
-                binding.model = result.data[0]
-                image = result.data[0].engineerProfilePict
-                Glide.with(requireContext()).load(img + result.data[0].engineerProfilePict).placeholder(R.drawable.ic_profile)
+    override fun onResultSuccessEngineer(data: ListEngineerResponse.Engineer) {
+        binding.model = data
+        Glide.with(requireContext()).load(img + data.engineerProfilePict).placeholder(R.drawable.ic_profile)
                     .error(R.drawable.ic_profile).into(binding.ivAvatar)
-            }
-        }
+
     }
 
-    private fun getDataSkillEngineer(id: Int?) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    serviceSkill?.getSkillByEngineer(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is SkillResponse) {
-                Log.d("dataskill", result.toString())
-                if(result.success) {
-                    val list = result.data.map {
-                        SkillModel(it.skillId, it.engineerId, it.skillName)
-                    }
-                    (binding.rvSkill.adapter as SkillAdapter).addList(list)
-                }
-            }
-        }
+    override fun onResultSuccessSkill(list: List<SkillModel>) {
+        (binding.rvSkill.adapter as SkillAdapter).addList(list)
+        binding.rvSkill.visibility = View.VISIBLE
+        binding.tvDataNotFound.visibility = View.GONE
     }
 
-    private fun deleteSkill(skillId: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    serviceSkill?.deleteSkill(skillId)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
+    override fun onResultFail(message: String) {
+        binding.rvSkill.visibility = View.GONE
+        binding.tvDataNotFound.visibility = View.VISIBLE
+        binding.message = message
+    }
 
-            if (result is GeneralResponse) {
-                if (result.success) {
-                    showMessage("Skill success to deleted!")
-                }
-            }
-        }
+    override fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.scrollView.visibility = View.GONE
+    }
+
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
+        binding.scrollView.visibility = View.VISIBLE
+    }
+
+    override fun onResultSuccessDeleteSkill() {
+        showMessage("Skill success to deleted!")
     }
 
     private fun showDialogDeleteSkill(position: Int) {
@@ -154,7 +129,7 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
         builder.setTitle("Delete Skill")
         builder.setMessage("Do you want to delete ${listSkill[position].skillName} from your skill?")
         builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
-            deleteSkill(id!!)
+            presenter?.callServiceDeleteSkill(id!!)
             moveActivity()
         }
         builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
@@ -172,6 +147,20 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
     private fun moveActivity() {
         startActivity(Intent(requireContext(), HomeActivity::class.java))
         activity?.finish()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val engineerId = sharedPref.getString(SharePrefHelper.ENG_ID)
+
+        presenter?.bindToView(this)
+        presenter?.callServiceEngineer(engineerId!!.toInt())
+        presenter?.callServiceSkill(engineerId!!.toInt())
+    }
+
+    override fun onStop() {
+        presenter?.unBind()
+        super.onStop()
     }
 
     override fun onDestroy() {
