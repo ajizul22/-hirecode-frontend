@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddExperienceBinding
@@ -23,11 +24,11 @@ class AddExperienceActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddExperienceBinding
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: ExperienceApiService
     private lateinit var sharePref : SharePrefHelper
     private lateinit var c: Calendar
     private lateinit var dateStart: DatePickerDialog.OnDateSetListener
     private lateinit var dateEnd: DatePickerDialog.OnDateSetListener
+    private lateinit var viewModel: AddExperienceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +36,12 @@ class AddExperienceActivity : AppCompatActivity() {
         sharePref = SharePrefHelper(this)
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(context = this)!!.create(ExperienceApiService::class.java)
+        val service = ApiClient.getApiClient(context = this)?.create(ExperienceApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(AddExperienceViewModel::class.java)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         c = Calendar.getInstance()
 
@@ -53,7 +59,8 @@ class AddExperienceActivity : AppCompatActivity() {
             val expEnd = binding.etEnd.text.toString()
             val expCompany = binding.etCompanyName.text.toString()
 
-            callExperienceApi(enId!!.toInt(), expPosition, expCompany, expStart, expEnd, expDesc)
+            viewModel.callExperienceApi(enId!!.toInt(), expPosition, expCompany, expStart, expEnd, expDesc)
+            subscribeLiveData()
         }
 
         binding.etStart.setOnClickListener {
@@ -72,11 +79,10 @@ class AddExperienceActivity : AppCompatActivity() {
             ).show()
         }
 
-        dateStartPicker()
-        dateEndPicker()
+        datePicker()
     }
 
-    private fun dateStartPicker() {
+    private fun datePicker() {
         dateStart = DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
             c.set(Calendar.YEAR, year)
             c.set(Calendar.MONTH, month)
@@ -88,9 +94,7 @@ class AddExperienceActivity : AppCompatActivity() {
 
             start.text = sdf.format(c.time)
         }
-    }
 
-    private fun dateEndPicker() {
         dateEnd = DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
             c.set(Calendar.YEAR, year)
             c.set(Calendar.MONTH, month)
@@ -99,27 +103,21 @@ class AddExperienceActivity : AppCompatActivity() {
             val end = findViewById<TextView>(R.id.et_end)
             val Format = "yyyyMMdd"
             val sdf = SimpleDateFormat(Format, Locale.US)
+
             end.text = sdf.format(c.time)
         }
     }
 
-    private fun callExperienceApi(enId: Int, expPosition: String, expCompany: String, expStart: String, expEnd: String, expDesc: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.addExperience(enId,expPosition,expCompany,expStart,expEnd,expDesc)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            Log.d("errornih", result.toString())
-
-            if (result is GeneralResponse) {
-                Log.d("masukga", result.toString())
+    private fun subscribeLiveData() {
+        viewModel.isAddExperienceLiveData.observe(this, androidx.lifecycle.Observer {
+            if (it) {
                 Toast.makeText(this@AddExperienceActivity, "Success Add Experience", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this@AddExperienceActivity, HomeActivity::class.java)
                 startActivity(intent)
+            } else {
+                Toast.makeText(this@AddExperienceActivity, "Failed to Add Experience", Toast.LENGTH_SHORT).show()
             }
-        }
+        })
     }
+
 }

@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
@@ -41,8 +42,8 @@ class AddPortfolioActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPortfolioBinding
     private lateinit var sharePref : SharePrefHelper
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: PortofolioApiService
     private lateinit var portType: String
+    private lateinit var viewModel: AddPortfolioViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +52,12 @@ class AddPortfolioActivity : AppCompatActivity() {
         sharePref = SharePrefHelper(this)
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(context = this)!!.create(PortofolioApiService::class.java)
+        val service = ApiClient.getApiClient(context = this)?.create(PortofolioApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(AddPortfolioViewModel::class.java)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -83,6 +89,18 @@ class AddPortfolioActivity : AppCompatActivity() {
 
     }
 
+    private fun subscribeLiveData() {
+        viewModel.isAddPortfolioLiveData.observe(this, androidx.lifecycle.Observer {
+            if (it) {
+                Toast.makeText(this@AddPortfolioActivity, "Success Add Portfolio", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@AddPortfolioActivity, HomeActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this@AddPortfolioActivity, "Failed to Add Portfolio", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     fun onRadioButtonClicked(view: View) {
         if (view is RadioButton) {
             // Is the button now checked?
@@ -98,43 +116,6 @@ class AddPortfolioActivity : AppCompatActivity() {
                     if (checked) {
                        portType = "aplikasi web"
                     }
-            }
-        }
-    }
-
-    private fun callPortfolioApi(image: MultipartBody.Part) {
-        coroutineScope.launch {
-
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val engineerId = sharePref.getString(SharePrefHelper.ENG_ID).toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portAppName = binding.etAppName.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portDesc = binding.etShortDescApp.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portLinkPub = binding.etLinkPub.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portLinkRepo = binding.etLinkRepo.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portWorkPlace = binding.etWorkplaceApp.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portoType = portType.toRequestBody("text/plain".toMediaTypeOrNull())
-
-                    service?.addPortfolio(engineerId, portAppName, portDesc, portLinkPub, portLinkRepo, portWorkPlace, portoType, image)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            Log.d("cek Data gagal masuk", result.toString())
-            if (result is GeneralResponse) {
-                Log.d("cek Data masuk", result.toString())
-                if (result.success) {
-
-                    val intent = Intent(this@AddPortfolioActivity, HomeActivity::class.java)
-                    Toast.makeText(this@AddPortfolioActivity, "Success add portfolio", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                }
             }
         }
     }
@@ -176,7 +157,6 @@ class AddPortfolioActivity : AppCompatActivity() {
 
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
-            Log.d("image", file.name)
 
             var img: MultipartBody.Part? = null
             val mediaTypeImg = "image/jpeg".toMediaType()
@@ -187,14 +167,26 @@ class AddPortfolioActivity : AppCompatActivity() {
                 MultipartBody.Part.createFormData("image", file.name, it1)
             }
 
-            Log.d("image", img.toString())
+            val engineerId = sharePref.getString(SharePrefHelper.ENG_ID).toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portAppName = binding.etAppName.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portDesc = binding.etShortDescApp.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portLinkPub = binding.etLinkPub.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portLinkRepo = binding.etLinkRepo.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portWorkPlace = binding.etWorkplaceApp.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portoType = portType.toRequestBody("text/plain".toMediaTypeOrNull())
 
             binding.btnAddPortfolio.setOnClickListener {
                 if (img != null) {
-                    callPortfolioApi(img)
+                    viewModel.callPortfolioApi(engineerId,portAppName, portDesc, portLinkPub, portLinkRepo, portWorkPlace, portoType, img)
+                    subscribeLiveData()
                 }
             }
-
         }
     }
 

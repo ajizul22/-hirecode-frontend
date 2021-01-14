@@ -30,7 +30,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textSize="20sp"
-            android:layout_below="@id/btn_add_exp"
+            android:layout_below="@id/btn_add_portfolio"
             android:layout_marginTop="20dp"/>
 
         <Button

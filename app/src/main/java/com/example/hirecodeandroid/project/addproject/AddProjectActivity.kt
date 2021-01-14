@@ -178,7 +178,7 @@ class AddProjectActivity : AppCompatActivity() {
         }
     }
 
-    fun subscribeLiveData() {
+    private fun subscribeLiveData() {
         viewModel.isAddProjectLiveData.observe(this, androidx.lifecycle.Observer {
             if (it) {
                 val intent = Intent(this@AddProjectActivity, HomeActivity::class.java)

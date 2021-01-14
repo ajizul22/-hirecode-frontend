@@ -62,8 +62,6 @@ class LoginActivity : AppCompatActivity() {
             } else if (password.isEmpty()) {
                 Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Login Success!", Toast.LENGTH_SHORT).show()
-
                 viewModel.callLoginApi(email, password)
                 sharePref.put(SharePrefHelper.KEY_PASSWORD, password)
 
@@ -84,17 +82,15 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Email/Password Wrong", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun subscribeEngineerIdLiveData() {
         viewModel.isGetEngineerId.observe(this, Observer {
-            Log.d("subscribeEngLiveData", "$it")
-
             if (it) {
-                Toast.makeText(this, "Engineer Id Get", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Welcome :)", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Engineer Id failed to Get", Toast.LENGTH_SHORT).show()
             }
@@ -103,10 +99,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun subscribeCompanyIdLiveData() {
         viewModel.isGetCompanyId.observe(this, Observer {
-            Log.d("subscribeCompLiveData", "$it")
-
             if (it) {
-                Toast.makeText(this, "Company Id Get", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Welcome :)", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Company Id failed to Get", Toast.LENGTH_SHORT).show()
             }
