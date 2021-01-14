@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ import com.example.hirecodeandroid.util.SharePrefHelper
 import com.example.hirecodeandroid.webview.WebViewActivity
 import kotlinx.coroutines.*
 
-class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSkillClickListener {
+class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSkillClickListener, DetailProfileEngineerContract.View {
 
     private lateinit var binding : ActivityDetailProfileEngineerBinding
     private lateinit var pagerAdapter: EngineerTabPagerAdapter
@@ -31,6 +32,7 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
     private lateinit var service: SkillApiService
     private lateinit var serviceEngineer: EngineerApiService
     private lateinit var sharedPref: SharePrefHelper
+    private var presenter: DetailProfileEngineerContract.Presenter? = null
     var listSkill = ArrayList<SkillModel>()
     val img = "http://3.80.223.103:4000/image/"
     var image: String? = null
@@ -45,6 +47,8 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
         serviceEngineer = ApiClient.getApiClient(this)!!.create(EngineerApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = SharePrefHelper(this)
+
+        presenter = DetailProfileEngineerPresenter(coroutineScope, serviceEngineer, service)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -72,54 +76,56 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
         binding.rvSkill.adapter = SkillAdapter(listSkill, this)
         binding.rvSkill.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
-        getDataSkillEngineer(sharedPref.getString(SharePrefHelper.ENG_ID_CLICKED)?.toInt())
-        getDataEngineer(sharedPref.getString(SharePrefHelper.ENG_ID_CLICKED)!!)
-
     }
 
-    private fun getDataEngineer(id: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    serviceEngineer?.getDataEngById(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is ListEngineerResponse) {
-                Log.d("data engineer by id", result.toString())
-                binding.model = result.data[0]
-                image = result.data[0].engineerProfilePict
-                Glide.with(this@DetailProfileEngineerActivity).load(img + result.data[0].engineerProfilePict).placeholder(
-                    R.drawable.ic_profile
-                )
-                    .error(R.drawable.ic_profile).into(binding.ivAvatar)
-            }
-        }
+    override fun onResultSuccessEngineer(data: ListEngineerResponse.Engineer) {
+        binding.model = data
+        Glide.with(binding.root).load(img + data.engineerProfilePict).placeholder(R.drawable.ic_profile)
+            .error(R.drawable.ic_profile).into(binding.ivAvatar)
     }
 
-    private fun getDataSkillEngineer(id: Int?) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getSkillByEngineer(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is SkillResponse) {
-                Log.d("dataskill", result.toString())
-                if(result.success) {
-                    val list = result.data.map {
-                        SkillModel(it.skillId, it.engineerId, it.skillName)
-                    }
-                    (binding.rvSkill.adapter as SkillAdapter).addList(list)
-                }
-            }
-        }
+    override fun onResultSuccessSkill(list: List<SkillModel>) {
+        (binding.rvSkill.adapter as SkillAdapter).addList(list)
+        binding.rvSkill.visibility = View.VISIBLE
+        binding.tvDataNotFound.visibility = View.GONE
+    }
+
+    override fun onResultFail(message: String) {
+        binding.rvSkill.visibility = View.GONE
+        binding.tvDataNotFound.visibility = View.VISIBLE
+        binding.message = message
+    }
+
+    override fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.scrollView.visibility = View.GONE
+    }
+
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
+        binding.scrollView.visibility = View.VISIBLE
     }
 
     override fun onItemSkillClicked(position: Int) {
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val engineerId = sharedPref.getString(SharePrefHelper.ENG_ID_CLICKED)
+
+        presenter?.bindToView(this)
+        presenter?.callServiceEngineer(engineerId!!.toInt())
+        presenter?.callServiceSkill(engineerId!!.toInt())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unBind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
     }
 }
