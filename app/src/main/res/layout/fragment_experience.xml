@@ -3,10 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="message"
+            type="String" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_data_not_found"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:fontFamily="sans-serif"
+            android:text="@{message}"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_below="@id/btn_add_exp"
+            android:layout_marginTop="20dp"/>
 
         <Button
             android:id="@+id/btn_add_exp"
@@ -23,6 +48,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_experience"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_below="@id/btn_add_exp"/>
+    </RelativeLayout>
 </layout>

@@ -1,6 +1,5 @@
 package com.example.hirecodeandroid.experience
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,18 +15,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentExperienceBinding
+import com.example.hirecodeandroid.experience.addexperience.AddExperienceActivity
+import com.example.hirecodeandroid.experience.updateexperience.UpdateExperienceActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
-class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpClickListener {
+class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpClickListener, ExperienceContract.View {
 
     private lateinit var binding : FragmentExperienceBinding
     private lateinit var sharePref: SharePrefHelper
     var listExperience = ArrayList<ExperienceModel>()
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: ExperienceApiService
+    private var presenter: ExperienceContract.Presenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +41,8 @@ class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpCl
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(requireContext())!!.create(ExperienceApiService::class.java)
+
+        presenter = ExperiencePresenter(coroutineScope, service)
 
         binding.rvExperience.adapter =
             ExperienceRecyclerViewAdapter(listExperience, this)
@@ -58,55 +62,31 @@ class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpCl
             startActivity(intent)
         }
 
-        val id = sharePref.getString(SharePrefHelper.ENG_ID)
-        val id1 = sharePref.getString(SharePrefHelper.ENG_ID_CLICKED)
-
-        if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
-            getListExperience(id!!.toInt())
-        } else if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 1) {
-            getListExperience(id1!!.toInt())
-        }
-
-
     }
 
-    private fun getListExperience(id: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                 service?.getExpByIdEng(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is ExperienceResponse) {
-                if (result.success) {
-                    val list = result.data?.map {
-                        ExperienceModel(it.experienceId, it.engineerId, it.experiencePosition, it.experienceCompany, it.experienceStart,it.experienceEnd,it.experienceDesc)
-                    }
-                    (binding.rvExperience.adapter as ExperienceRecyclerViewAdapter).addList(list)
-                }
-            }
-        }
+    override fun onResultSuccess(list: List<ExperienceModel>) {
+        (binding.rvExperience.adapter as ExperienceRecyclerViewAdapter).addList(list)
+        binding.rvExperience.visibility = View.VISIBLE
+        binding.tvDataNotFound.visibility = View.GONE
     }
 
-    private fun deleteExpById(id: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.deleteExperience(id)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
+    override fun onResultFail(message: String) {
+        binding.rvExperience.visibility = View.GONE
+        binding.tvDataNotFound.visibility = View.VISIBLE
+        binding.message = message
+    }
 
-            if (result is GeneralResponse) {
-                if (result.success) {
-                    showMessage("Experience success to deleted!")
-                }
-            }
-        }
+    override fun onResultSuccessDeleteExperience() {
+        showMessage("Experience success to deleted!")
+    }
+
+    override fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.rvExperience.visibility = View.GONE
+    }
+
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
     }
 
     override fun onHireDelete(position: Int) {
@@ -131,7 +111,7 @@ class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpCl
         builder.setTitle("Delete Experience")
         builder.setMessage("Do you want to deleted this experience?")
         builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
-            deleteExpById(id!!)
+            presenter?.callDeleteExperienceByIdService(id!!)
             moveActivity()
         }
         builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
@@ -145,6 +125,25 @@ class FragmentExperience : Fragment(), ExperienceRecyclerViewAdapter.OnListExpCl
     private fun moveActivity() {
         startActivity(Intent(requireContext(), HomeActivity::class.java))
         activity?.finish()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindToView(this)
+
+        val id = sharePref.getString(SharePrefHelper.ENG_ID)
+        val idForCompany = sharePref.getString(SharePrefHelper.ENG_ID_CLICKED)
+
+        if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
+            presenter?.callExperienceService(id!!.toInt())
+        } else if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 1) {
+            presenter?.callExperienceService(idForCompany!!.toInt())
+        }
+    }
+
+    override fun onStop() {
+        presenter?.unbind()
+        super.onStop()
     }
 
     override fun onDestroy() {

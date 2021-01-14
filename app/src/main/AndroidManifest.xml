@@ -23,10 +23,10 @@
             android:name=".portfolio.UpdatePortfolioActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".portfolio.DetailPortfolioActivity"
+            android:name=".portfolio.detailportfolio.DetailPortfolioActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".experience.UpdateExperienceActivity"
+            android:name=".experience.updateexperience.UpdateExperienceActivity"
             android:theme="@style/Basic" />
         <activity android:name=".hire.DetailHireActivity" />
         <activity
@@ -42,10 +42,10 @@
             android:name=".project.detailproject.DetailProjectActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".portfolio.AddPortfolioActivity"
+            android:name=".portfolio.addportfolio.AddPortfolioActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".experience.AddExperienceActivity"
+            android:name=".experience.addexperience.AddExperienceActivity"
             android:theme="@style/Basic" />
         <activity android:name=".temporary.ProjectListActivity" />
         <activity android:name=".reset_password.InputNewPasswordActivity" />

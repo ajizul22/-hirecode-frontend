@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.portfolio
+package com.example.hirecodeandroid.portfolio.addportfolio
 
 import android.Manifest
 import android.app.Activity
@@ -19,8 +19,7 @@ import androidx.loader.content.CursorLoader
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddPortfolioBinding
-import com.example.hirecodeandroid.project.ProjectApiService
-import com.example.hirecodeandroid.project.addproject.AddProjectActivity
+import com.example.hirecodeandroid.portfolio.PortofolioApiService
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
@@ -67,7 +66,9 @@ class AddPortfolioActivity : AppCompatActivity() {
                     //permission denied
                     val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
                     //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE);
+                    requestPermissions(permissions,
+                        PERMISSION_CODE
+                    );
                 }
                 else{
                     //permission already granted
@@ -161,7 +162,8 @@ class AddPortfolioActivity : AppCompatActivity() {
     private fun openImageChooser() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent,REQUEST_CODE_IMAGE_PICKER
+        startActivityForResult(intent,
+            REQUEST_CODE_IMAGE_PICKER
         )
     }
 

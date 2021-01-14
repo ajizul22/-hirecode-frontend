@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.portfolio
+package com.example.hirecodeandroid.portfolio.detailportfolio
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -12,6 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityDetailPortfolioBinding
+import com.example.hirecodeandroid.portfolio.PortofolioApiService
+import com.example.hirecodeandroid.portfolio.PortofolioResponse
+import com.example.hirecodeandroid.portfolio.UpdatePortfolioActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
