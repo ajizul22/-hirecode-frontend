@@ -77,6 +77,7 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
         viewModel.resultFail.observe(this, Observer {
             if (it) {
                 binding.tvDataNotFound.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
             }
         })
 

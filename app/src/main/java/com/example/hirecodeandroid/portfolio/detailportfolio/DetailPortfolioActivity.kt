@@ -8,15 +8,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityDetailPortfolioBinding
 import com.example.hirecodeandroid.portfolio.PortofolioApiService
-import com.example.hirecodeandroid.portfolio.PortofolioResponse
 import com.example.hirecodeandroid.portfolio.updateportfolio.UpdatePortfolioActivity
 import com.example.hirecodeandroid.remote.ApiClient
-import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 
@@ -25,8 +25,7 @@ class DetailPortfolioActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailPortfolioBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var sharePref: SharePrefHelper
-    private lateinit var service: PortofolioApiService
-    val img = "http://3.80.223.103:4000/image/"
+    private lateinit var viewModel: DetailPortfolioViewModel
     var idPort: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,10 +34,16 @@ class DetailPortfolioActivity : AppCompatActivity() {
         sharePref = SharePrefHelper(this)
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(this)!!.create(PortofolioApiService::class.java)
+        val service = ApiClient.getApiClient(this)?.create(PortofolioApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(DetailPortfolioViewModel::class.java)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         val id = intent.getIntExtra("id", 0)
-        getDataPortfolio(id)
+        viewModel.getDataPortfolio(id)
+        subscribeLiveData()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -62,43 +67,38 @@ class DetailPortfolioActivity : AppCompatActivity() {
 
     }
 
-    private fun getDataPortfolio(id: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getPortfolioByIdPort(id)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeLiveData() {
+        viewModel.isLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.content.visibility = View.VISIBLE
+                binding.button.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.content.visibility = View.GONE
+                binding.button.visibility = View.GONE
             }
+        })
 
-            if (result is PortofolioResponse) {
-                if (result.success) {
-                    binding.model = result.data[0]
-                    idPort = result.data[0].portoId
-                    Glide.with(this@DetailPortfolioActivity).load(img + result.data[0].portoImage).placeholder(R.drawable.ic_project)
-                        .error(R.drawable.ic_project).into(binding.ivPortfolio)
-                }
-            }
-        }
+        viewModel.listModel.observe(this, Observer {
+            binding.model = it[0]
+            val img = "http://3.80.223.103:4000/image/"
+            Glide.with(binding.root)
+                .load(img+it[0].portoImage)
+                .placeholder(R.drawable.ic_project)
+                .error(R.drawable.ic_project)
+                .into(binding.ivPortfolio)
+        })
     }
 
-    private fun deletePortofolio(id: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.deletePortfolio(id)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeDeleteLiveData() {
+        viewModel.isDeleteLiveData.observe(this, Observer {
+            if (it) {
+                showMessage("Portfolio success to deleted!")
+            } else {
+                showMessage("Portfolio failed to deleted!")
             }
-
-            if (result is GeneralResponse) {
-                if (result.success) {
-                    showMessage("Portfolio success to deleted!")
-                }
-            }
-        }
+        })
     }
 
     private fun showDialogDelete() {
@@ -107,7 +107,8 @@ class DetailPortfolioActivity : AppCompatActivity() {
         builder.setTitle("Delete Portfolio")
         builder.setMessage("Do you want to deleted this portfolio?")
         builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
-            deletePortofolio(id)
+            viewModel.deletePortfolio(id)
+            subscribeDeleteLiveData()
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
