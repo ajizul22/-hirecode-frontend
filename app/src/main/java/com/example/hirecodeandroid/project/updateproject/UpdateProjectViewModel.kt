@@ -26,6 +26,12 @@ class UpdateProjectViewModel: ViewModel(), CoroutineScope {
 
     private lateinit var service: ProjectApiService
     private lateinit var binding: ActivityUpdateProjectBinding
+    private lateinit var image: MultipartBody.Part
+
+
+    fun setImage(image: MultipartBody.Part) {
+        this.image = image
+    }
 
     fun setProjectService(service: ProjectApiService) {
         this.service = service
@@ -67,14 +73,16 @@ class UpdateProjectViewModel: ViewModel(), CoroutineScope {
         }
     }
 
-    fun updateProject(id: Int, image: MultipartBody.Part) {
+    fun updateProject(type: Int, id: Int, projectName: RequestBody, projectDesc: RequestBody, projectDeadline: RequestBody ) {
         launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val projectName = createPartFromString(binding.etProjectName.text.toString())
-                    val projectDeadline = createPartFromString(binding.etProjectDeadline.text.toString())
-                    val projectDesc = createPartFromString(binding.etProjectDesc.text.toString())
-                    service.updateProject(id, projectName, projectDesc, projectDeadline, image)
+                    if (type == 1) {
+                        service.updateProjectWithImage(id, projectName, projectDesc, projectDeadline, image)
+                    } else {
+                        service.updateProject(id, projectName, projectDesc, projectDeadline)
+                    }
+
                 } catch (e: Throwable) {
                     e.printStackTrace()
 
@@ -92,12 +100,6 @@ class UpdateProjectViewModel: ViewModel(), CoroutineScope {
                 }
             }
         }
-    }
-
-    private fun createPartFromString(json: String): RequestBody {
-        val mediaType = "multipart/form-data".toMediaType()
-        return json
-            .toRequestBody(mediaType)
     }
 
 }

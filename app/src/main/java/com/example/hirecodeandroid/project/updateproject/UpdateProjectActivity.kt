@@ -48,6 +48,8 @@ class UpdateProjectActivity : AppCompatActivity() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var deadlineProject: DatePickerDialog.OnDateSetListener
     private lateinit var c: Calendar
+    private var img: MultipartBody.Part? = null
+    private var image: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +105,21 @@ class UpdateProjectActivity : AppCompatActivity() {
             ).show()
         }
         deadlineProject()
+
+        binding.btnAddProject.setOnClickListener {
+            val projectName = createPartFromString(binding.etProjectName.text.toString())
+            val projectDeadline = createPartFromString(binding.etProjectDeadline.text.toString())
+            val projectDesc = createPartFromString(binding.etProjectDesc.text.toString())
+
+            if (image != "") {
+                viewModel.setImage(img!!)
+                viewModel.updateProject(1, projectId, projectName, projectDesc, projectDeadline)
+                subscribeLiveDataUpdate()
+            } else {
+                viewModel.updateProject(0, projectId, projectName, projectDesc, projectDeadline)
+                subscribeLiveDataUpdate()
+            }
+        }
     }
 
     private fun deadlineProject() {
@@ -156,22 +173,16 @@ class UpdateProjectActivity : AppCompatActivity() {
 
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
+            if (filePath != null) {
+                image = filePath
+            }
 
-            var img: MultipartBody.Part? = null
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile: RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
 
             img = reqFile?.let { it1 ->
                 MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-
-            val projectId = intent.getIntExtra("project_id", 0)
-            binding.btnAddProject.setOnClickListener {
-                if (img != null) {
-                    viewModel.updateProject(projectId, img)
-                    subscribeLiveDataUpdate()
-                }
             }
         }
     }
@@ -218,6 +229,11 @@ class UpdateProjectActivity : AppCompatActivity() {
         return result
     }
 
+    private fun createPartFromString(json: String): RequestBody {
+        val mediaType = "multipart/form-data".toMediaType()
+        return json
+            .toRequestBody(mediaType)
+    }
 
     override fun onDestroy() {
         coroutineScope.cancel()

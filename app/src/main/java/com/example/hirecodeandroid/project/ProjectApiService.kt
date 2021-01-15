@@ -33,6 +33,15 @@ interface ProjectApiService {
         @Path("id") projectId: Int?,
         @Part("pj_nama_project") projectName: RequestBody,
         @Part("pj_deskripsi") projectDesc: RequestBody,
+        @Part("pj_deadline") projectDeadline: RequestBody
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("project/{id}")
+    suspend fun updateProjectWithImage(
+        @Path("id") projectId: Int?,
+        @Part("pj_nama_project") projectName: RequestBody,
+        @Part("pj_deskripsi") projectDesc: RequestBody,
         @Part("pj_deadline") projectDeadline: RequestBody,
         @Part image: MultipartBody.Part
     ) : GeneralResponse
