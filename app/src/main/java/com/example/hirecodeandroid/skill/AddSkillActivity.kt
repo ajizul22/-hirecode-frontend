@@ -59,26 +59,6 @@ class AddSkillActivity : AppCompatActivity() {
         })
     }
 
-//    private fun addSkill(id: Int, skillName: String) {
-//        coroutineScope.launch {
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    service?.createSkill(id, skillName)
-//                } catch (e:Throwable) {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            if (result is GeneralResponse) {
-//                if (result.success) {
-//                    Toast.makeText(this@AddSkillActivity, "Success Add Skill", Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this@AddSkillActivity, HomeActivity::class.java)
-//                    startActivity(intent)
-//                }
-//            }
-//        }
-//    }
-
     override fun onDestroy() {
         coroutineScope.cancel()
         super.onDestroy()
