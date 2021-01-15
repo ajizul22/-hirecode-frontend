@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="model"
+            type="com.example.hirecodeandroid.experience.ExperienceResponse.Experience" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,7 +24,18 @@
             app:layout_constraintLeft_toLeftOf="parent"
             tools:targetApi="lollipop" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <ScrollView
+            android:id="@+id/scroll_view"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,6 +89,7 @@
                     android:id="@+id/et_position"
                     android:hint="Web developer"
                     android:textSize="15sp"
+                    android:text="@{model.experiencePosition}"
                     android:inputType="text"
                     android:paddingStart="15dp"
                     android:layout_width="match_parent"
@@ -97,6 +115,7 @@
                     android:id="@+id/et_company_name"
                     android:hint="PT Harus Bisa"
                     android:inputType="text"
+                    android:text="@{model.experienceCompany}"
                     android:textSize="15sp"
                     android:paddingStart="15dp"
                     android:layout_width="match_parent"
@@ -172,6 +191,7 @@
                     android:id="@+id/et_short_desc_exp"
                     android:hint="description your job"
                     android:textColorHint="@color/navy"
+                    android:text="@{model.experienceDesc}"
                     android:inputType="text"
                     android:textSize="15sp"
                     android:gravity="top"

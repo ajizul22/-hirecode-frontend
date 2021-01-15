@@ -4,16 +4,16 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityUpdateExperienceBinding
 import com.example.hirecodeandroid.experience.ExperienceApiService
 import com.example.hirecodeandroid.remote.ApiClient
-import com.example.hirecodeandroid.util.GeneralResponse
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,36 +21,35 @@ import java.util.*
 class UpdateExperienceActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUpdateExperienceBinding
-    private lateinit var service: ExperienceApiService
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var c: Calendar
     private lateinit var dateStart: DatePickerDialog.OnDateSetListener
     private lateinit var dateEnd: DatePickerDialog.OnDateSetListener
+    private lateinit var viewModel: UpdateExperienceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_update_experience)
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(this)!!.create(ExperienceApiService::class.java)
+        val service = ApiClient.getApiClient(this)?.create(ExperienceApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(UpdateExperienceViewModel::class.java)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         c = Calendar.getInstance()
 
         val id = intent.getIntExtra("id", 0)
-        val posText = intent.getStringExtra("position")
-        binding.etPosition.setText(posText)
-        val compText = intent.getStringExtra("company")
-        binding.etCompanyName.setText(compText)
-        val startText = intent.getStringExtra("start")!!.split("T")[0].split("-").joinToString("")
-        binding.etStart.setText(startText)
-        val endText = intent.getStringExtra("end")!!.split("T")[0].split("-").joinToString("")
-        binding.etEnd.setText(endText)
-        val descText = intent.getStringExtra("desc")
-        binding.etShortDescExp.setText(descText)
+        viewModel.getDataExperience(id)
+        subscribeLiveData()
 
         binding.btnUpdateExp.setOnClickListener {
-            updateExperience(id, binding.etPosition.text.toString(), binding.etCompanyName.text.toString(),
+            viewModel.updateExperience(id, binding.etPosition.text.toString(), binding.etCompanyName.text.toString(),
                 binding.etStart.text.toString(), binding.etEnd.text.toString(), binding.etShortDescExp.text.toString())
+
+            subscribeLiveDataUpdate()
         }
 
         binding.etStart.setOnClickListener {
@@ -72,6 +71,43 @@ class UpdateExperienceActivity : AppCompatActivity() {
         dateStartPicker()
         dateEndPicker()
     }
+
+    fun subscribeLiveData() {
+        viewModel.isLiveData.observe(this, androidx.lifecycle.Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.scrollView.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.scrollView.visibility = View.GONE
+            }
+        })
+
+        viewModel.listModel.observe(this, androidx.lifecycle.Observer {
+            val start = it[0].experienceStart!!.split("T")[0].split("-").joinToString("")
+            val end = it[0].experienceEnd!!.split("T")[0].split("-").joinToString("")
+
+            binding.model = it[0]
+            binding.etStart.setText(start)
+            binding.etEnd.setText(end)
+
+        })
+    }
+
+    private fun subscribeLiveDataUpdate() {
+        viewModel.isUpdateLiveData.observe(this, androidx.lifecycle.Observer {
+            if (it) {
+                val intent = Intent(this, HomeActivity::class.java)
+                Toast.makeText(this, "Success Update Experience", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Failed to Update Experience", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
 
     private fun dateStartPicker() {
         dateStart = DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
@@ -100,25 +136,25 @@ class UpdateExperienceActivity : AppCompatActivity() {
         }
     }
 
-    fun updateExperience(id: Int, expPosition: String, expCompany: String, expStart: String, expEnd: String, expDesc: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.updateExperience(id, expPosition, expCompany, expStart, expEnd, expDesc)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            Log.d("tidak update?", result.toString())
-            if (result is GeneralResponse) {
-                    Log.d("data update", result.toString())
-                    Toast.makeText(this@UpdateExperienceActivity, "Update experience success!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@UpdateExperienceActivity, HomeActivity::class.java)
-                    startActivity(intent)
-                finish()
-            }
-        }
-    }
+//    fun updateExperience(id: Int, expPosition: String, expCompany: String, expStart: String, expEnd: String, expDesc: String) {
+//        coroutineScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                try {
+//                    service?.updateExperience(id, expPosition, expCompany, expStart, expEnd, expDesc)
+//                } catch (e: Throwable) {
+//                    e.printStackTrace()
+//                }
+//            }
+//            Log.d("tidak update?", result.toString())
+//            if (result is GeneralResponse) {
+//                    Log.d("data update", result.toString())
+//                    Toast.makeText(this@UpdateExperienceActivity, "Update experience success!", Toast.LENGTH_SHORT).show()
+//                    val intent = Intent(this@UpdateExperienceActivity, HomeActivity::class.java)
+//                    startActivity(intent)
+//                finish()
+//            }
+//        }
+//    }
 
     override fun onDestroy() {
         coroutineScope.cancel()

@@ -8,6 +8,9 @@ interface ExperienceApiService {
     @GET("experience/{id}")
     suspend fun getExpByIdEng(@Path("id") engineerId: Int?) : ExperienceResponse
 
+    @GET("experience/detail/{id}")
+    suspend fun getExperienceById(@Path("id") experienceId: Int?) : ExperienceResponse
+
     @FormUrlEncoded
     @POST("experience")
     suspend fun addExperience(

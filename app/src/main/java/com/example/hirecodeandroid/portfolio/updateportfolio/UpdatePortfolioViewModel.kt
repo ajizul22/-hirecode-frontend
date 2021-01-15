@@ -37,7 +37,6 @@ class UpdatePortfolioViewModel: ViewModel(), CoroutineScope {
    fun updatePortfolio(type: Int, portId: Int, portAppName: RequestBody, portDesc: RequestBody, portLinkPub: RequestBody,
                                 portLinkRepo: RequestBody, portWorkPlace: RequestBody, portoType: RequestBody) {
         launch {
-
             val result = withContext(Dispatchers.IO) {
                 try {
                     if (type == 1) {
