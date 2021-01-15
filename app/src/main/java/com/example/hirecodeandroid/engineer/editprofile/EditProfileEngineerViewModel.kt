@@ -28,9 +28,14 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
     private lateinit var service: EngineerApiService
     private lateinit var binding: ActivityEditProfileEngineerBinding
     private lateinit var sharePref: SharePrefHelper
+    private lateinit var image: MultipartBody.Part
 
     fun setSharePref(sharePref: SharePrefHelper) {
         this.sharePref = sharePref
+    }
+
+    fun setImage(image: MultipartBody.Part) {
+        this.image = image
     }
 
     fun setService(service: EngineerApiService) {
@@ -69,16 +74,16 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
         }
     }
 
-    fun updateEngineer(id: Int, image: MultipartBody.Part) {
+    fun updateEngineer(type: Int, id: Int, jobTitle: RequestBody, jobType: RequestBody, domicile: RequestBody, desc: RequestBody) {
         launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val jobTitle = createPartFromString(binding.etJobTitle.text.toString())
-                    val jobType = createPartFromString(sharePref.getString(SharePrefHelper.JOB_TYPE)!!)
-                    val domicile = createPartFromString(binding.etCity.text.toString())
-                    val desc = createPartFromString(binding.etShortDesc.text.toString())
+                    if (type == 1) {
+                        service?.updateEngineerWithImage(id, jobTitle, jobType, domicile, desc, image)
+                    } else {
+                        service?.updateEngineer(id, jobTitle, jobType, domicile, desc)
+                    }
 
-                    service?.updateEngineer(id, jobTitle, jobType, domicile, desc, image)
                 } catch (e:Throwable) {
                     e.printStackTrace()
 
@@ -89,11 +94,7 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
             }
 
             if (result is GeneralResponse) {
-                if (result.success) {
-                    isUpdateEngineerLiveData.value = true
-                } else {
-                    isUpdateEngineerLiveData.value = false
-                }
+                isUpdateEngineerLiveData.value = result.success
             }
         }
     }
@@ -149,9 +150,5 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
         }
     }
 
-    private fun createPartFromString(json: String): RequestBody {
-        val mediaType = "multipart/form-data".toMediaType()
-        return json
-            .toRequestBody(mediaType)
-    }
+
 }

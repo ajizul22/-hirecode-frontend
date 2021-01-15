@@ -21,6 +21,19 @@ interface CompanyApiService {
         @Part("cn_kota") companyCity: RequestBody,
         @Part("cn_deskripsi") companyDesc: RequestBody,
         @Part("cn_instagram") companyIg: RequestBody,
+        @Part("cn_linkedin") companyLinkedIn: RequestBody
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("company/{id}")
+    suspend fun updateCompanyWithImage(
+        @Path("id") companyId: Int?,
+        @Part("cn_perusahaan") companyName: RequestBody,
+        @Part("cn_jabatan") position: RequestBody,
+        @Part("cn_bidang") companyField: RequestBody,
+        @Part("cn_kota") companyCity: RequestBody,
+        @Part("cn_deskripsi") companyDesc: RequestBody,
+        @Part("cn_instagram") companyIg: RequestBody,
         @Part("cn_linkedin") companyLinkedIn: RequestBody,
         @Part image: MultipartBody.Part
     ) : GeneralResponse

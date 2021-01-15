@@ -41,7 +41,9 @@ class EditProfileCompanyActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharePrefHelper
     private lateinit var binding: ActivityEditProfileCompanyBinding
     private lateinit var viewModel: EditProfileCompanyViewModel
-    val img = "http://3.80.223.103:4000/image/"
+    private var img: MultipartBody.Part? = null
+    private var image: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +85,25 @@ class EditProfileCompanyActivity : AppCompatActivity() {
 
             viewModel.updateAccount(accountId.toInt(), name, email, phone, password)
             subscribeLiveDataUpdate()
+        }
+
+        binding.btnSave.setOnClickListener {
+            val companyName = createPartFromString(binding.etCompanyName.text.toString())
+            val companyField = createPartFromString(binding.etCompanyField.text.toString())
+            val position = createPartFromString(binding.etPosition.text.toString())
+            val city = createPartFromString(binding.etCity.text.toString())
+            val instagram = createPartFromString(binding.etIg.text.toString())
+            val linkedIn = createPartFromString(binding.etLinkedin.text.toString())
+            val desc = createPartFromString(binding.etShortDesc.text.toString())
+
+            if (image != "") {
+                viewModel.setImage(img!!)
+                viewModel.updateDataCompany(1, id.toInt(), companyName, position, companyField, city, desc, instagram, linkedIn)
+                subscribeLiveDataUpdate()
+            } else {
+                viewModel.updateDataCompany(0, id.toInt(), companyName, position, companyField, city, desc, instagram, linkedIn)
+                subscribeLiveDataUpdate()
+            }
         }
 
         binding.tvEdit.setOnClickListener {
@@ -170,23 +191,16 @@ class EditProfileCompanyActivity : AppCompatActivity() {
 
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
-            Log.d("image", file.name)
+            if (filePath != null) {
+                image = filePath
+            }
 
-            var img: MultipartBody.Part? = null
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile: RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
 
             img = reqFile?.let { it1 ->
                 MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-            val id = sharedPref.getString(SharePrefHelper.COM_ID)
-
-            binding.btnSave.setOnClickListener {
-                if (img != null) {
-                    viewModel.updateDataCompany(id!!.toInt(), img)
-                    subscribeLiveDataUpdate()
-                }
             }
         }
     }
@@ -206,5 +220,11 @@ class EditProfileCompanyActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+    private fun createPartFromString(json: String): RequestBody {
+        val mediaType = "multipart/form-data".toMediaType()
+        return json
+            .toRequestBody(mediaType)
     }
 }

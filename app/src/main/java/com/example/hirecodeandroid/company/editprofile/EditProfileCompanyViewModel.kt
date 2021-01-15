@@ -29,6 +29,12 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
     private lateinit var service: CompanyApiService
     private lateinit var binding: ActivityEditProfileCompanyBinding
     private lateinit var sharePref: SharePrefHelper
+    private lateinit var image: MultipartBody.Part
+
+
+    fun setImage(image: MultipartBody.Part) {
+        this.image = image
+    }
 
     fun setSharePref(sharePref: SharePrefHelper) {
         this.sharePref = sharePref
@@ -71,18 +77,16 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
         }
     }
 
-    fun updateDataCompany(id: Int, image: MultipartBody.Part) {
+    fun updateDataCompany(type: Int, id: Int, companyName: RequestBody, position: RequestBody, companyField: RequestBody, city: RequestBody, desc: RequestBody,
+                          instagram: RequestBody, linkedIn: RequestBody) {
         launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val companyName = createPartFromString(binding.etCompanyName.text.toString())
-                    val companyField = createPartFromString(binding.etCompanyField.text.toString())
-                    val position = createPartFromString(binding.etPosition.text.toString())
-                    val city = createPartFromString(binding.etCity.text.toString())
-                    val instagram = createPartFromString(binding.etIg.text.toString())
-                    val linkedIn = createPartFromString(binding.etLinkedin.text.toString())
-                    val desc = createPartFromString(binding.etShortDesc.text.toString())
-                    service?.updateCompany(id,companyName, position, companyField, city, desc, instagram, linkedIn, image)
+                    if (type == 1) {
+                        service?.updateCompanyWithImage(id,companyName, position, companyField, city, desc, instagram, linkedIn, image)
+                    } else {
+                        service?.updateCompany(id, companyName, position, companyField, city, desc, instagram, linkedIn)
+                    }
                 } catch (e:Throwable) {
                     e.printStackTrace()
 
@@ -93,11 +97,7 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
             }
 
             if (result is GeneralResponse) {
-                if (result.success) {
-                    isUpdateCompanyLiveData.value = true
-                } else {
-                    isUpdateCompanyLiveData.value = false
-                }
+                isUpdateCompanyLiveData.value = result.success
             }
         }
     }
@@ -153,9 +153,5 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
         }
     }
 
-    private fun createPartFromString(json: String): RequestBody {
-        val mediaType = "multipart/form-data".toMediaType()
-        return json
-            .toRequestBody(mediaType)
-    }
+
 }

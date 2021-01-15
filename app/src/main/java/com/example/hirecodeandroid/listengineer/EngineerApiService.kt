@@ -29,6 +29,16 @@ interface EngineerApiService {
         @Part("en_job_title") jobTitle: RequestBody,
         @Part("en_job_type") jobType: RequestBody,
         @Part("en_domisili") engineerDomicilie: RequestBody,
+        @Part("en_deskripsi") engineerDesc: RequestBody
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("engineer/{id}")
+    suspend fun updateEngineerWithImage(
+        @Path("id") engineerId: Int?,
+        @Part("en_job_title") jobTitle: RequestBody,
+        @Part("en_job_type") jobType: RequestBody,
+        @Part("en_domisili") engineerDomicilie: RequestBody,
         @Part("en_deskripsi") engineerDesc: RequestBody,
         @Part image: MultipartBody.Part
     ) : GeneralResponse
@@ -45,5 +55,7 @@ interface EngineerApiService {
         @Field("acPhone") accountPhone: String,
         @Field("acPassword") accountPassword: String
     ) : GeneralResponse
+
+
 
 }

@@ -19,14 +19,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
-import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityEditProfileEngineerBinding
 import com.example.hirecodeandroid.listengineer.EngineerApiService
-import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
-import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -47,6 +44,8 @@ class EditProfileEngineerActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharePrefHelper
     private lateinit var viewModel: EditProfileEngineerViewModel
     val typeApp = arrayOf("fulltime", "freelance")
+    private var img: MultipartBody.Part? = null
+    private var image: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +109,22 @@ class EditProfileEngineerActivity : AppCompatActivity() {
             else{
                 //system OS is < Marshmallow
                 openImageChooser()
+            }
+        }
+
+        binding.btnSave.setOnClickListener {
+            val jobTitle = createPartFromString(binding.etJobTitle.text.toString())
+            val jobType = createPartFromString(sharedPref.getString(SharePrefHelper.JOB_TYPE)!!)
+            val domicile = createPartFromString(binding.etCity.text.toString())
+            val desc = createPartFromString(binding.etShortDesc.text.toString())
+
+            if (image != "") {
+                viewModel.setImage(img!!)
+                viewModel.updateEngineer(1, id!!.toInt(), jobTitle, jobType, domicile, desc)
+                subscribeLiveDataUpdate()
+            } else {
+                viewModel.updateEngineer(0, id!!.toInt(), jobTitle, jobType, domicile, desc)
+                subscribeLiveDataUpdate()
             }
         }
     }
@@ -195,24 +210,16 @@ class EditProfileEngineerActivity : AppCompatActivity() {
 
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
-            Log.d("image", file.name)
+            if (filePath != null) {
+                image = filePath
+            }
 
-            var img: MultipartBody.Part? = null
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile: RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
 
             img = reqFile?.let { it1 ->
                 MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-
-            val id = sharedPref.getString(SharePrefHelper.ENG_ID)
-
-            binding.btnSave.setOnClickListener {
-                if (img != null) {
-                    viewModel.updateEngineer(id!!.toInt(), img)
-                    subscribeLiveDataUpdate()
-                }
             }
 
         }
@@ -233,5 +240,11 @@ class EditProfileEngineerActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+    private fun createPartFromString(json: String): RequestBody {
+        val mediaType = "multipart/form-data".toMediaType()
+        return json
+            .toRequestBody(mediaType)
     }
 }
