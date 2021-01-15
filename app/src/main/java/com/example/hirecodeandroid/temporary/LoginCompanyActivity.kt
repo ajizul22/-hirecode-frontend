@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import com.example.hirecodeandroid.MainActivity
 import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.register.RegisterCompanyActivity
+import com.example.hirecodeandroid.register.company.RegisterCompanyActivity
 import com.example.hirecodeandroid.reset_password.ResetPasswordActivity
 
 class LoginCompanyActivity : AppCompatActivity() {

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:background="#F6F7F8"
-            tools:context=".register.RegisterCompanyActivity">
+            tools:context=".register.company.RegisterCompanyActivity">
 
             <ImageView
                 android:id="@+id/iv_logo"

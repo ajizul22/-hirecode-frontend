@@ -12,7 +12,7 @@ import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.OnBoardScreenActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityLoginBinding
-import com.example.hirecodeandroid.register.RegisterEngineerActivity
+import com.example.hirecodeandroid.register.engineer.RegisterEngineerActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.reset_password.ResetPasswordActivity
 import com.example.hirecodeandroid.util.SharePrefHelper

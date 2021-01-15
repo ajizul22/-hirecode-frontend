@@ -1,5 +1,7 @@
 package com.example.hirecodeandroid.register
 
+import com.example.hirecodeandroid.register.company.RegisterCompanyResponse
+import com.example.hirecodeandroid.register.engineer.RegisterEngineerResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

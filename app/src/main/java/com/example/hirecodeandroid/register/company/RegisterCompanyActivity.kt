@@ -1,14 +1,17 @@
-package com.example.hirecodeandroid.register
+package com.example.hirecodeandroid.register.company
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.hirecodeandroid.temporary.LoginCompanyActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityRegisterCompanyBinding
 import com.example.hirecodeandroid.login.LoginActivity
+import com.example.hirecodeandroid.register.RegisterApiService
+import com.example.hirecodeandroid.register.engineer.RegisterEngineerViewModel
 import com.example.hirecodeandroid.remote.ApiClient
 import kotlinx.coroutines.*
 
@@ -16,7 +19,7 @@ class RegisterCompanyActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityRegisterCompanyBinding
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: RegisterApiService
+    private lateinit var viewModel: RegisterCompanyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +27,12 @@ class RegisterCompanyActivity : AppCompatActivity() {
             R.layout.activity_register_company
         )
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(context = this)!!.create(RegisterApiService::class.java)
+        val service = ApiClient.getApiClient(context = this)?.create(RegisterApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(RegisterCompanyViewModel::class.java)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         binding.tvLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -45,29 +53,26 @@ class RegisterCompanyActivity : AppCompatActivity() {
             } else if (password != confirmPassword){
                 Toast.makeText(this, "Password & Confrim Password not same", Toast.LENGTH_LONG).show()
             } else {
-                callRegistrasiApi(name, email, companyName, position, phone, password,1)
+                viewModel.callRegisterApi(name, email, companyName, position, phone, password,1)
+                subscribeLiveData()
             }
         }
     }
 
-    private fun callRegistrasiApi(name: String, email: String, companyName: String, position: String, phone:String, password:String, level: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.RegisterCompanyRequest(name,email,phone,password, level, companyName,position)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
+    private fun subscribeLiveData() {
+        viewModel.isLiveData.observe(this, Observer {
+            if (it) {
+                Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show()
 
-            if (result is RegisterCompanyResponse) {
-                if (result.success) {
-                    val intent = Intent(this@RegisterCompanyActivity, LoginActivity::class.java)
-                    startActivity(intent)
-                }
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Email has been registered", Toast.LENGTH_SHORT).show()
             }
-        }
+        })
     }
+
 
     override fun onDestroy() {
         coroutineScope.cancel()

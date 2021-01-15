@@ -76,10 +76,10 @@
             android:name=".reset_password.ResetPasswordActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".register.RegisterCompanyActivity"
+            android:name=".register.company.RegisterCompanyActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".register.RegisterEngineerActivity"
+            android:name=".register.engineer.RegisterEngineerActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".login.LoginActivity"

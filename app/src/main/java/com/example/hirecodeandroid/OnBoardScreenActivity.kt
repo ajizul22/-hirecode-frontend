@@ -10,9 +10,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.databinding.ActivityOnBoardScreenBinding
 import com.example.hirecodeandroid.databinding.LayoutDialogRegisterBinding
 import com.example.hirecodeandroid.login.LoginActivity
-import com.example.hirecodeandroid.register.RegisterCompanyActivity
-import com.example.hirecodeandroid.register.RegisterEngineerActivity
-import com.example.hirecodeandroid.temporary.LoginCompanyActivity
+import com.example.hirecodeandroid.register.company.RegisterCompanyActivity
+import com.example.hirecodeandroid.register.engineer.RegisterEngineerActivity
 import com.example.hirecodeandroid.util.SharePrefHelper
 
 class OnBoardScreenActivity : AppCompatActivity() {

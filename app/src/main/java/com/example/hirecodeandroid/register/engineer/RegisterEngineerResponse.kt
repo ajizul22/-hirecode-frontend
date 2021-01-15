@@ -1,6 +1,5 @@
-package com.example.hirecodeandroid.register
+package com.example.hirecodeandroid.register.engineer
 
-import com.example.hirecodeandroid.login.LoginResponse
 import com.google.gson.annotations.SerializedName
 
 data class RegisterEngineerResponse(val success: Boolean, val message: String, val data: Data?) {

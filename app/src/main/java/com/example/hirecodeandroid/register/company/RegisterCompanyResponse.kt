@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.register
+package com.example.hirecodeandroid.register.company
 
 import com.google.gson.annotations.SerializedName
 
