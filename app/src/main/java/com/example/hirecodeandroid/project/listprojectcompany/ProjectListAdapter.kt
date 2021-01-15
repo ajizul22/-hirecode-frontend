@@ -35,8 +35,7 @@ class ProjectListAdapter(private val listProject: ArrayList<ProjectModel>, priva
         val item = listProject[position]
         val img = "http://3.80.223.103:4000/image/${item.projectImage}"
         holder.binding.tvProjectTitle.text = item.projectName
-        holder.binding.tvProjectCompany.text = item.companyId
-        holder.binding.tvProjectDeadline.text = item.projectDeadline
+        holder.binding.tvProjectDeadline.text = item.projectDeadline!!.split("T")[0]
 
         Glide.with(holder.itemView)
             .load(img)
