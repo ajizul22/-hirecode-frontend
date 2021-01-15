@@ -20,7 +20,7 @@
             android:name=".project.updateproject.UpdateProjectActivity"
             android:theme="@style/Basic"/>
         <activity
-            android:name=".portfolio.UpdatePortfolioActivity"
+            android:name=".portfolio.updateportfolio.UpdatePortfolioActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".portfolio.detailportfolio.DetailPortfolioActivity"

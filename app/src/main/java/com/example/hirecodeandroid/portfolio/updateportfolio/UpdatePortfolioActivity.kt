@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.portfolio
+package com.example.hirecodeandroid.portfolio.updateportfolio
 
 import android.Manifest
 import android.app.Activity
@@ -15,11 +15,14 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityUpdatePortfolioBinding
+import com.example.hirecodeandroid.portfolio.PortofolioApiService
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
@@ -41,8 +44,10 @@ class UpdatePortfolioActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUpdatePortfolioBinding
     private lateinit var sharePref : SharePrefHelper
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: PortofolioApiService
     private lateinit var portType: String
+    private lateinit var viewModel: UpdatePortfolioViewModel
+    private var imgPortfolio: MultipartBody.Part? = null
+    private var image: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +55,12 @@ class UpdatePortfolioActivity : AppCompatActivity() {
         sharePref = SharePrefHelper(this)
 
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(context = this)!!.create(PortofolioApiService::class.java)
+        val service = ApiClient.getApiClient(context = this)?.create(PortofolioApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(UpdatePortfolioViewModel::class.java)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         val lastPortType = intent.getStringExtra("type")
         val img = "http://3.80.223.103:4000/image/"
@@ -65,7 +75,6 @@ class UpdatePortfolioActivity : AppCompatActivity() {
             .placeholder(R.drawable.ic_project)
             .error(R.drawable.ic_project)
             .into(binding.ivUploadImage)
-        Log.d("imageView", intent.getStringExtra("image")!!)
 
         if (lastPortType == "aplikasi mobile") {
             binding.radioMobile.isChecked = true
@@ -80,7 +89,9 @@ class UpdatePortfolioActivity : AppCompatActivity() {
                     //permission denied
                     val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
                     //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE);
+                    requestPermissions(permissions,
+                        PERMISSION_CODE
+                    );
                 }
                 else{
                     //permission already granted
@@ -92,6 +103,45 @@ class UpdatePortfolioActivity : AppCompatActivity() {
                 openImageChooser()
             }
         }
+
+        binding.btnUpdatePortfolio.setOnClickListener {
+            val portId = intent.getIntExtra("id", 0)
+            val portAppName = binding.etAppName.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portDesc = binding.etShortDescApp.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portLinkPub = binding.etLinkPub.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portLinkRepo = binding.etLinkRepo.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portWorkPlace = binding.etWorkplaceApp.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
+            val portoType = portType?.toRequestBody("text/plain".toMediaTypeOrNull())
+
+            if (image != "") {
+                viewModel.setImage(imgPortfolio!!)
+                viewModel.updatePortfolio(1, portId, portAppName, portDesc, portLinkPub, portLinkRepo, portWorkPlace, portoType)
+                subscribeLiveDataUpdate()
+            } else {
+                viewModel.updatePortfolio(0, portId, portAppName, portDesc, portLinkPub, portLinkRepo, portWorkPlace, portoType)
+                subscribeLiveDataUpdate()
+            }
+        }
+
+
+    }
+
+    private fun subscribeLiveDataUpdate() {
+        viewModel.isUpdateLiveData.observe(this, Observer {
+            if (it) {
+                val intent = Intent(this@UpdatePortfolioActivity, HomeActivity::class.java)
+                Toast.makeText(this@UpdatePortfolioActivity, "Success Update Portfolio", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this@UpdatePortfolioActivity, "Failed to Update Portfolio", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun onRadioButtonClicked(view: View) {
@@ -136,7 +186,8 @@ class UpdatePortfolioActivity : AppCompatActivity() {
     private fun openImageChooser() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_CODE_IMAGE_PICKER
+        startActivityForResult(intent,
+            REQUEST_CODE_IMAGE_PICKER
         )
     }
 
@@ -149,23 +200,16 @@ class UpdatePortfolioActivity : AppCompatActivity() {
 
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
-            Log.d("image", file.name)
+            if (filePath != null) {
+                image = filePath
+            }
 
-            var img: MultipartBody.Part? = null
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile: RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
 
-            img = reqFile?.let { it1 ->
+            imgPortfolio = reqFile?.let { it1 ->
                 MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-
-            Log.d("image", img.toString())
-
-            binding.btnUpdatePortfolio.setOnClickListener {
-                if (img != null) {
-                    updatePortfolio(img)
-                }
             }
 
         }
@@ -188,42 +232,42 @@ class UpdatePortfolioActivity : AppCompatActivity() {
         return result
     }
 
-    private fun updatePortfolio(image: MultipartBody.Part) {
-        coroutineScope.launch {
-
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val portId = intent.getIntExtra("id", 0)
-                    val portAppName = binding.etAppName.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portDesc = binding.etShortDescApp.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portLinkPub = binding.etLinkPub.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portLinkRepo = binding.etLinkRepo.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portWorkPlace = binding.etWorkplaceApp.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val portoType = portType?.toRequestBody("text/plain".toMediaTypeOrNull())
-
-                    service?.updatePortfolio(portId, portAppName, portDesc, portLinkPub, portLinkRepo, portWorkPlace, portoType, image)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            Log.d("cek Data gagal masuk", result.toString())
-            if (result is GeneralResponse) {
-                Log.d("cek Data masuk", result.toString())
-                if (result.success) {
-
-                    val intent = Intent(this@UpdatePortfolioActivity, HomeActivity::class.java)
-                    Toast.makeText(this@UpdatePortfolioActivity, "Success update portfolio", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        }
-    }
+//    private fun updatePortfolio(image: MultipartBody.Part) {
+//        coroutineScope.launch {
+//
+//            val result = withContext(Dispatchers.IO) {
+//                try {
+//                    val portId = intent.getIntExtra("id", 0)
+//                    val portAppName = binding.etAppName.text.toString()
+//                        .toRequestBody("text/plain".toMediaTypeOrNull())
+//                    val portDesc = binding.etShortDescApp.text.toString()
+//                        .toRequestBody("text/plain".toMediaTypeOrNull())
+//                    val portLinkPub = binding.etLinkPub.text.toString()
+//                        .toRequestBody("text/plain".toMediaTypeOrNull())
+//                    val portLinkRepo = binding.etLinkRepo.text.toString()
+//                        .toRequestBody("text/plain".toMediaTypeOrNull())
+//                    val portWorkPlace = binding.etWorkplaceApp.text.toString()
+//                        .toRequestBody("text/plain".toMediaTypeOrNull())
+//                    val portoType = portType?.toRequestBody("text/plain".toMediaTypeOrNull())
+//
+//                    service?.updatePortfolio(portId, portAppName, portDesc, portLinkPub, portLinkRepo, portWorkPlace, portoType, image)
+//                } catch (e:Throwable) {
+//                    e.printStackTrace()
+//                }
+//            }
+//            Log.d("cek Data gagal masuk", result.toString())
+//            if (result is GeneralResponse) {
+//                Log.d("cek Data masuk", result.toString())
+//                if (result.success) {
+//
+//                    val intent = Intent(this@UpdatePortfolioActivity, HomeActivity::class.java)
+//                    Toast.makeText(this@UpdatePortfolioActivity, "Success update portfolio", Toast.LENGTH_SHORT).show()
+//                    startActivity(intent)
+//                    finish()
+//                }
+//            }
+//        }
+//    }
 
     override fun onDestroy() {
         coroutineScope.cancel()

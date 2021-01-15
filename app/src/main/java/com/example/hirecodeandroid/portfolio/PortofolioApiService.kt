@@ -38,6 +38,18 @@ interface PortofolioApiService {
         @Part("pr_link_pub") portLinkPub: RequestBody,
         @Part("pr_link_repo") portLinkRepo: RequestBody,
         @Part("pr_tp_kerja") portWorkPlace: RequestBody,
+        @Part("pr_tipe") portType: RequestBody?
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("portofolio/{id}")
+    suspend fun updatePortfolioWithImage(
+        @Path("id") portfolioId: Int?,
+        @Part("pr_aplikasi") portAppName: RequestBody,
+        @Part("pr_deskripsi") portDesc: RequestBody,
+        @Part("pr_link_pub") portLinkPub: RequestBody,
+        @Part("pr_link_repo") portLinkRepo: RequestBody,
+        @Part("pr_tp_kerja") portWorkPlace: RequestBody,
         @Part("pr_tipe") portType: RequestBody?,
         @Part image: MultipartBody.Part
     ) : GeneralResponse

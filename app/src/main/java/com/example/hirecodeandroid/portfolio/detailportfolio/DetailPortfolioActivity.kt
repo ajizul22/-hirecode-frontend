@@ -14,7 +14,7 @@ import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityDetailPortfolioBinding
 import com.example.hirecodeandroid.portfolio.PortofolioApiService
 import com.example.hirecodeandroid.portfolio.PortofolioResponse
-import com.example.hirecodeandroid.portfolio.UpdatePortfolioActivity
+import com.example.hirecodeandroid.portfolio.updateportfolio.UpdatePortfolioActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
@@ -74,7 +74,6 @@ class DetailPortfolioActivity : AppCompatActivity() {
             intent.putExtra("image", image)
             startActivity(intent)
         }
-
 
     }
 
