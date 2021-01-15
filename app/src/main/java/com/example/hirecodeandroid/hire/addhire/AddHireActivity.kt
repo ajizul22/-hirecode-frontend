@@ -8,6 +8,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddHireBinding
@@ -26,6 +28,7 @@ class AddHireActivity : AppCompatActivity() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service: ProjectApiService
     private lateinit var sharePref : SharePrefHelper
+    private lateinit var viewModel: AddHireViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,13 @@ class AddHireActivity : AppCompatActivity() {
         sharePref = SharePrefHelper(this)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(ProjectApiService::class.java)
+        val serviceHire = ApiClient.getApiClient(context = this)?.create(HireApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(AddHireViewModel::class.java)
+        if (serviceHire != null) {
+            viewModel.setService(serviceHire)
+        }
+
         listProjectSpinner()
 
         setSupportActionBar(binding.toolbar)
@@ -52,9 +62,22 @@ class AddHireActivity : AppCompatActivity() {
             if (binding.etHireMessage.text.isEmpty() || binding.etHirePrice.text.isEmpty()) {
                 Toast.makeText(this, "All field must be filled!", Toast.LENGTH_SHORT).show()
             } else {
-                callHireApi(engineerId!!.toInt(), projectId, hirePrice, hireMessage, "wait")
+                viewModel.callHireApi(engineerId!!.toInt(), projectId, hirePrice, hireMessage, "wait")
+                subscribeLiveData()
             }
         }
+    }
+
+    fun subscribeLiveData() {
+        viewModel.isLiveData.observe(this, Observer {
+            if (it) {
+                Toast.makeText(this, "Success Hire", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+            } else {
+                Toast.makeText(this, "Failed to Hire Engineer", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun listProjectSpinner() {
@@ -108,27 +131,6 @@ class AddHireActivity : AppCompatActivity() {
                         Toast.makeText(this@AddHireActivity, "${projectId[position]} clicked", Toast.LENGTH_LONG).show()
                         sharePref.put(SharePrefHelper.PROJECT_ID_SELECTED, projectId[position]!!)
                     }
-                }
-            }
-        }
-    }
-
-    fun callHireApi(enId: Int, pjId: Int, hirePrice: String, hireMessage: String, hireStatus: String) {
-        val service = ApiClient.getApiClient(context = this)?.create(HireApiService::class.java)
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.addHire(enId, pjId, hirePrice, hireMessage, hireStatus)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is HireResponse) {
-                if (result.success) {
-                    Toast.makeText(this@AddHireActivity, "Success Hire", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@AddHireActivity, HomeActivity::class.java)
-                    startActivity(intent)
                 }
             }
         }
