@@ -1,4 +1,4 @@
-package com.example.hirecodeandroid.hire
+package com.example.hirecodeandroid.hire.addhire
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +11,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddHireBinding
+import com.example.hirecodeandroid.hire.HireApiService
+import com.example.hirecodeandroid.hire.HireResponse
 import com.example.hirecodeandroid.project.ProjectApiService
 import com.example.hirecodeandroid.project.ProjectModel
 import com.example.hirecodeandroid.project.ProjectResponse

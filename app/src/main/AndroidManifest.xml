@@ -28,7 +28,6 @@
         <activity
             android:name=".experience.updateexperience.UpdateExperienceActivity"
             android:theme="@style/Basic" />
-        <activity android:name=".hire.DetailHireActivity" />
         <activity
             android:name=".project.addproject.AddProjectActivity"
             android:theme="@style/Basic" />
@@ -36,7 +35,7 @@
             android:name=".skill.AddSkillActivity"
             android:theme="@style/Basic" />
         <activity
-            android:name=".hire.AddHireActivity"
+            android:name=".hire.addhire.AddHireActivity"
             android:theme="@style/Basic" />
         <activity
             android:name=".project.detailproject.DetailProjectActivity"

@@ -32,7 +32,7 @@ class UpdateExperienceViewModel: ViewModel(), CoroutineScope {
                     e.printStackTrace()
 
                     withContext(Dispatchers.Main) {
-                        isUpdateLiveData.value = false
+                        isLiveData.value = false
                     }
                 }
             }

@@ -107,8 +107,6 @@ class UpdateExperienceActivity : AppCompatActivity() {
         })
     }
 
-
-
     private fun dateStartPicker() {
         dateStart = DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
             c.set(Calendar.YEAR, year)
@@ -135,26 +133,6 @@ class UpdateExperienceActivity : AppCompatActivity() {
             end.text = sdf.format(c.time)
         }
     }
-
-//    fun updateExperience(id: Int, expPosition: String, expCompany: String, expStart: String, expEnd: String, expDesc: String) {
-//        coroutineScope.launch {
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    service?.updateExperience(id, expPosition, expCompany, expStart, expEnd, expDesc)
-//                } catch (e: Throwable) {
-//                    e.printStackTrace()
-//                }
-//            }
-//            Log.d("tidak update?", result.toString())
-//            if (result is GeneralResponse) {
-//                    Log.d("data update", result.toString())
-//                    Toast.makeText(this@UpdateExperienceActivity, "Update experience success!", Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this@UpdateExperienceActivity, HomeActivity::class.java)
-//                    startActivity(intent)
-//                finish()
-//            }
-//        }
-//    }
 
     override fun onDestroy() {
         coroutineScope.cancel()

@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.HomeActivity
@@ -26,8 +29,8 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
 
     private lateinit var binding: FragmentHireEngineerBinding
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service: HireApiService
     private lateinit var sharePref: SharePrefHelper
+    private lateinit var viewModel: ListHireEngineerViewModel
     var listHire = ArrayList<HireModel>()
 
     override fun onCreateView(
@@ -37,8 +40,13 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hire_engineer,container,false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(requireContext())!!.create(HireApiService::class.java)
+        val service = ApiClient.getApiClient(requireContext())?.create(HireApiService::class.java)
         sharePref = SharePrefHelper(requireContext())
+
+        viewModel = ViewModelProvider(this@FragmentHireEngineer).get(ListHireEngineerViewModel::class.java)
+        if (service != null) {
+            viewModel.setService(service)
+        }
 
         binding.rvHire.adapter = HireListAdapter(listHire, this)
         binding.rvHire.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -47,27 +55,44 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getListHire()
+        val engineerId = sharePref.getString(SharePrefHelper.ENG_ID)
+        viewModel.getListHire(engineerId!!)
+        subscribeLiveData()
     }
 
-    private fun getListHire() {
-        coroutineScope.launch {
+    fun subscribeLiveData() {
+        viewModel.isLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.rvHire.visibility = View.VISIBLE
+                binding.tvDataNotFound.visibility = View.GONE
 
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getHireByEngineerId(sharePref.getString(SharePrefHelper.ENG_ID))
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.rvHire.visibility = View.GONE
+                binding.tvDataNotFound.visibility = View.GONE
             }
-            if (result is HireResponse) {
-                Log.d("hire list", result.toString())
-                val list = result.data?.map {
-                    HireModel(it.hireId, it.engineerId, it.projectId, it.hirePrice, it.hireMessage, it.hireStatus,it.hireDateConfirm, it.hireCreated, it.companyName, it.projectName, it.projectDeadline)
-                }
-                (binding.rvHire.adapter as HireListAdapter).addList(list)
+        })
+
+        viewModel.resultFail.observe(this, Observer {
+            if (it) {
+                binding.tvDataNotFound.visibility = View.VISIBLE
             }
-        }
+        })
+
+        viewModel.listHire.observe(this, Observer {
+            (binding.rvHire.adapter as HireListAdapter).addList(it)
+        })
+    }
+
+    private fun subscribeUpdateLiveData() {
+        viewModel.isUpdateLiveData.observe(this, Observer {
+            if (it) {
+                Toast.makeText(requireContext(), "Update Hire Success", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Failed to Update Hire Status", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onHireRejectClicked(position: Int) {
@@ -84,32 +109,14 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
         startActivity(intent)
     }
 
-    private fun updateHireStatus(id: String, status: String) {
-        coroutineScope.launch {
-
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.responseHire(id, status)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is GeneralResponse) {
-                if (result.success) {
-                    Toast.makeText(requireContext(), "Update Hire Success", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
     private fun showDialogAprrove(position: Int) {
         val id = listHire[position].hireId
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Approve Hire")
         builder.setMessage("Are you sure to approve this hiring?")
         builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
-            updateHireStatus(id!!, "approve")
+            viewModel.updateHireStatus(id!!, "approve")
+            subscribeUpdateLiveData()
             moveActivity()
         }
         builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
@@ -122,7 +129,8 @@ class FragmentHireEngineer: Fragment(), HireListAdapter.OnListHireClickListener 
         builder.setTitle("Reject Hire")
         builder.setMessage("Are you sure to reject this hiring?")
         builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int ->
-            updateHireStatus(id!!, "reject")
+            viewModel.updateHireStatus(id!!, "reject")
+            subscribeUpdateLiveData()
             moveActivity()
         }
         builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}

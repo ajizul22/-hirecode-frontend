@@ -40,13 +40,17 @@ class HireListAdapter(private val listHire: ArrayList<HireModel>, private val on
         holder.binding.tvCompanyName.text = item.companyName
         holder.binding.tvHireStatus.text = item.hireStatus
 
-        if (item.hireStatus == "wait" || item.hireStatus == "") {
+        if (item.hireStatus == "wait") {
             holder.binding.tvHireStatus.text = "wait your response"
+            holder.binding.btnResponse.visibility = View.VISIBLE
+            holder.binding.tvHireStatus.setTextColor(Color.rgb(122, 0, 0))
         } else if (item.hireStatus == "approve") {
             holder.binding.tvHireStatus.setTextColor(Color.rgb(60, 122, 62))
             holder.binding.btnResponse.visibility = View.GONE
         } else if (item.hireStatus == "reject") {
             holder.binding.btnResponse.visibility = View.GONE
+            holder.binding.btnDetailProject.visibility = View.GONE
+            holder.binding.tvHireStatus.setTextColor(Color.rgb(122, 0, 0))
         }
 
         holder.binding.btnApprove.setOnClickListener {

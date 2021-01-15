@@ -3,7 +3,6 @@ package com.example.hirecodeandroid.engineer.detailprofileengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,14 +11,13 @@ import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.ActivityDetailProfileEngineerBinding
-import com.example.hirecodeandroid.hire.AddHireActivity
+import com.example.hirecodeandroid.hire.addhire.AddHireActivity
 import com.example.hirecodeandroid.listengineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.skill.SkillAdapter
 import com.example.hirecodeandroid.skill.SkillApiService
 import com.example.hirecodeandroid.skill.SkillModel
-import com.example.hirecodeandroid.skill.SkillResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import com.example.hirecodeandroid.webview.WebViewActivity
 import kotlinx.coroutines.*
