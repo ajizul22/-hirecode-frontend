@@ -3,7 +3,10 @@ package com.example.hirecodeandroid.portfolio.updateportfolio
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide
+import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.portfolio.PortofolioApiService
+import com.example.hirecodeandroid.portfolio.PortofolioResponse
 import com.example.hirecodeandroid.util.GeneralResponse
 import kotlinx.coroutines.*
 import okhttp3.MultipartBody
@@ -12,6 +15,8 @@ import kotlin.coroutines.CoroutineContext
 
 class UpdatePortfolioViewModel: ViewModel(), CoroutineScope {
 
+    val listModel = MutableLiveData<List<PortofolioResponse.Portofolio>>()
+    val isLiveData = MutableLiveData<Boolean>()
     val isUpdateLiveData = MutableLiveData<Boolean>()
 
     override val coroutineContext: CoroutineContext
@@ -50,6 +55,29 @@ class UpdatePortfolioViewModel: ViewModel(), CoroutineScope {
             }
             if (result is GeneralResponse) {
                 isUpdateLiveData.value = result.success
+            }
+        }
+    }
+
+    fun getDataPortfolio(id: Int) {
+        launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    service.getPortfolioByIdPort(id)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+
+                    withContext(Dispatchers.Main) {
+                        isUpdateLiveData.value = false
+                    }
+                }
+            }
+
+            if (result is PortofolioResponse) {
+                if (result.success) {
+                    listModel.value = result.data
+                    isLiveData.value = true
+                }
             }
         }
     }

@@ -28,14 +28,6 @@ class DetailPortfolioActivity : AppCompatActivity() {
     private lateinit var service: PortofolioApiService
     val img = "http://3.80.223.103:4000/image/"
     var idPort: Int? = null
-    var appName: String? = null
-    var desc: String? = null
-    var linkPub: String? = null
-    var linkRepo: String? = null
-    var workplace: String? = null
-    var portType: String? = null
-    var image: String? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,13 +57,6 @@ class DetailPortfolioActivity : AppCompatActivity() {
         binding.btnUpdate.setOnClickListener {
             val intent = Intent(this, UpdatePortfolioActivity::class.java)
             intent.putExtra("id", idPort)
-            intent.putExtra("name", appName)
-            intent.putExtra("desc", desc)
-            intent.putExtra("pub", linkPub)
-            intent.putExtra("repo", linkRepo)
-            intent.putExtra("workplace", workplace)
-            intent.putExtra("type", portType)
-            intent.putExtra("image", image)
             startActivity(intent)
         }
 
@@ -91,13 +76,6 @@ class DetailPortfolioActivity : AppCompatActivity() {
                 if (result.success) {
                     binding.model = result.data[0]
                     idPort = result.data[0].portoId
-                    appName = result.data[0].portoAppName
-                    desc = result.data[0].portoDesc
-                    linkPub = result.data[0].portoLinkPub
-                    linkRepo = result.data[0].portoLinkRepo
-                    workplace = result.data[0].portoWorkPlace
-                    portType = result.data[0].portoType
-                    image = result.data[0].portoImage
                     Glide.with(this@DetailPortfolioActivity).load(img + result.data[0].portoImage).placeholder(R.drawable.ic_project)
                         .error(R.drawable.ic_project).into(binding.ivPortfolio)
                 }

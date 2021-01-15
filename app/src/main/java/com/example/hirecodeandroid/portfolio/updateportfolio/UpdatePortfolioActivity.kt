@@ -44,10 +44,10 @@ class UpdatePortfolioActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUpdatePortfolioBinding
     private lateinit var sharePref : SharePrefHelper
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var portType: String
     private lateinit var viewModel: UpdatePortfolioViewModel
     private var imgPortfolio: MultipartBody.Part? = null
     private var image: String = ""
+    private var portType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,25 +62,9 @@ class UpdatePortfolioActivity : AppCompatActivity() {
             viewModel.setService(service)
         }
 
-        val lastPortType = intent.getStringExtra("type")
-        val img = "http://3.80.223.103:4000/image/"
-        binding.etAppName.setText(intent.getStringExtra("name"))
-        binding.etShortDescApp.setText(intent.getStringExtra("desc"))
-        binding.etLinkPub.setText(intent.getStringExtra("pub"))
-        binding.etLinkRepo.setText(intent.getStringExtra("repo"))
-        binding.etWorkplaceApp.setText(intent.getStringExtra("workplace"))
-        portType = lastPortType!!
-        Glide.with(binding.root)
-            .load(img+intent.getStringExtra("image"))
-            .placeholder(R.drawable.ic_project)
-            .error(R.drawable.ic_project)
-            .into(binding.ivUploadImage)
-
-        if (lastPortType == "aplikasi mobile") {
-            binding.radioMobile.isChecked = true
-        } else if (lastPortType == "aplikasi web") {
-            binding.radioWeb.isChecked = true
-        }
+        val portId = intent.getIntExtra("id", 0)
+        viewModel.getDataPortfolio(portId)
+        subscribeLiveData()
 
         binding.ivUploadImage.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -105,7 +89,7 @@ class UpdatePortfolioActivity : AppCompatActivity() {
         }
 
         binding.btnUpdatePortfolio.setOnClickListener {
-            val portId = intent.getIntExtra("id", 0)
+
             val portAppName = binding.etAppName.text.toString()
                 .toRequestBody("text/plain".toMediaTypeOrNull())
             val portDesc = binding.etShortDescApp.text.toString()
@@ -128,7 +112,35 @@ class UpdatePortfolioActivity : AppCompatActivity() {
             }
         }
 
+    }
 
+    private fun subscribeLiveData() {
+        viewModel.isLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.GONE
+                binding.scrollView.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.scrollView.visibility = View.GONE
+            }
+        })
+
+        viewModel.listModel.observe(this, Observer {
+            binding.model = it[0]
+            val img = "http://3.80.223.103:4000/image/"
+            Glide.with(binding.root)
+            .load(img+it[0].portoImage)
+            .placeholder(R.drawable.ic_project)
+            .error(R.drawable.ic_project)
+            .into(binding.ivUploadImage)
+
+            portType = it[0].portoType!!
+            if (it[0].portoType == "aplikasi mobile") {
+            binding.radioMobile.isChecked = true
+            } else if (it[0].portoType == "aplikasi web") {
+            binding.radioWeb.isChecked = true
+            }
+        })
     }
 
     private fun subscribeLiveDataUpdate() {

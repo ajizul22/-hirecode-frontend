@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="model"
+            type="com.example.hirecodeandroid.portfolio.PortofolioResponse.Portofolio" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,9 +24,20 @@
             app:layout_constraintLeft_toLeftOf="parent"
             tools:targetApi="lollipop" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
@@ -72,6 +89,7 @@
                 <EditText
                     android:id="@+id/et_app_name"
                     android:hint="Enter application name"
+                    android:text="@{model.portoAppName}"
                     android:textColorHint="@color/navy"
                     android:textSize="15sp"
                     android:inputType="text"
@@ -99,6 +117,7 @@
                     android:id="@+id/et_short_desc_app"
                     android:hint="description your application"
                     android:textColorHint="@color/navy"
+                    android:text="@{model.portoDesc}"
                     android:inputType="text"
                     android:textSize="15sp"
                     android:gravity="top"
@@ -128,6 +147,7 @@
                     android:id="@+id/et_link_pub"
                     android:hint="Enter link publication"
                     android:textColorHint="@color/navy"
+                    android:text="@{model.portoLinkPub}"
                     android:textSize="15sp"
                     android:inputType="text"
                     android:paddingStart="15dp"
@@ -154,6 +174,7 @@
                     android:id="@+id/et_link_repo"
                     android:hint="Enter link repository"
                     android:textColorHint="@color/navy"
+                    android:text="@{model.portoLinkRepo}"
                     android:inputType="text"
                     android:textSize="15sp"
                     android:paddingStart="15dp"
@@ -180,6 +201,7 @@
                     android:id="@+id/et_workplace_app"
                     android:hint="Enter workplace"
                     android:textColorHint="@color/navy"
+                    android:text="@{model.portoWorkPlace}"
                     android:inputType="text"
                     android:textSize="15sp"
                     android:paddingStart="15dp"
