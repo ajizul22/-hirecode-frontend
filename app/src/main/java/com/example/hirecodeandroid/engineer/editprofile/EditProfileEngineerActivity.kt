@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
+import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityEditProfileEngineerBinding
@@ -56,8 +57,6 @@ class EditProfileEngineerActivity : AppCompatActivity() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
         viewModel = ViewModelProvider(this).get(EditProfileEngineerViewModel::class.java)
-        viewModel.setBinding(binding)
-        viewModel.setSharePref(sharedPref)
 
         if (service != null) {
             viewModel.setService(service)
@@ -159,12 +158,24 @@ class EditProfileEngineerActivity : AppCompatActivity() {
                 binding.scrollView.visibility = View.GONE
             }
         })
+        viewModel.listDataProfile.observe(this, Observer {
+            binding.model = it[0]
+            val img = "http://3.80.223.103:4000/image/"
+            Glide.with(binding.root).load(img + it[0].engineerProfilePict).placeholder(
+                R.drawable.ic_profile)
+                .error(R.drawable.ic_profile).into(binding.ivAvatar)
+        })
+        viewModel.listDataAccount.observe(this, Observer {
+            binding.account = it[0]
+            binding.etAcPassword.setText(sharedPref.getString(SharePrefHelper.KEY_PASSWORD))
+        })
     }
 
     private fun subscribeLiveDataUpdate() {
         viewModel.isUpdateEngineerLiveData.observe(this, Observer {
             if (it) {
                 val intent = Intent(this, HomeActivity::class.java)
+                sharedPref.put(SharePrefHelper.KEY_PASSWORD, binding.etAcPassword.text.toString())
                 Toast.makeText(this, "Success update profile", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             } else {

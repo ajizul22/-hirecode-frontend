@@ -21,18 +21,14 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
 
     val isEngineerLiveData = MutableLiveData<Boolean>()
     val isUpdateEngineerLiveData = MutableLiveData<Boolean>()
+    val listDataProfile = MutableLiveData<List<ListEngineerResponse.Engineer>>()
+    val listDataAccount = MutableLiveData<List<UpdateAccountResponse.Data>>()
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
 
     private lateinit var service: EngineerApiService
-    private lateinit var binding: ActivityEditProfileEngineerBinding
-    private lateinit var sharePref: SharePrefHelper
     private lateinit var image: MultipartBody.Part
-
-    fun setSharePref(sharePref: SharePrefHelper) {
-        this.sharePref = sharePref
-    }
 
     fun setImage(image: MultipartBody.Part) {
         this.image = image
@@ -40,10 +36,6 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
 
     fun setService(service: EngineerApiService) {
         this.service = service
-    }
-
-    fun setBinding(binding: ActivityEditProfileEngineerBinding) {
-        this.binding = binding
     }
 
     fun getDataEngineer(id: String) {
@@ -61,11 +53,7 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
             }
             if (result is ListEngineerResponse) {
                 if (result.success) {
-                    binding.model = result.data[0]
-                    val img = "http://3.80.223.103:4000/image/"
-                    Glide.with(binding.root).load(img + result.data[0].engineerProfilePict).placeholder(
-                        R.drawable.ic_profile)
-                        .error(R.drawable.ic_profile).into(binding.ivAvatar)
+                    listDataProfile.value = result.data
                     isEngineerLiveData.value = true
                 }else {
                     isEngineerLiveData.value = false
@@ -115,8 +103,7 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
 
             if (result is UpdateAccountResponse) {
                 if (result.success) {
-                    binding.account = result.data[0]
-                    binding.etAcPassword.setText(sharePref.getString(SharePrefHelper.KEY_PASSWORD))
+                    listDataAccount.value = result.data
                     isEngineerLiveData.value = true
                 } else {
                     isEngineerLiveData.value = false
@@ -141,7 +128,6 @@ class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {
 
             if (result is GeneralResponse) {
                 if (result.success) {
-                    sharePref.put(SharePrefHelper.KEY_PASSWORD, binding.etAcPassword.text.toString())
                     isUpdateEngineerLiveData.value = true
                 } else {
                     isUpdateEngineerLiveData.value = false
