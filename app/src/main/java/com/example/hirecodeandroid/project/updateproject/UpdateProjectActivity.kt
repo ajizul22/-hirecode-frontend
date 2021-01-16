@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
+import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityUpdateProjectBinding
@@ -59,7 +60,6 @@ class UpdateProjectActivity : AppCompatActivity() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
         viewModel = ViewModelProvider(this).get(UpdateProjectViewModel::class.java)
-        viewModel.setBinding(binding)
 
         c = Calendar.getInstance()
 
@@ -196,6 +196,17 @@ class UpdateProjectActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.VISIBLE
                 binding.scrollView.visibility = View.GONE
             }
+        })
+        viewModel.listDataModel.observe(this, Observer {
+            binding.model = it[0]
+            val deadLine = it[0].projectDeadline.split("T")[0]
+            binding.etProjectDeadline.setText(deadLine)
+            val img = "http://3.80.223.103:4000/image/"
+            Glide.with(binding.ivUploadImage)
+                .load(img + it[0].projectImage)
+                .placeholder(R.drawable.ic_project)
+                .error(R.drawable.ic_project)
+                .into(binding.ivUploadImage)
         })
     }
 

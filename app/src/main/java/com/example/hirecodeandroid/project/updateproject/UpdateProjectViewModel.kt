@@ -20,14 +20,13 @@ class UpdateProjectViewModel: ViewModel(), CoroutineScope {
 
     val isProjectLiveData = MutableLiveData<Boolean>()
     val isUpdateLiveData = MutableLiveData<Boolean>()
+    val listDataModel = MutableLiveData<List<DetailProjectResponse.Project>>()
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
 
     private lateinit var service: ProjectApiService
-    private lateinit var binding: ActivityUpdateProjectBinding
     private lateinit var image: MultipartBody.Part
-
 
     fun setImage(image: MultipartBody.Part) {
         this.image = image
@@ -35,10 +34,6 @@ class UpdateProjectViewModel: ViewModel(), CoroutineScope {
 
     fun setProjectService(service: ProjectApiService) {
         this.service = service
-    }
-
-    fun setBinding(binding:ActivityUpdateProjectBinding) {
-        this.binding = binding
     }
 
     fun getDataProject(id: Int) {
@@ -56,15 +51,7 @@ class UpdateProjectViewModel: ViewModel(), CoroutineScope {
             }
             if (result is DetailProjectResponse) {
                 if (result.success) {
-                    binding.model = result.data[0]
-                    val deadLine = result.data[0].projectDeadline.split("T")[0]
-                    binding.etProjectDeadline.setText(deadLine)
-                    val img = "http://3.80.223.103:4000/image/"
-                    Glide.with(binding.ivUploadImage)
-                        .load(img + result.data[0].projectImage)
-                        .placeholder(R.drawable.ic_project)
-                        .error(R.drawable.ic_project)
-                        .into(binding.ivUploadImage)
+                    listDataModel.value = result.data
                     isProjectLiveData.value = true
                 } else {
                     isProjectLiveData.value = false
