@@ -39,7 +39,6 @@ class FragmentProfileCompany: Fragment() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
         viewModel = ViewModelProvider(this@FragmentProfileCompany).get(ProfileCompanyViewModel::class.java)
-        viewModel.setBinding(binding)
 
         if (service != null) {
             viewModel.setCompanyService(service)

@@ -19,15 +19,9 @@ class ProfileCompanyViewModel: ViewModel(), CoroutineScope {
         get() = Job() + Dispatchers.Main
 
     private lateinit var service: CompanyApiService
-    private lateinit var binding: FragmentProfileCompanyBinding
-
 
     fun setCompanyService(service: CompanyApiService) {
         this.service = service
-    }
-
-    fun setBinding(binding: FragmentProfileCompanyBinding) {
-        this.binding = binding
     }
 
     fun callCompanyApi(id: Int) {

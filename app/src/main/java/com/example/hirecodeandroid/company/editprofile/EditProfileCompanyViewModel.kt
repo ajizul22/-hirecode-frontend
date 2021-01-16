@@ -22,13 +22,13 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
     val isCompanyLiveData = MutableLiveData<Boolean>()
     val isUpdateCompanyLiveData = MutableLiveData<Boolean>()
+    val listDataProfile = MutableLiveData<List<CompanyResponse.Company>>()
+    val listDataAccount = MutableLiveData<List<UpdateAccountResponse.Data>>()
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
 
     private lateinit var service: CompanyApiService
-    private lateinit var binding: ActivityEditProfileCompanyBinding
-    private lateinit var sharePref: SharePrefHelper
     private lateinit var image: MultipartBody.Part
 
 
@@ -36,16 +36,8 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
         this.image = image
     }
 
-    fun setSharePref(sharePref: SharePrefHelper) {
-        this.sharePref = sharePref
-    }
-
     fun setCompanyService(service: CompanyApiService) {
         this.service = service
-    }
-
-    fun setBinding(binding: ActivityEditProfileCompanyBinding) {
-        this.binding = binding
     }
 
     fun getDataCompany(id: Int) {
@@ -64,11 +56,7 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
             if (result is CompanyResponse) {
                 if (result.success) {
-                    binding.model = result.data[0]
-                    val img = "http://3.80.223.103:4000/image/"
-                    Glide.with(binding.root).load(img + result.data[0].companyPhotoProfile).placeholder(
-                        R.drawable.ic_profile)
-                        .error(R.drawable.ic_profile).into(binding.ivAvatar)
+                    listDataProfile.value = result.data
                     isCompanyLiveData.value = true
                 } else {
                     isCompanyLiveData.value = false
@@ -118,8 +106,7 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
             if (result is UpdateAccountResponse) {
                 if (result.success) {
-                    binding.account = result.data[0]
-                    binding.etAcPassword.setText(sharePref.getString(SharePrefHelper.KEY_PASSWORD))
+                    listDataAccount.value = result.data
                     isCompanyLiveData.value = true
                 } else {
                     isCompanyLiveData.value = false
@@ -144,7 +131,6 @@ class EditProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
             if (result is GeneralResponse) {
                 if (result.success) {
-                    sharePref.put(SharePrefHelper.KEY_PASSWORD, binding.etAcPassword.text.toString())
                     isUpdateCompanyLiveData.value = true
                 } else {
                     isUpdateCompanyLiveData.value = false
