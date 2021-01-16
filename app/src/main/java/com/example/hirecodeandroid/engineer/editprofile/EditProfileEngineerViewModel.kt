@@ -2,19 +2,13 @@ package com.example.hirecodeandroid.engineer.editprofile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
-import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.databinding.ActivityEditProfileEngineerBinding
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.util.GeneralResponse
-import com.example.hirecodeandroid.util.SharePrefHelper
 import com.example.hirecodeandroid.util.UpdateAccountResponse
 import kotlinx.coroutines.*
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import kotlin.coroutines.CoroutineContext
 
 class EditProfileEngineerViewModel: ViewModel(), CoroutineScope {

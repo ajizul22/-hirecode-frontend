@@ -10,7 +10,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -23,7 +22,7 @@ import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityEditProfileEngineerBinding
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
@@ -141,7 +140,6 @@ class EditProfileEngineerActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                Toast.makeText(this@EditProfileEngineerActivity, "${typeApp[position]} clicked", Toast.LENGTH_SHORT).show();
                 sharedPref.put(SharePrefHelper.JOB_TYPE, typeApp[position])
             }
 

@@ -12,7 +12,7 @@ import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
 import com.example.hirecodeandroid.databinding.ActivityDetailProfileEngineerBinding
 import com.example.hirecodeandroid.hire.addhire.AddHireActivity
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.skill.SkillAdapter

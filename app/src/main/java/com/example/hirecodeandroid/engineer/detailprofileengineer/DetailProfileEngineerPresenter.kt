@@ -1,10 +1,7 @@
 package com.example.hirecodeandroid.engineer.detailprofileengineer
 
 import android.util.Log
-import com.bumptech.glide.Glide
-import com.example.hirecodeandroid.R
-import com.example.hirecodeandroid.engineer.profile.ProfileEngineerContract
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.skill.SkillApiService
 import com.example.hirecodeandroid.skill.SkillModel

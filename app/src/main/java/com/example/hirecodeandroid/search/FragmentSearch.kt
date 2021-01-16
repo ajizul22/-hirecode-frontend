@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hirecodeandroid.engineer.detailprofileengineer.DetailProfileEngineerActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentSearchBinding
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.util.SharePrefHelper

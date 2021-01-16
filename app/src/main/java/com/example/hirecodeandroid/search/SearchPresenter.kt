@@ -1,15 +1,14 @@
 package com.example.hirecodeandroid.search
 
-import android.util.Log
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
-import com.example.hirecodeandroid.util.SharePrefHelper
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 
 class SearchPresenter(private val coroutineScope: CoroutineScope,
-                      private val service: EngineerApiService) : SearchContract.Presenter {
+                      private val service: EngineerApiService
+) : SearchContract.Presenter {
 
     private var view: SearchContract.View? = null
 
@@ -52,7 +51,9 @@ class SearchPresenter(private val coroutineScope: CoroutineScope,
                             ListEngineerModel(it.engineerId, it.accountId, it.accountName,it.accountEmail,it.accountPhone, it.engineerJobTitle, it.engineerJobType,
                                 it.engineerDomicilie, it.engineerDesc, it.engineerProfilePict,it.engineerCreated, it.engineerUpdate, it.skillEngineer)
                         }
-                        view?.onResultSuccess(list)
+                        val mutable = list.toMutableList()
+                        mutable.removeAll { it.engineerJobTitle == null || it.engineerJobType == null || it.engineerProfilePict == null }
+                        view?.onResultSuccess(mutable)
                     } else {
                         view?.onResultFail(result.message)
                     }

@@ -1,9 +1,8 @@
 package com.example.hirecodeandroid.engineer.profile
 
 import android.util.Log
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
-import com.example.hirecodeandroid.skill.SkillAdapter
 import com.example.hirecodeandroid.skill.SkillApiService
 import com.example.hirecodeandroid.skill.SkillModel
 import com.example.hirecodeandroid.skill.SkillResponse

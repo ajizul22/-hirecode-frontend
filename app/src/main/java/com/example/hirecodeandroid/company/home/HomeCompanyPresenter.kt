@@ -1,6 +1,6 @@
 package com.example.hirecodeandroid.company.home
 
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerModel
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +10,8 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 class HomeCompanyPresenter(private val coroutineScope: CoroutineScope,
-                           private val service: EngineerApiService) : HomeCompanyContract.Presenter {
+                           private val service: EngineerApiService
+) : HomeCompanyContract.Presenter {
 
     private var view: HomeCompanyContract.View? = null
 

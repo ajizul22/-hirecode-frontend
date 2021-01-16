@@ -20,6 +20,7 @@ class SharePrefHelper(private val context: Context) {
         const val PROJECT_ID_SELECTED = "PROJECT_ID_SELECTED"
         const val JOB_TYPE = "JOB_TYPE"
         const val PROJECT_ID_COMPANY_CLICKED = "PROJECT_ID"
+        const val JOB_TITLE = "JOB_TITLE"
     }
 
     private val sharedPref: SharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)

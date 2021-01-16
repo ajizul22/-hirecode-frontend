@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +18,10 @@ import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.FragmentProfileBinding
 import com.example.hirecodeandroid.engineer.editprofile.EditProfileEngineerActivity
 import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
-import com.example.hirecodeandroid.listengineer.EngineerApiService
+import com.example.hirecodeandroid.engineer.EngineerApiService
 import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.skill.*
-import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.SharePrefHelper
 import com.example.hirecodeandroid.webview.WebViewActivity
 import kotlinx.coroutines.*

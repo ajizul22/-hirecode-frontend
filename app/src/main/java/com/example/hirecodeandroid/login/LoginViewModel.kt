@@ -48,13 +48,13 @@ class LoginViewModel: ViewModel(), CoroutineScope {
                     sharePref.put(SharePrefHelper.KEY_EMAIL, result.data.accountEmail!!)
                     sharePref.put(SharePrefHelper.AC_ID, result.data.accountId!!)
 
-                    isLoginLiveData.value = true
-
                     if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
                         getEngineerId()
                     } else {
                         getCompanyId()
                     }
+
+                    isLoginLiveData.value = true
                 } else {
                     isLoginLiveData.value = false
                 }
@@ -80,6 +80,13 @@ class LoginViewModel: ViewModel(), CoroutineScope {
                 if (result.success) {
                     sharePref.put(SharePrefHelper.ENG_ID, result.data.engineerId)
                     sharePref.put(SharePrefHelper.ENG_NAME, result.data.accountName)
+
+                    if (result.data.engineerJobTitle != null) {
+                        sharePref.put(SharePrefHelper.JOB_TITLE, result.data.engineerJobTitle)
+                    } else {
+                        sharePref.getString(SharePrefHelper.JOB_TITLE)
+                    }
+
 
                     isGetEngineerId.value = true
                 } else {

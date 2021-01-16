@@ -11,6 +11,7 @@ import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.OnBoardScreenActivity
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityLoginBinding
+import com.example.hirecodeandroid.engineer.editprofile.EditProfileEngineerActivity
 import com.example.hirecodeandroid.register.engineer.RegisterEngineerActivity
 import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.reset_password.ResetPasswordActivity
@@ -68,30 +69,30 @@ class LoginActivity : AppCompatActivity() {
         }
 
         subscribeLiveData()
-        subscribeEngineerIdLiveData()
         subscribeCompanyIdLiveData()
     }
 
     private fun subscribeLiveData() {
-        viewModel.isLoginLiveData.observe(this, Observer {
-            if (it) {
+        viewModel.isLoginLiveData.observe(this, Observer {it1 ->
+            if (it1) {
                 Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                moveActivity()
+                viewModel.isGetEngineerId.observe(this, Observer {
+                    if (it) {
+                        if (sharePref.getString(SharePrefHelper.JOB_TITLE) == null) {
+                            Toast.makeText(this, "Please complete your data first", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@LoginActivity, EditProfileEngineerActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Welcome :)", Toast.LENGTH_SHORT).show()
+                            moveActivity()
+                        }
+                    }
+                })
 
-                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
             } else {
                 Toast.makeText(this, "Email/Password Wrong", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun subscribeEngineerIdLiveData() {
-        viewModel.isGetEngineerId.observe(this, Observer {
-            if (it) {
-                Toast.makeText(this, "Welcome :)", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Engineer Id failed to Get", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -104,6 +105,11 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Company Id failed to Get", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun moveActivity() {
+        startActivity(Intent(this, HomeActivity::class.java))
+        finish()
     }
 
     override fun onBackPressed() {

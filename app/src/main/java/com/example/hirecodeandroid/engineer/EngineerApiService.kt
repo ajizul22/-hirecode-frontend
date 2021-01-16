@@ -1,5 +1,6 @@
-package com.example.hirecodeandroid.listengineer
+package com.example.hirecodeandroid.engineer
 
+import com.example.hirecodeandroid.listengineer.ListEngineerResponse
 import com.example.hirecodeandroid.util.GeneralResponse
 import com.example.hirecodeandroid.util.UpdateAccountResponse
 import okhttp3.MultipartBody
