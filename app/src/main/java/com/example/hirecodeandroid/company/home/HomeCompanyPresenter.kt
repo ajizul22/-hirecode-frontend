@@ -55,7 +55,9 @@ class HomeCompanyPresenter(private val coroutineScope: CoroutineScope,
                     val list = result.data.map {
                         ListEngineerModel(it.engineerId, it.accountId, it.accountName,it.accountEmail,it.accountPhone, it.engineerJobTitle, it.engineerJobType, it.engineerDomicilie, it.engineerDesc, it.engineerProfilePict,it.engineerCreated, it.engineerUpdate, it.skillEngineer)
                     }
-                    view?.onResultSuccess(list)
+                    val mutable = list.toMutableList()
+                    mutable.removeAll { it.engineerJobTitle == null || it.engineerJobType == null || it.engineerProfilePict == null }
+                    view?.onResultSuccess(mutable)
                 } else {
                     view?.onResultFail(result.message)
                 }
