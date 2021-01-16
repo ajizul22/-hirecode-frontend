@@ -6,6 +6,7 @@ data class HireResponse(val success: Boolean, val message: String, val data: Lis
     data class Hire(
         @SerializedName("hr_id") val hireId: String?,
         @SerializedName("en_id") val engineerId: String?,
+        @SerializedName("cn_id") val companyId: String?,
         @SerializedName("pj_id") val projectId: String?,
         @SerializedName("hr_price") val hirePrice: Long?,
         @SerializedName("hr_message") val hireMessage: String?,

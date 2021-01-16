@@ -1,12 +1,14 @@
 package com.example.hirecodeandroid.hire.addhire
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +17,7 @@ import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.databinding.ActivityAddHireBinding
 import com.example.hirecodeandroid.hire.HireApiService
 import com.example.hirecodeandroid.hire.HireResponse
+import com.example.hirecodeandroid.hire.ListHireEngineerViewModel
 import com.example.hirecodeandroid.project.ProjectApiService
 import com.example.hirecodeandroid.project.ProjectModel
 import com.example.hirecodeandroid.project.ProjectResponse
@@ -80,10 +83,32 @@ class AddHireActivity : AppCompatActivity() {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun listProjectSpinner() {
         binding.spinnerListProject
-
+        val serviceHire = ApiClient.getApiClient(context = this)?.create(HireApiService::class.java)
         coroutineScope.launch {
+            val engineerId = sharePref.getString(SharePrefHelper.ENG_ID_CLICKED)
+            val companyId = sharePref.getString(SharePrefHelper.COM_ID)
+            val listProject = mutableListOf<Long>()
+
+
+            val resultCheck = withContext(Dispatchers.IO) {
+                try {
+                    serviceHire?.getHireByEngineerId(engineerId)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+
+            if (resultCheck is HireResponse) {
+                resultCheck.data.map {
+                    if (it.companyId == companyId && it.engineerId == engineerId) {
+                        listProject.add(it.projectId!!.toLong())
+                    }
+                }
+            }
+
             val result = withContext(Dispatchers.IO) {
                 try {
                     service?.getProjectByCompanyId(sharePref.getString(SharePrefHelper.COM_ID))
@@ -105,14 +130,21 @@ class AddHireActivity : AppCompatActivity() {
                         it.projectUpdated
                     )
                 }
-                val projectName =
-                    arrayOfNulls<String>(list.size)
-                val projectId =
-                    arrayOfNulls<Int>(list.size)
 
-                for (i in 0 until list.size) {
-                    projectName[i] = list.get(i).projectName
-                    projectId[i] = list.get(i).projectId
+                val mutableListProject = list.toMutableList()
+
+                for (i in 0 until listProject.size) {
+                    mutableListProject.removeIf { it.projectId == listProject[i].toInt() }
+                }
+
+                val projectName =
+                    arrayOfNulls<String>(mutableListProject.size)
+                val projectId =
+                    arrayOfNulls<Int>(mutableListProject.size)
+
+                for (i in 0 until mutableListProject.size) {
+                    projectName[i] = mutableListProject.get(i).projectName
+                    projectId[i] = mutableListProject.get(i).projectId
                 }
 
                 binding.spinnerListProject.adapter = ArrayAdapter<String>(this@AddHireActivity, R.layout.support_simple_spinner_dropdown_item, projectName)
@@ -128,7 +160,6 @@ class AddHireActivity : AppCompatActivity() {
                         position: Int,
                         id: Long
                     ) {
-                        Toast.makeText(this@AddHireActivity, "${projectId[position]} clicked", Toast.LENGTH_LONG).show()
                         sharePref.put(SharePrefHelper.PROJECT_ID_SELECTED, projectId[position]!!)
                     }
                 }
