@@ -42,7 +42,6 @@ class DetailProjectActivity : AppCompatActivity() {
         val serviceHire = ApiClient.getApiClient(this)?.create(HireApiService::class.java)
 
         viewModel = ViewModelProvider(this).get(DetailProjectViewModel::class.java)
-        viewModel.setBinding(binding)
 
         if (serviceHire != null) {
             viewModel.setServiceHire(serviceHire)
@@ -81,6 +80,16 @@ class DetailProjectActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.VISIBLE
                 binding.scrollView.visibility = View.GONE
             }
+        })
+        viewModel.listDataModel.observe(this, Observer {
+            binding.model = it[0]
+            binding.tvDeadlinePj.text = it[0].projectDeadline.split("T")[0]
+            val img = "http://3.80.223.103:4000/image/"
+            Glide.with(binding.ivProject)
+                .load(img + it[0].projectImage)
+                .placeholder(R.drawable.ic_project)
+                .error(R.drawable.ic_project)
+                .into(binding.ivProject)
         })
     }
 
