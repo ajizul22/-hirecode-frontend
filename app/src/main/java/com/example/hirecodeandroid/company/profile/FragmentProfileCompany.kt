@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.R
 import com.example.hirecodeandroid.company.CompanyApiService
 import com.example.hirecodeandroid.company.editprofile.EditProfileCompanyActivity
@@ -68,6 +69,14 @@ class FragmentProfileCompany: Fragment() {
                 binding.progressBar.visibility = View.VISIBLE
                 binding.content.visibility = View.GONE
             }
+        })
+
+        viewModel.listModel.observe(this, Observer {
+            binding.model = it[0]
+            val img = "http://3.80.223.103:4000/image/"
+            Glide.with(binding.root).load(img + it[0].companyPhotoProfile).placeholder(
+                R.drawable.ic_profile)
+                .error(R.drawable.ic_profile).into(binding.ivAvatar)
         })
     }
 

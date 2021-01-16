@@ -13,6 +13,7 @@ import kotlin.coroutines.CoroutineContext
 class ProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
     val isCompanyLiveData = MutableLiveData<Boolean>()
+    val listModel = MutableLiveData<List<CompanyResponse.Company>>()
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
@@ -45,11 +46,7 @@ class ProfileCompanyViewModel: ViewModel(), CoroutineScope {
 
             if (result is CompanyResponse) {
                 if (result.success) {
-                    binding.model = result.data[0]
-                    val img = "http://3.80.223.103:4000/image/"
-                    Glide.with(binding.root).load(img + result.data[0].companyPhotoProfile).placeholder(
-                        R.drawable.ic_profile)
-                        .error(R.drawable.ic_profile).into(binding.ivAvatar)
+                    listModel.value = result.data
                     isCompanyLiveData.value = true
                 } else {
                     isCompanyLiveData.value = false
