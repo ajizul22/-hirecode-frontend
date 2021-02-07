@@ -20,6 +20,7 @@ import com.example.hirecodeandroid.skill.SkillApiService
 import com.example.hirecodeandroid.skill.SkillModel
 import com.example.hirecodeandroid.util.SharePrefHelper
 import com.example.hirecodeandroid.webview.WebViewActivity
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.*
 
 class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSkillClickListener, DetailProfileEngineerContract.View {
@@ -54,6 +55,10 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
             onBackPressed()
         }
 
+        if (sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
+            binding.btnHire.visibility = View.GONE
+        }
+
         binding.tvGit.setOnClickListener {
             val intent = Intent(this, WebViewActivity::class.java)
             startActivity(intent)
@@ -71,8 +76,12 @@ class DetailProfileEngineerActivity : AppCompatActivity(), SkillAdapter.OnItemSk
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
 
-        binding.rvSkill.adapter = SkillAdapter(listSkill, this)
-        binding.rvSkill.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+//        binding.rvSkill.adapter = SkillAdapter(listSkill, this)
+//        binding.rvSkill.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+
+        binding.rvSkill.layoutManager = FlexboxLayoutManager(this)
+        val adapter = SkillAdapter(listSkill, this)
+        binding.rvSkill.adapter = adapter
 
     }
 

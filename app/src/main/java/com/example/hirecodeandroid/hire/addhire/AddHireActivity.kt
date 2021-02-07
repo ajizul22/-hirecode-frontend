@@ -33,6 +33,7 @@ class AddHireActivity : AppCompatActivity() {
     private lateinit var sharePref : SharePrefHelper
     private lateinit var viewModel: AddHireViewModel
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,
@@ -146,6 +147,12 @@ class AddHireActivity : AppCompatActivity() {
                     projectName[i] = mutableListProject.get(i).projectName
                     projectId[i] = mutableListProject.get(i).projectId
                 }
+
+                if (mutableListProject.isNullOrEmpty()) {
+                    binding.btnAddHire.visibility = View.GONE
+                    Toast.makeText(this@AddHireActivity, "You don't have any project to hire this engineer!", Toast.LENGTH_SHORT).show()
+                }
+
 
                 binding.spinnerListProject.adapter = ArrayAdapter<String>(this@AddHireActivity, R.layout.support_simple_spinner_dropdown_item, projectName)
 

@@ -3,14 +3,13 @@ package com.example.hirecodeandroid.util
 import android.content.Context
 import android.content.SharedPreferences
 
-class SharePrefHelper(private val context: Context) {
+class SharePrefHelper(context: Context) {
     companion object {
         const val SHARED_PREF_NAME = "HIREC0D3"
         const val KEY_EMAIL = "EMAIL_HC"
         const val KEY_PASSWORD = "PASSWORD_HC"
         const val KEY_LOGIN = "LOGIN"
         const val AC_LEVEL = "AC_LEVEL"
-        const val AC_NAME = "AC_NAME"
         const val TOKEN = "TOKEN"
         const val AC_ID = "ACID"
         const val ENG_ID = "ENG_ID"
@@ -61,6 +60,15 @@ class SharePrefHelper(private val context: Context) {
     fun clear() {
         editor.clear()
             .apply()
+    }
+
+    fun clearOneKey(myKey: String) {
+        for (key in sharedPref.all.keys) {
+            if (key.contains(myKey)) {
+                editor.remove(myKey)
+            }
+        }
+        editor.apply()
     }
 
 

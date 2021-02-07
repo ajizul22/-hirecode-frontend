@@ -143,9 +143,11 @@ class EditProfileCompanyActivity : AppCompatActivity() {
         viewModel.listDataProfile.observe(this, Observer {
             binding.model = it[0]
             val img = "http://3.80.223.103:4000/image/"
-            Glide.with(binding.root).load(img + it[0].companyPhotoProfile).placeholder(
-                R.drawable.ic_profile)
-                .error(R.drawable.ic_profile).into(binding.ivAvatar)
+            if (it[0].companyPhotoProfile != null) {
+                Glide.with(binding.root).load(img + it[0].companyPhotoProfile).placeholder(
+                    R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile).into(binding.ivAvatar)
+            }
         })
 
         viewModel.listDataAccount.observe(this, Observer {

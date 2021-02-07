@@ -40,11 +40,8 @@ class HomeActivity : AppCompatActivity() {
 
 
         if(sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
-            val bundle = Bundle()
-            bundle.putString("name", name)
-            fragmentHomeEng.arguments = bundle
             supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentHomeEng).commit()
-            binding.tvToolbarTitle.text = ""
+            binding.tvToolbarTitle.text = "Home"
         } else if (sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 1) {
             supportFragmentManager.beginTransaction().replace(R.id.fg_container, fragmentHomeCom).commit()
             binding.tvToolbarTitle.text = "Home"
@@ -57,11 +54,8 @@ class HomeActivity : AppCompatActivity() {
                         supportFragmentManager.beginTransaction().replace(R.id.fg_container,fragmentHomeCom).commit()
                         binding.tvToolbarTitle.text = "Home"
                     } else if (sharedPref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
-                        val bundle = Bundle()
-                        bundle.putString("name", name)
-                        fragmentHomeEng.arguments = bundle
                         supportFragmentManager.beginTransaction().replace(R.id.fg_container, fragmentHomeEng).commit()
-                        binding.tvToolbarTitle.text = ""
+                        binding.tvToolbarTitle.text = "Home"
                     }
                     true
                 }

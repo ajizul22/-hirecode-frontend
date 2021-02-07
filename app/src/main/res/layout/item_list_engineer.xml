@@ -21,7 +21,6 @@
             android:layout_height="100dp"
             android:layout_marginLeft="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/avatar"
             />
@@ -31,7 +30,7 @@
             android:id="@+id/tv_name_talent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="20dp"
             android:gravity="left"
             android:text="Ajizul Hakim"
             android:textSize="20sp"
@@ -59,7 +58,7 @@
             android:drawablePadding="2dp"
             android:layout_marginTop="5dp"
             android:textSize="18sp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="20dp"
             android:gravity="right"
             android:text="Jakarta"
             app:layout_constraintLeft_toRightOf="@id/iv_engineer"
@@ -72,75 +71,35 @@
             android:fontFamily="sans-serif-light"
             android:layout_marginLeft="15dp"
             android:textSize="18sp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:drawableLeft="@drawable/ic_baseline_place_24"
             android:gravity="right"
             android:text="Full time"
             app:layout_constraintLeft_toRightOf="@id/tv_fulltime"
             app:layout_constraintTop_toTopOf="@id/tv_fulltime"/>
 
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintLeft_toRightOf="@id/iv_engineer"
+            app:layout_constraintTop_toBottomOf="@id/tv_domicile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:flexWrap="wrap">
 
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginLeft="30dp"
-           android:layout_marginTop="10dp"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintTop_toBottomOf="@id/tv_fulltime"
-           app:layout_constraintLeft_toRightOf="@id/iv_engineer">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_skill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_list_skill"/>
 
-           <TextView
-               android:id="@+id/tv_skill1"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:background="@drawable/bg_skill"
-               android:gravity="center"
-               android:padding="4dp"
-               android:text="Javascript"
-               android:textColor="@android:color/white"
-               app:layout_constraintLeft_toLeftOf="parent"
-               app:layout_constraintTop_toTopOf="parent"
-               android:textSize="12sp" />
-
-           <TextView
-               android:id="@+id/tv_skill2"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:background="@drawable/bg_skill"
-               android:gravity="center"
-               android:layout_marginLeft="5dp"
-               android:padding="4dp"
-               android:text="Python"
-               android:textColor="@android:color/white"
-               android:textSize="12sp"
-               app:layout_constraintLeft_toRightOf="@+id/tv_skill1"
-               app:layout_constraintTop_toTopOf="parent"/>
-
-           <TextView
-               android:id="@+id/tv_skill3"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:background="@drawable/bg_skill"
-               android:gravity="center"
-               android:padding="4dp"
-               android:layout_marginLeft="5dp"
-               android:text="React Js"
-               android:textColor="@android:color/white"
-               android:textSize="12sp"
-               app:layout_constraintLeft_toRightOf="@+id/tv_skill2"
-               app:layout_constraintTop_toTopOf="parent"/>
-
-           <TextView
-               android:id="@+id/tv_more_skill"
-               android:text="2+"
-               android:textSize="14sp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               app:layout_constraintLeft_toRightOf="@id/tv_skill3"
-               app:layout_constraintTop_toTopOf="@id/tv_skill3"
-               app:layout_constraintBottom_toBottomOf="@id/tv_skill3"
-               android:layout_marginLeft="5dp"/>
-
-       </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.flexbox.FlexboxLayout>
 
 
 

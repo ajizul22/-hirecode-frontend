@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hirecodeandroid.HomeActivity
 import com.example.hirecodeandroid.R
+import com.example.hirecodeandroid.company.home.HomeSkillAdapter
 import com.example.hirecodeandroid.databinding.FragmentProfileBinding
 import com.example.hirecodeandroid.engineer.editprofile.EditProfileEngineerActivity
 import com.example.hirecodeandroid.engineer.EngineerTabPagerAdapter
@@ -24,6 +25,7 @@ import com.example.hirecodeandroid.remote.ApiClient
 import com.example.hirecodeandroid.skill.*
 import com.example.hirecodeandroid.util.SharePrefHelper
 import com.example.hirecodeandroid.webview.WebViewActivity
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.*
 
 
@@ -61,8 +63,12 @@ class FragmentProfileEngineer: Fragment(), SkillAdapter.OnItemSkillClickListener
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
 
-        binding.rvSkill.adapter = SkillAdapter(listSkill, this)
-        binding.rvSkill.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+//        binding.rvSkill.adapter = SkillAdapter(listSkill, this)
+//        binding.rvSkill.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+
+        binding.rvSkill.layoutManager = FlexboxLayoutManager(requireContext())
+        val adapter = SkillAdapter(listSkill, this)
+        binding.rvSkill.adapter = adapter
 
         binding.btnEditProfile.setOnClickListener {
             val intent = Intent(activity, EditProfileEngineerActivity::class.java)

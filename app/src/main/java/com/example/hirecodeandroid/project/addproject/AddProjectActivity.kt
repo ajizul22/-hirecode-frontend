@@ -40,6 +40,7 @@ class AddProjectActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_IMAGE_PICKER = 100;
         private const val PERMISSION_CODE = 1001;
+        const val FIELD_REQUIRED = "Field must not empty"
     }
 
     private lateinit var binding: ActivityAddProjectBinding
@@ -48,6 +49,7 @@ class AddProjectActivity : AppCompatActivity() {
     private lateinit var deadlineProject: DatePickerDialog.OnDateSetListener
     private lateinit var viewModel: AddProjectViewModel
     private lateinit var c: Calendar
+    var img: MultipartBody.Part? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +104,12 @@ class AddProjectActivity : AppCompatActivity() {
         }
 
         deadlineProject()
+
+        binding.btnAddProject.setOnClickListener {
+            validation()
+            img?.let { it1 -> viewModel.callProjectApi(it1) }
+            subscribeLiveData()
+        }
     }
 
     private fun deadlineProject() {
@@ -158,7 +166,7 @@ class AddProjectActivity : AppCompatActivity() {
             val file = File(filePath)
             Log.d("image", file.name)
 
-            var img: MultipartBody.Part? = null
+
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile: RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
@@ -167,14 +175,33 @@ class AddProjectActivity : AppCompatActivity() {
                 MultipartBody.Part.createFormData("image", file.name, it1)
             }
 
-            Log.d("image", img.toString())
 
-            binding.btnAddProject.setOnClickListener {
-                if (img != null) {
-                    viewModel.callProjectApi(img)
-                    subscribeLiveData()
-                }
-            }
+        }
+    }
+
+    private fun validation() {
+        val projectName = binding.etProjectName.text.toString()
+        val projectDesc = binding.etProjectDesc.text.toString()
+        val projectDeadline = binding.etProjectDeadline.text.toString()
+
+        if (projectName.isEmpty()) {
+            showToast(FIELD_REQUIRED)
+            return
+        }
+
+        if (projectDesc.isEmpty()) {
+            showToast(FIELD_REQUIRED)
+            return
+        }
+
+        if (projectDeadline.isEmpty()) {
+            showToast(FIELD_REQUIRED)
+            return
+        }
+
+        if (img == null) {
+            showToast("Please insert image project")
+            return
         }
     }
 
@@ -206,6 +233,10 @@ class AddProjectActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroy() {

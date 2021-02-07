@@ -72,7 +72,11 @@ class DetailPortfolioActivity : AppCompatActivity() {
             if (it) {
                 binding.progressBar.visibility = View.GONE
                 binding.content.visibility = View.VISIBLE
-                binding.button.visibility = View.VISIBLE
+
+                if (sharePref.getInteger(SharePrefHelper.AC_LEVEL) == 0) {
+                    binding.button.visibility = View.VISIBLE
+                }
+
             } else {
                 binding.progressBar.visibility = View.VISIBLE
                 binding.content.visibility = View.GONE
@@ -82,6 +86,7 @@ class DetailPortfolioActivity : AppCompatActivity() {
 
         viewModel.listModel.observe(this, Observer {
             binding.model = it[0]
+            idPort = it[0].portoId
             val img = "http://3.80.223.103:4000/image/"
             Glide.with(binding.root)
                 .load(img+it[0].portoImage)

@@ -16,7 +16,11 @@ class SkillAdapter(private val listSkill: ArrayList<SkillModel>,
         notifyDataSetChanged()
     }
 
-    class SkillHolder(val binding: ItemListSkillBinding): RecyclerView.ViewHolder(binding.root)
+    class SkillHolder(val binding: ItemListSkillBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(skill: SkillModel) {
+            binding.skill = skill
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkillHolder {
         return SkillHolder(
@@ -34,7 +38,7 @@ class SkillAdapter(private val listSkill: ArrayList<SkillModel>,
     override fun onBindViewHolder(holder: SkillHolder, position: Int) {
         val item = listSkill[position]
 
-        holder.binding.tvSkill.text = item.skillName
+        holder.bind(item)
 
         holder.itemView.setOnClickListener {
             onItemSkillClickListener.onItemSkillClicked(position)
